@@ -50,7 +50,7 @@ div#fancy_loading_overlay {
 
 div#fancy_loading_icon {
 	position: absolute;
-	background: url('fancy_loading.gif') no-repeat;
+	background: url('http://ccfe.altervista.org/jquery.fancybox/fancy_loading.gif') no-repeat;
 	z-index: 35;
 	width: 16px;
 	height: 16px;
