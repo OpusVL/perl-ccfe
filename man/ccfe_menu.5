@@ -1,0 +1,348 @@
+.\" Copyright (C) 2009, 2016 Massimo Loschi <ccfedevel@gmail.com>
+.\"
+.\" This is is free documentation; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" The GNU General Public License's references to "object code"
+.\" and "executables" are to be interpreted as the output of any
+.\" document formatting or typesetting system, including
+.\" intermediate and printed output.
+.\"
+.\" This manual is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this manual; if not, write to the Free Software
+.\" Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+.\"
+.TH "CCFE MENU" 5 "September,  4 2016" "ccfe 1.58" "Curses Command Front-end"
+.SH NAME
+ccfe menu \- the Curses Command Front-end menu definition file.
+.SH DESCRIPTION
+The Curses Command Front-end menu is a tool which permits to collect scripts
+or CCFE forms in hierarchical menus.
+When the user selects an item of a menu, then is executed the corresponding
+\fBaction\fR, which can be an O.S. command, an external script, a \fBCCFE form\fR
+or another \fBCCFE menu\fR.
+It is based on the menu library, the curses extensions for programming menus:
+please see the
+.BR ncurses (3X)
+and
+.BR menu (3X)
+manpages.
+A CCFE menu can be a \fIstatic menu\fR or a \fIdynamic menu\fR: in the first case
+all the menu definition (both general definition and items definition) is contained
+in a single file, in the second case they are splitted in many files: it is a
+simple way to distribute software managed by CCFE (please see \fBDYNAMIC MENUS\fR below).
+.SH SYNOPSIS
+A menu is definited in a file with name terminated with the \fI.menu\fR extension,
+and the following attributes can be used in that file:
+.PP
+.RS
+.nf
+title {}
+top {}
+path {}
+item {}
+item {}
+ ...
+item {}
+.fi
+.RE
+.PP
+(some of them are optional).
+.br
+.B Comments
+begins with the "\fB#\fR" character, and continue until the end of the line.
+Empty lines are ignored.
+
+.SH GENERAL MENU ATTRIBUTES
+.TP
+\fBtitle { STRING }\fR
+Title of the menu to display.
+.br
+It is also used as \fIfast path description\fR when \fBccfe(1)\fR is called with
+\fB-f\fR option.
+.br
+If title attribute is omitted, it will be used the \fIdescription\fR of the
+item selected from the calling menu, but if omitted in a menu called with a
+\fIfast path\fR (see ccfe(1)), then no title will be used.
+.br
+Optional: Yes
+.br
+Examples:
+.nf
+.ta +3i
+    title { Configure System Services }
+.fi
+or
+.nf
+.ta +3i
+    title {
+      Configure System Services
+    }
+.fi
+.PP
+
+.TP
+\fBtop { STRING1\\nSTRING2 }\fR
+Text lines (max 2) to display on the bottom of the menu, between the
+title and the items of the menu.
+If omitted, the lines of the parameter \fIform_top_msg\fR in
+.BR ccfe.conf (5)
+will be displayed.
+.br
+Optional: Yes
+.br
+Examples:
+.nf
+.ta +3i
+    top {
+      Move cursor to desired item and press Enter.
+    }
+.fi
+.PP
+
+.TP
+\fBbottom { STRING1\\nSTRING2 }\fR
+Not yet implemented.
+.PP
+
+.TP
+\fBpath { LIST:OF:PATHNAMES }\fR
+List of extra path (added to environment variable PATH) to search binaries
+calling the O.S. in the menu \fBaction{}\fR.
+Note: \fBpath{}\fR is used only to search binaries, and not for forms and menus.
+.br
+Optional: Yes
+.br
+Formato:
+  - LIST:OF:PATHNAMES has the character ':' as separator;
+  - LIST:OF:PATHNAMES can contain relative and absolute subdirectories;
+  - le directory con path relativo sono relativizzate a $SCREEN_DIR
+.br
+Examples:
+.nf
+.ta +3i
+    path { ldap_lib }
+.fi
+.PP
+
+
+NB: XX_abc_XX indica una frase da rivedere o tradurre.
+
+.SH ITEM DEFINITION
+.B item {}
+Defines an item of the menu. It must appear at least one time in a 
+menu definition file.
+Every item definition is a collection of attributes, with the following
+syntax:
+.LP
+.PD .1v
+.RS
+.nf
+item {
+.RS
+.IP attribute 10
+= value
+.IP attribute
+= value
+ ...
+.IP attribute
+= value
+.RE
+}
+.fi
+.PD
+.RE
+.PP
+Valid item attributes are explained later with the following format:
+
+.B attribute_name
+.RS
+Attribute description.
+.PP
+.I Values:
+Notes on the syntax of the value of the field.
+If there is a list of values, the first element of the list is
+the default.
+The \fB""\fR value represents the null value.
+.br
+.I Required:
+\fIYes\fR or \fIno\fR, depending if the attribute is mandatory or not.
+.br
+.I Types:
+List of field \fBtype\fP for which this attribute is valid.
+
+.SS id
+Identifier of the item used to refer its value by help procedure.
+It must be unique in the scope of the menu.
+.PP
+Values:
+An upper case string (but it is case insensitive) composed by characters A-Z,0-9,-,_
+.br
+Required: Yes
+.br
+Types: All
+
+.SS descr
+Text of the item to put in the menu.
+.PP
+Values:
+A string of any charachter.
+.br
+Required: Yes
+
+.SS action
+Action to execute when this item is highlighted and the \fB<Enter>\fR key is pressed.
+The selection of items without this attribute have the same effect to press
+the \fB<back key>\fR.
+Items without this attribute defined can be marked; please see the \fBmark_noaction_items\fR
+parameter in the
+.BR ccfe.conf (5)
+manual page.
+The syntax for a menu action is the following:
+.RS
+.PP
+
+.\"\fBaction {\fR \fIaction-type\fR[\fB(\fR\fIoption0\fR\fB,\fIoption1\fR\fB,\fR...\fB)\fR] \fB}\fR
+\fBaction {\fR \fIaction-type\fR[\fB(\fR\fIoptions\fR\fB)\fR]\fB:\fR \fIaction-args\fR \fB}\fR
+.RE
+.PP
+Where:
+
+.TP
+\fIaction-type\fR can be one of the following:
+
+.RS
+.TP
+.B run
+Execute \fIaction-args\fR and then show the results in the \fBOutput Browser screen\fR (please
+see the
+.BR ccfe (1)
+manpage).
+\fIaction-args\fR can be a simple command or a complete script which will
+be passed to a command shell for parsing (with "sh -c"). The shell used is the one specified in
+the \fBshell\fR parameter of the \fCccfe.conf\fR configuration file.
+
+.TP
+.B menu
+Load and display the specified menu.
+Before the name of menu, you can specify a path relative to LIB_DIR_PLACEHOLDER
+directory (for example \fCdemo.d/sysmon\fR).
+
+.TP
+.B form
+Load and post the specified form.
+Note that it is not possible to pass arguments as when calling a form from
+another form.
+Before the name of form, you can specify a path relative to LIB_DIR_PLACEHOLDER
+directory (for example \fCusers.d/ask_user\fR).
+
+.TP
+.B system
+Temporarily exit from \fBccfe\fR, executes \fIaction-args\fR and
+returns in \fBccfe\fR.
+This is useful for actions which need user interaction: for example the
+.BR passwd (1)
+command.
+If \fBwait_key\fR is specified in \fIoptions\fP, then it is displayed
+a message reporting the exit status and wait a user keystroke before to
+return in \fBccfe\fR.
+
+.TP
+.B exec
+Terminate \fBccfe\fR and executes \fIaction-args\fR.
+This is useful to return to Operating System after calling external commands
+or applications.
+Be aware that \fIaction-args\fR are executed directly instead of via a command
+shell, so invocation errors may not be reported.
+.RE
+.PP
+\fIoptions\fP is a comma-separated list of one or more of the following
+options:
+
+.RS
+.TP
+.B confirm
+Open a pop-up window to request a confirm before execute action.
+The option highlighted by default is "No" (not confirm).
+
+.TP
+.B log
+Save in the logfile the output of the execution of the action.
+
+.TP
+.B wait_key
+Valid only for \fIaction-type\fR\fB=system\fR: when action is completed, wait for
+continuing until the user presses a key.
+.RE
+
+.br
+Required: No
+
+
+.SH DYNAMIC MENUS
+A \fIdynamic menu\fP is a directory whose files are used to build the menu
+description: the file named \fBdefinition\fP must exists and contains general
+menu attributes (like \fBtitle{}\fP, \fBtop{}\fP and \fBbottom{}\fP blocks).
+Every item description is contained in a file: its name is user defined,
+but the extension must be \fB.item\fP.
+\fB*.item\fP files are sorted, so you can establish the items order
+by the name of their files definition.
+At least one \fB.item\fP file must exists.
+.PP
+For example, the dynamic menu \fIdemo\fP is defined by the following files:
+.nf
+\fC  /usr/lib/ccfe/ccfe/demo.menu/
+  /usr/lib/ccfe/ccfe/demo.menu/definition
+  /usr/lib/ccfe/ccfe/demo.menu/recursive.item
+  /usr/lib/ccfe/ccfe/demo.menu/sysmon.item\fP
+.fi
+
+where
+.IP \(bu 3
+\fC/usr/lib/ccfe/ccfe/demo.menu/definition\fP content is:
+.nf
+\fC  title {
+    CCFE Demo Menu
+  }\fP
+
+.IP \(bu 3
+\fC/usr/lib/ccfe/ccfe/demo.menu/recursive.item\fP content is:
+.nf
+\fC  item {
+    id     = RECURSIVE
+    descr  = Test form recursivity
+    action = form:demo.d/recursive
+  }\fP
+
+.IP \(bu 3
+\fC/usr/lib/ccfe/ccfe/demo.menu/sysmon.item\fP content is:
+.nf
+\fC  item {
+    id     = SYSMON
+    descr  = System resources usage monitors
+    action = menu:sysmon
+  }\fP
+.PP
+Please see the samples included in the CCFE distribution package.
+
+
+.SH EXAMPLES
+To be filled in!
+
+.SH SEE ALSO
+.BR ccfe (1),
+.BR ccfe.conf (5),
+.BR ccfe_form (5),
+.BR ccfe_help (5),
+.BR curses (3X),
+.BR menu (3X)
+
+.SH AUTHOR
+Massimo Loschi <\fIccfedevel@gmail.com\fR>

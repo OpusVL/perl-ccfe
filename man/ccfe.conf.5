@@ -1,0 +1,760 @@
+.\" Copyright (C) 2009, 2016 Massimo Loschi <ccfedevel@gmail.com>
+.\"
+.\" This is is free documentation; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" The GNU General Public License's references to "object code"
+.\" and "executables" are to be interpreted as the output of any
+.\" document formatting or typesetting system, including
+.\" intermediate and printed output.
+.\"
+.\" This manual is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this manual; if not, write to the Free Software
+.\" Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+.\"
+.\" $Id: ccfe.conf.5,v 1.2 2010/03/14 09:51:00 mloschi Exp mloschi $
+.TH "CCFE.CONF" 5 "September,  4 2016" "ccfe 1.58" "Curses Command Front-end"
+.SH NAME
+ccfe.conf \- the Curses Command Front-end configuration file.
+.SH DESCRIPTION
+.B ccfe.conf
+is the main configuration file for \fBccfe\fP. It determines the aspect of the screens provided
+by the Curses Command Front-end and some other features.
+.SH SYNOPSIS
+The \fIccfe configuration file\fR contains entries in the form:
+.PP
+.RS
+.nf
+\fCglobal {}
+menu_global {}
+form_global {}
+field_attr {}
+browser_global {}\fP
+.fi
+.RE
+.PP
+The order in which they appear is not important.
+.B Comments
+begin with the "\fB#\fR" character, and continue until the end of the line.
+Empty lines are ignored. Keywords are not case sensitive.
+Every \fIconfiguration section\fR is a collection of \fIparameters\fR with the following syntax:
+.LP
+.PD .1v
+.RS
+.nf
+\fC  configuration_section {
+    parameter = value
+    parameter = value
+     ...
+    parameter = value
+  }\fP
+.fi
+.PD
+.RE
+.PP
+Valid parameters are explained later with the following format:
+
+.B parameter_name
+.RS
+Parameter description.
+.PP
+.I Values:
+Notes on the syntax of the value of the field.
+If is present a list of values, the first element of the list is
+the default.
+The \fB""\fR value represents the null value.
+.br
+.I Required:
+\fIYes\fR or \fIno\fR, depending if the parameter is mandatory or not.
+.br
+.RE
+.SS Program instances
+Implemented, but not yet documented!
+
+.SS Configuration overrides
+It is possible to run CCFE by
+calling it with alternative names, so you can have a CCFE with a particular
+configuration for specific tasks: for example, you can configure CCFE
+to appear as the IBM AIX's System Management Interface Tool (SMIT), and invoke
+it with the \fBsmit\fR command, so your operations people can have a similar
+interface to administer both AIX and both Linux hosts.
+In this case you simply need to make symbolic link (or a hard link) called
+\fBsmit\fR to \fBccfe\fR, so CCFE will refer all its objects with the
+name used to call it: it read the global configuration file \fBccfe.conf\fR
+and next the \fIinstance configuration file\fR smit.conf, then it refers for
+menus and forms to the directory $PREFIX/lib/smit instead the default
+\fC$PREFIX/lib/ccfe\fR, then load the default menu \fC$PREFIX/lib/smit/ccfe.menu\fR
+
+.SH GLOBAL CONFIGURATION SECTION
+The
+.B global {}
+section defines general configuration parameters.
+
+.SS screen_layout
+Defines the layout of the screen: \fBnormal\fR if you want reverse background of the
+pop-up windows, centered menu options, screen areas separated by horizontal lines and
+titles in bold font, but if you plan to use \fBccfe\fR with low functions terminals
+and you don't want these features, you can set it as \fBsimple\fR.
+.PP
+Values:
+.BR normal | simple
+.br
+Required: No
+
+.SS hide_cursor
+Show or hide the cursor.
+.PP
+Values:
+.BR YES | NO
+.br
+Required: No
+
+.SS show_screen_name
+Show the file name of menu or form in the right of the top line
+of the screen.
+.PP
+Values:
+.BR YES | NO
+.br
+Required: No
+
+.SS path
+.PP
+Values:
+.BR YES | NO
+.br
+Required: No
+
+.SS shell
+.PP
+The shell used for the execution of every command string specified in forms
+and menus.
+.B WARNING: no check is actually made on the validity of the shell:
+for example, it is not verified that it is listed in
+\fC/etc/shells\fR
+system file.
+
+.SS user_shell
+.PP
+The shell called when user presses
+.B <shell_escape key>
+key.
+If \fBuser_shell\fR is not present in configuration file, then the user's shell
+in \fC/etc/passwd\fR system file will be used. Else, if it is present 
+but it is not valid (that is, not listed in \fC/etc/shells\fR system
+file), then the message with ID \fBBAD_SHELL_MSG\fR (see the \fBMULTILINGUAL SUPPORT\fR
+section in
+.BR ccfe (1)
+manpage) will be displayed in a pop-up window.
+So, if you want to disable the user escape shell, you simply have to set an invalid
+value to \fBuser_shell\fR parameter. For example
+.LP
+.PD .1v
+.RS
+.nf
+user_shell = DISABLED
+.fi
+.PD
+.RE
+.PP
+
+.SS log_level
+Define the verbosity of the log file.
+The default configuration only log actions with \fBlog\fR option.
+Except the first level, which can be used to trace user activity, all other details are useful for debugging purposes during new menus or forms development.
+Invoking \fBccfe\fR with \fB-d\fR option enables the maximum log detail,
+depending by \fBpermit_debug\fR parameter explained below.
+
+.TP
+.BR 1 " (LOG_NORMAL)"
+Write to logfile the commands executed by the actions with the \fBlog\fR attribute
+specified.
+.TP
+.BR 2 " (LOG_LIST_CMD)"
+Write to logfile informations related \fBlist_cmd\fR of type \fBcommand\fR attributes:
+executed commands and their output.
+.TP
+.BR 4 " (LOG_DEFAULT_CMD)"
+Write to logfile details of commands executed to setup the default value
+of forms fields. 
+.TP
+.BR 8 " (LOG_ACTION_CMD)"
+Write to logfile the commands invoked by action blocks.
+.TP
+.BR 16 " (LOG_FIELD_VALS)"
+Write to logfile the value of fields before execute action blocks.
+.TP
+.BR 32 " (LOG_MENU_CHOICE)"
+Write to logfile selections in menus and pop-up menus.
+.TP
+.BR 64 " (LOG_ACTION_OUT)"
+Write to logfile the output of executed action blocks.
+.TP
+.BR 128 " (LOG_SYSCALL_ENV)"
+Write to logfile the environment used to execute external commands.
+.TP
+.BR 256 " (LOG_SCAN_PATHS)"
+Write to logfile the search path used to look for forms, menus, and
+configuration files.
+.TP
+.BR 512 " (LOG_INITFORM_OUT)"
+Write to logfile the output of executed init blocks.
+
+Examples:
+
+.nf
+\fC  log_level = 1    # Log only actions with \fBlog\fR attribute
+
+  log_level = 577  # 577 = 1 + 64 + 512\fR
+.fi
+
+
+.SS permit_debug
+.PP
+If \fBYES\fR, users can enable debugging messages in their logfiles by invoking \fBccfe\fR
+with \fB-d\fR option. Please see the
+.BR ccfe (1)
+manpage.
+.PP
+Values:
+.BR YES | NO
+.br
+Required: No
+
+.SS load_user_objects
+.PP
+Define if $HOME/.ccfe directory has to be scanned when load \fBccfe\fR configuration,
+forms and menus.
+.PP
+Values:
+.BR NO | YES
+.br
+Required: No
+
+.SS key_f1
+.SS key_f2
+.SS key_f3
+.SS key_f4
+.SS key_f5
+.SS key_f6
+.SS key_f7
+.SS key_f8
+.SS key_f9
+.SS key_f10
+.SS key_f11
+.SS key_f12
+Assign a function to keyboard standard programmable keys. The functions available are the
+following:
+.PP
+.RS
+.TP
+.B back
+Exits from current form or menu or pop-up window and go to the previous
+(if any) without executing action.
+.TP
+.B exit
+Exit from \fBccfe\fR.
+.TP
+.B help
+Show the contextual help. Please see the
+.BR ccfe_help (5)
+manual page.
+.TP
+.B list
+Show a pop-up window with a list of admitted values for the entry field to select from. Depending on the list type,
+it is possible to select just one value or multiple values. Keys enabled for the
+selection are:
+.RS
+.TP
+.BR "<sel_items key>" " or " <Spacebar>
+Please see the explanation of the function \fBsel_items\fP below.
+.TP
+.BR <A> " or " <a>
+Only available in multiple values lists, select all the items.
+.TP
+.BR <U> " or " <u>
+Only available in multiple values lists, unselect all the items.
+.TP
+.BR "<Left arrow>" " and " "<Right arrow>"
+Scroll horizontally the menu if it is more wider than the pop-up window.
+.TP
+.B </>
+Find an item in the list, starting from the current and using the
+.BR menu_pattern (3X)
+menu pattern match management.
+.TP
+.BR <n> " or " <N>
+Find the next item, using the search pattern previously entered with the \fB/\fR (find) command.
+.TP
+.B <Enter>
+Close the pop-up window and put the selected value(s) in the field.
+.RE
+.TP
+.B redraw
+Refresh the screen if it has been accidentally overwritten, for example, by a
+.BR write (1)
+command from another user.
+.TP
+.B reset_field
+Resets the value of the actual field to the one at the form submission.
+.TP
+.B save
+In form screens: save the actual value of the fields in the logfile.
+In output browser screen: save in a text file the displayed output, or save the action
+in a shell script ready for execution outside \fBccfe\fR.
+.TP
+.B sel_items
+Only available in multiple values lists, select or unselect the higlighted item.
+.TP
+.B shell_escape
+Escapes temporary to a shell (please see \fBuser_shell\fR parameter in
+.BR ccfe.conf (5)
+man page).
+.TP
+.B show_action
+In a \fIform screen\fP, displays a pop-up window with the action that will be executed by pressing \fB<Enter>\fR,
+with the values actually in the fields.
+In a \fIoutput browser screen\fP, displays a pop-up window with the executed action.
+.RE
+.PP
+Please note that these parameters does not change the label of the function
+key on the screens: you have to modify the corrisponding definition
+\fBKEY_xxxx_LABEL\fR in the \fIglobal messages configuration file\fR
+\fCMSG_DIR_PLACEHOLDER/LOCALE_ID/ccfe\fR.
+.PP
+Example:
+
+.nf
+\fC  In /etc/ccfe/ccfe.conf:
+.fi
+.RS
+.B key_f10 = exit
+.RE
+.PP
+.nf
+\fC  and in /usr/lib/ccfe/msg/C/ccfe:
+.fi
+.RS
+.B KEY_F10_LABEL = """Quit"""
+.RE
+.PP
+.br
+Required: No
+
+
+.SH FORM CONFIGURATION SECTION
+The
+.B form_global {}
+block defines the parameters common to all \fBccfe\fR instance forms.
+Some parameters can depend by terminal name in which \fBccfe\fR is running:
+please see the
+.B TERMINAL-DEPENDENT SETTINGS
+section below.
+
+.SS field_pad
+.PP
+Defines the character used to fill normal fields.
+Be careful to conversion to blanks performed by 
+.BR ncurses (3X)
+library: for example, if \fBfield_pad="_"\fR and the user inserts the value
+"root_vg usr_vg var_vg" in a field, it appears on screen as
+"root_vg_usr_vg_var_vg", but the string "root vg usr vg var vg" will be
+passed to \fBaction {}\fR block!
+
+Values:
+A charachter delimited by double quote, for example: \fBfield_pad = " "\fR
+.br
+Default: \fB" "\fR
+.br
+Required: No
+
+.SS hidden_field_pad
+.PP
+Defines the character used to fill fields of \fBhidden\fR type.
+
+Values:
+A charachter delimited by double quote, for example: \fBhidden_field_pad = "X"\fR
+.br
+Default: \fB"*"\fR
+.br
+Required: No
+
+.SS initial_ovl_mode
+Set the overlay mode at program startup to input characters in the fields; if \fBNO\fR the
+insert mode is selected.
+.PP
+Values:
+.BR YES | NO
+.br
+Required: No
+
+.SS show_changed_fields
+Display with a different video attribute the value of the fields changed by the user.
+Please see the
+.BR changed_value_fg " and " changed_value_bg
+parameters in the \fBFORM FIELD ATTRIBUTES CONFIGURATION SECTION\fP.
+.PP
+Values:
+.BR YES | NO
+.br
+Required: No
+
+.SS show_field_flags
+Show flags (for instance, the \fB*\fP character before fields with required value) for
+every field.
+.PP
+Values:
+.BR YES | NO
+.br
+Required: No
+
+.SS show_dots
+Fill with some dots the gap between prompt and value of fields of forms.
+.PP
+Values:
+.BR YES | NO
+.br
+Required: No
+
+.SS value_delimiters
+Specify the characters to use to show when starts and ends the value of
+the field. Useful when \fBfield_pad\fR is a blank.
+.PP
+Values:
+A couple of charachters delimited by double quote and separated by a comma:
+for example: \fBvalue_delimiters = "[","]"\fR
+.br
+Default: \fB" "," "\fR
+.br
+Required: No
+ 
+.PP
+
+.SS field_value_pos
+.PP
+Define the column position of the screen for the fields value of the forms.
+The special value \fB-1\fR (default) means they will be right aligned.
+.PP
+Values: \fIinteger value\fR
+.br
+Default: \fB-1\fR
+.br
+Required: No
+.PP
+
+.SS fnkeys_rows
+.PP
+Define the number of bottom rows of the screen used to display the function key labels defined
+in the \fIccfe message file definition\fR. Warning: no check is made on this value.
+.PP
+Values: \fIinteger value\fR
+.br
+Default: \fB1\fR
+.br
+Required: No
+
+
+.SH FORM FIELD ATTRIBUTES CONFIGURATION SECTION
+The \fBfield_attr {}\fR and \fBactive_field_attr {}\fR blocks
+defines the video attributes common to all \fBccfe\fR instance forms.
+The accepted values are the standard
+.BR ncurses (3X)
+video attributes, as defined in \fB<ncurses.h>\fR: for example
+.PP
+.RS
+.nf
+field_attr {
+  label_fg = A_NORMAL
+}
+.fi
+.RE
+.PP
+Please see them in the
+.BR curs_attr (3X)
+manpage.
+It is possible to define \fBfield_attr {}\fR and \fBactive_field_attr {}\fR blocks
+for several terminal types: \fBccfe\fR use the one with the terminal type where
+it is running;
+please see the
+.B TERMINAL-DEPENDENT SETTINGS
+section below.
+
+.SS label_fg
+.PP
+.SS label_bg
+Fields label foreground and background video attributes.
+.PP
+.SS value_fg
+.PP
+.SS value_bg
+Fields initial value foreground and background video attributes.
+.PP
+.SS changed_value_fg
+.PP
+.SS changed_value_bg
+Foreground and background video attributes for fields value changed by user.
+.PP
+
+Please see the
+.B EXAMPLES
+section below.
+
+
+.SH MENU CONFIGURATION SECTION
+The
+.B menu_global {}
+block defines the parameters common to all \fBccfe\fR instance menus.
+
+.SS mark_noaction_items
+Options without defined action will be displayed inside parentheses.
+.PP
+Values:
+.BR NO | YES
+.br
+Required: No
+.PP
+
+.SS fnkeys_rows
+.PP
+Define the number of bottom rows of the screen used to display the function key labels defined
+in the \fIccfe message file definition\fR. Warning: no check is made on this value.
+.PP
+Values: \fIinteger value\fR
+.br
+Default: 1
+.br
+Required: No
+
+
+.SH OUTPUT BROWSER CONFIGURATION SECTION
+The
+.B browser_global {}
+block defines the parameters for the screen used to browse the output of an executed
+menu or form action. Available parameters are:
+
+.SS max_rows
+Size of the buffer used to display the standard output and error of the action executed.
+If the action produces a bigger output, then a pop-up message window will inform the user
+how to view it for entire.
+
+.SS info_attr
+Video attribute used to display the \fBccfe\fR generated messages (for example, when an action is
+interrupted with \fB<Ctrl>+C\fR).
+.PP
+Values: a standard
+.BR ncurses (3X)
+video attribute, as defined in \fB<ncurses.h>\fR. Please
+see them in the
+.BR curs_attr (3X)
+manpage.
+.br
+Default: \fBA_REVERSE\fR
+.br
+Required: No
+
+.SS end_marker
+String to show at the end of the output produced by \fBaction{}\fR block.
+\fBinfo_attr\fR is used as video attribute.
+.br
+To disable it, please set it to a null value:
+.nf
+\fC  end_marker =
+.fi
+.PP
+Values: \fIstring value\fR
+.br
+Default: \fB**** end of output ****\fR
+.br
+Required: No
+
+.SS stderr_attr
+Video attribute used to display the standard error rows.
+.PP
+Values: a standard
+.BR ncurses (3X)
+video attribute, as defined in \fB<ncurses.h>\fR. Please
+see them in the
+.BR curs_attr (3X)
+manpage.
+.br
+Default: \fBA_BOLD\fR
+.br
+Required: No
+
+.SS stdout_attr
+Video attribute used to display the standard output rows.
+.PP
+Values: a standard
+.BR ncurses (3X)
+video attribute, as defined in \fB<ncurses.h>\fP. Please
+see them in the
+.BR curs_attr (3X)
+manpage.
+.br
+Default: \fBA_NORMAL\fP
+.br
+Required: No
+
+.SS fnkeys_rows
+.PP
+Define the number of bottom rows of the screen used to display the function key labels defined
+in the \fIccfe message file definition\fR. Warning: no check is made on this value.
+.PP
+Values: \fIinteger value\fP
+.br
+Default: \fB1\fR
+.br
+Required: No
+
+
+.SH TERMINAL-DEPENDENT SETTINGS
+Some settings can depend on terminal type used to run \fBccfe\fP. For example
+
+.nf
+\fC  form_global { field_pad.linux = "_" }\fP
+.fi
+
+sets the parameter \fBfield_pad\fP only for terminals of type \fBlinux\fP.
+The \fIterminal ID\fR to use is the same of the environment variable TERM,
+case sensitive.
+The effective parameter value depends by the order of its configuration:
+for example:
+
+.IP \(bu 3
+Sets \fBfield_pad=" "\fP for all terminal types except \fBlinux\fP field_pad="_".
+
+.nf
+\fC  form_global {
+    field_pad        = " "
+    field_pad.linux  = "_"
+    hidden_field_pad = "*"
+  }\fP
+.fi
+
+.IP \(bu 3
+Sets \fBfield_pad=" "\fP for every terminal type: the \fBfield_pad\fP overrides
+the preceding \fBfield_pad.xterm\fP and \fBfield_pad.linux\fP:
+
+.nf
+\fC  form_global {
+    field_pad.linux  = "_"
+    field_pad.xterm  = "."
+    field_pad        = " "
+    hidden_field_pad = "*"
+  }\fP
+.fi
+
+.PP
+Terminal-dependent settings are:
+.IP \(bu 3
+form_global { field_pad }
+.IP \(bu 3
+field_attr {}
+.IP \(bu 3
+active_field_attr {}
+
+.SH EXAMPLES
+.PP
+.nf
+\fC  # The Curses Command Front-end default configuration file.
+
+  global {
+    screen_layout       = Normal
+    hide_cursor         = YES
+    shell               = /bin/sh
+    log_level           = 1
+    #path                = /path/to/add:/another/path/to/add
+    #user_shell          = /bin/ksh
+  }
+
+  browser_global {
+    max_rows    = 5000
+    info_attr   = A_REVERSE
+    stderr_attr = A_BOLD
+    stdout_attr = A_NORMAL
+    end_marker  = **** end of output ****
+  }
+
+  menu_global {
+    mark_noaction_items = YES
+  }
+
+  form_global {
+    field_pad           = " "
+    field_pad.linux     = "_"
+    hidden_field_pad    = "*"
+    show_changed_fields = YES
+    show_field_flags    = YES
+    initial_ovl_mode    = YES
+  }
+
+  field_attr {
+    label_fg         = A_NORMAL
+    label_bg         = A_NORMAL
+    value_fg         = A_NORMAL
+    value_bg         = A_UNDERLINE
+    changed_value_fg = A_BOLD
+    changed_value_bg = A_UNDERLINE
+  }
+  field_attr.linux {
+    label_fg         = A_NORMAL
+    label_bg         = A_NORMAL
+    value_fg         = A_NORMAL
+    value_bg         = A_NORMAL
+    changed_value_fg = A_BOLD
+    changed_value_bg = A_NORMAL
+  }
+
+  active_field_attr {
+    label_fg         = A_BOLD
+    label_bg         = A_NORMAL
+    value_fg         = A_NORMAL
+    value_bg         = A_REVERSE
+    changed_value_fg = A_NORMAL
+    changed_value_bg = A_REVERSE
+  }\fP
+.fi
+.PP
+
+.SH FILES
+
+.TP
+\fCETC_DIR_PLACEHOLDER/ccfe.conf\fR
+Global configuration.
+
+.TP
+\fCETC_DIR_PLACEHOLDER/CALLNAME.conf\fR
+Instance configuration. For example: \fCETC_DIR_PLACEHOLDER/foo.conf\fR,
+\fCETC_DIR_PLACEHOLDER/bar.conf\fR
+
+.TP
+\fC$HOME/.ccfe/ccfe.conf\fR
+User global preferences.
+
+.TP
+\fC$HOME/.ccfe/CALLNAME.conf\fR
+User instance preferences.
+For example: \fC$HOME/.ccfe/foo.conf\fR
+
+.TP
+\fCMSG_DIR_PLACEHOLDER/LOCALE_ID/CALLNAME\fR
+Instance messages configuration.
+
+.SH SEE ALSO
+.BR ccfe (1),
+.BR ccfe_form (5),
+.BR ccfe_menu (5),
+.BR ncurses (3X),
+.BR curs_attr (3X),
+.BR form (3X),
+.BR shells (5)
+
+.SH AUTHOR
+Massimo Loschi <\fIccfedevel@gmail.com\fR>

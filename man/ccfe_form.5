@@ -1,0 +1,1415 @@
+.\" Copyright (C) 2009, 2016 Massimo Loschi <ccfedevel@gmail.com>
+.\"
+.\" This is is free documentation; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" The GNU General Public License's references to "object code"
+.\" and "executables" are to be interpreted as the output of any
+.\" document formatting or typesetting system, including
+.\" intermediate and printed output.
+.\"
+.\" This manual is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this manual; if not, write to the Free Software
+.\" Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+.\"
+.TH "CCFE FORM" 5 "September,  4 2016" "ccfe 1.58" "Curses Command Front-end"
+.SH NAME
+ccfe form \- the Curses Command Front-end form definition file.
+
+.SH DESCRIPTION
+The Curses Command Front-end form is a tool which permit to assist the user to
+valorize options and arguments requested for the execution of a O.S. command
+or script, which can be into an external file or embedded in the form.
+It is based on the form library, the curses extensions for programming forms:
+please see the
+.BR ncurses (3X)
+and
+.BR form (3X)
+manpages.
+A \fIccfe menu\fR is basically an ordered collection of fields with an
+\fIaction\fR to execute when the form is posted.
+Each field can be associated to an option or an argument.
+
+.SH SYNOPSIS
+A form is definited in a file with name terminated with the \fI.form\fR extension,
+and the following attributes can be used in that file:
+.PP
+.RS
+.nf
+\fCtitle {}
+top {}
+path {}
+init {}
+field {}
+field {}
+ ...
+field {}
+action {}\fP
+.fi
+.RE
+.PP
+(some of them are optional).
+.br
+.B "Comment lines"
+begin with the "\fB#\fR" character.
+Empty lines are ignored. Comments embedded in lines are not permitted so you
+can use the "\fB#\fR" character in commands and text of the form. 
+All keywords are case insensitive.
+
+.SH GENERAL FORM ATTRIBUTES
+The following attributes concern the static parts of the form.
+.SS
+.BI "title {" STRING }
+Title of the form to display.
+.br
+It is also used as \fIfast path description\fR when \fBccfe(1)\fR is called with
+\fB-f\fR option.
+.br
+If title attribute is omitted, it will be used the \fIdescription\fR of the
+item selected from the calling menu, but if omitted in a form called with a
+\fIfast path\fR (see ccfe(1)), then no title will be used.
+.br
+Optional: Yes
+.br
+Examples:
+
+.nf
+\fC  title { Change user password expiry information }\fP
+.fi
+or
+.nf
+\fC  title {
+    Change user password expiry information
+  }\fP
+.fi
+.PP
+
+.SS
+\fBtop { \fIstring\fR [\\n\fIstring\fR] \fB}\fR
+Text lines (max 2) to display on the top of the form, between the
+title and the fields.
+If omitted, the lines of the parameter \fBform_top_msg\fP in
+.BR ccfe.conf (5)
+will be displayed.
+.br
+Optional: Yes
+.br
+Example:
+
+.nf
+\fC  top {
+    Type or select a value for the entry field.
+    Press Enter AFTER making all desired changes.
+  }\fP
+.fi
+.PP
+
+.SS
+.BI "path {" list : of : pathnames }
+List of extra path (added to environment variable PATH) to search binaries
+calling the O.S. in the following contexts:
+.RS
+.IP \(bu 3
+field.default
+.IP \(bu 3
+field.list_cmd
+.IP \(bu 3
+form.init
+.IP \(bu 3
+form.action
+.RE
+Note: path{} is used only to search binaries, and not for
+forms and menus.
+.br
+Optional: Yes
+.br
+Formato:
+  - LIST:OF:PATHNAMES has the character ':' as separator;
+  - LIST:OF:PATHNAMES can contains relative and absolute subdirectories;
+  - le directory con path relativo sono relativizzate a $SCREEN_DIR
+.br
+Example:
+.PP
+.nf
+  \fCpath { ldap_lib }\fP
+.fi
+.PP
+
+
+.SH FIELD DEFINITION
+The
+.B field {}
+form attribute defines a field of the form. It must appear at least one time in a 
+form definition file.
+Every field definition is a collection of attributes, with the following
+syntax:
+.LP
+.PD .1v
+.RS
+.nf
+field {
+.RS
+.IP attribute 10
+= value
+.IP attribute
+= value
+ ...
+.IP attribute
+= value
+.RE
+}
+.fi
+.PD
+.RE
+.PP
+Valid field attributes are explained later with the following format:
+
+.B attribute_name
+.RS
+Attribute description.
+.PP
+.I Values:
+Notes on the syntax of the value of the field.
+If there is a list of values, the first element of the list is
+the default.
+The \fB""\fR value represents the \fIempty string\fR (or \fInull string\fR) value.
+.br
+.I Required:
+\fIYes\fR or \fIno\fR, depending if the attribute is mandatory or not.
+.br
+.I Types:
+List of field \fBtype\fP for which this attribute is valid.
+
+.SS id
+Identifier of the field used to refer its value by
+.B init{}
+and
+.B action{}
+attributes.
+It must be unique in the scope of the form and cannot be one of the reserved values
+.BR CCFE_REMOVE_FIELDS , CCFE_ENABLE_FIELDS , CCFE_DISABLE_FIELDS , ARGV x
+(please see \fBFORM INITIALIZATION\fR and the \fBform action type\fR in \fBFORM ACTION\fR below).
+It is also used as reference for contextual help
+(please see the
+.BR ccfe_help (5)
+manpage).
+.PP
+Values:
+A string composed by characters
+.BR A-Z , a-z , 0-9 , - , _ .
+It is case sensitive.
+.br
+Required: Yes
+.br
+Types: All
+
+.SS label
+Prompt string of the field.
+.PP
+Values:
+A string of any charachter.
+.br
+Required: Yes
+.br
+Types: All
+
+.SS enabled
+Flag to enable or disable the field. It is not possible to move the cursor
+to a disabled field, and then to insert a value. Disabled fields ca be
+used to insert a comment or a simple label in the form.
+.PP
+Values:
+.BR YES | NO
+.br
+Required: No
+.br
+Types: All
+
+.SS len
+Size of the field (in characters).
+It is ignored for the fields of type \fBBOOLEAN\fR and \fBNULLBOOLEAN\fR, because it is
+automatically XX_set up_XX.
+If "hscroll=YES", then the specified length is a "window" to scroll on the value
+of the field, which can be more longest of that size.
+.br
+Required: No
+.br
+Types: \fBNUMERIC\fR, \fBSTRING\fR, \fBUCSTRING\fR
+.br
+Default: 20
+
+.SS hscroll
+Please see the previous attribute.
+.PP
+Values:
+.BR NO | YES
+.br
+Required: No
+.br
+Types: \fBNUMERIC\fR, \fBSTRING\fR, \fBUCSTRING\fR
+
+.SS type
+Set of the characters accepted in the field. If none of the following is
+specified, the \fBSTRING\fR is used. Available field types are:
+.TP
+.B NUMERIC
+""|0-9,"+","-",",","."
+.br
+Note that if you want a default value of zero instead the \fIempty string\fR value, you can
+use the "\fBdefault = const:0\fR" field attribute or the \fBinit{}\fR form attribute
+(please see
+.SM
+.B FIELD VALUE INITIALIZATION
+below).
+.TP
+.B BOOLEAN
+.BR NO | YES
+.TP
+.B NULLBOOLEAN
+.BR NO | YES | """""
+.br
+Like the previous type, but can also assume the "null" (or "nothing") value, represented
+by the \fIempty string\fR value.
+.TP
+.B STRING
+Alphanumeric string. Default value: \fIempty string\fR.
+.TP
+.B UCSTRING
+Alphanumeric string converted in upper case. Default value: \fIempty string\fR.
+.PP
+The fields of type \fBBOOLEAN\fR and \fBNULLBOOLEAN\fR have the following
+additional features:
+.IP \(bu 3
+Navigation between all admitted values with the <Tab> key;
+.IP \(bu 3
+Automatic setup of the \fBlist_cmd\fR attribute.
+.PP
+Required: Yes
+
+.SS option
+Every shell command accepts options and arguments: this attribute let you generate a command option 
+depending on the value inserted in the field.
+Every occurrence
+.BI %{ field_id }
+in the
+.B action{}
+attribute will be substituted by \fIOPTION VALUE\fR.
+If the field value contains blanks between tokens, then \fIOPTION VALUE\fR will be repeated for
+every token, unless is specified to quote it.
+To quote the value of a field you must end the option with a double quote character
+(\fB"\fR) or a single quote character (\fB'\fR), as explained in the examples below.
+.br
+Additional features:
+.IP \(bu 3
+If field type is \fBBOOLEAN\fR, instead a single value, you may list the two values to return if the user select \fBYES\fP
+or \fBNO\fP, and then every occurrence
+.BI %{ field_id }
+in \fBaction{}\fP
+will be substituted by it.
+.br
+For example, the definition:
+
+.nf
+\fC  field {
+    id     = LOCK
+    label  = Lock "guest" user account?
+    type   = BOOLEAN
+    option = -L,-U
+  }
+  action {
+    run:usermod %{LOCK} guest
+  }\fP
+.fi
+
+will execute the command:
+.RS
+.IP \(bu 3
+"\fBusermod -L guest\fP" if the field value is \fBYES\fR
+.IP \(bu 3
+"\fBusermod -U guest\fP" if the field value is \fBNO\fR.
+.PP
+.\".IP \(bu 3
+.\"If field type is \fBBOOLEAN\fR, then every occurrence
+.\".BI %{ field_id }
+.\"in \fBaction{}\fR
+.\"will be substituted by option attribute if the selected value is \fBYES\fR, \fB""\fR otherwise.
+.\"br
+The second value of the \fBoption\fP attribute is optional: it is not required for options
+which must appear only if the user select for them the value \fBYES\fP; for example, the definition:
+.PP
+.nf
+\fC  field {
+    id     = LONG
+    label  = Use a long listing format
+    type   = BOOLEAN
+    option = -l
+  }
+  action {
+    run:ls %{LONG}
+  }\fP
+.fi
+.PP
+will execute the command:
+.IP \(bu 3
+"\fBls -l\fP" if the field value is \fBYES\fR
+.IP \(bu 3
+"\fBls\fP" if the field value is \fBNO\fR.
+.RE
+.RE
+.PP
+.IP \(bu 3
+If field type is \fBNULLBOOLEAN\fR, then every occurrence
+.BI %{ field_id }
+in \fBaction{}\fR will be substituted by:
+.RS
+.IP \(bu 3
+"\fIoption\fR \fBy\fR" if the value inserted is \fBYES\fR
+.IP \(bu 3
+"\fIoption\fR \fBn\fR" if the value inserted is \fBNO\fR
+.\"the character "\fBy\fR" if the selected value is \fBYES\fR
+.IP \(bu 3
+\fB""\fR otherwise.
+.PP
+For example, the definition:
+
+.nf
+\fC  field {
+    id    = VG_NAME
+    label = Volume Group Name
+    type  = STRING
+    len   = 32
+  }
+  field {
+    id      = AVAILABLE
+    label   = Activate Volume Group?
+    type    = NULLBOOLEAN
+    default = const:      # see the \fBdefault\fP attribute
+    option  = -a
+  }
+  action {
+    run:vgchange %{AVAILABLE} %{VG_NAME}
+  }\fP
+.fi
+
+will execute the command:
+.IP \(bu 3
+"\fBvgchange -a y vg00\fR" if the \fIAVAILABLE\fR value is \fBYES\fR.
+.IP \(bu 3
+"\fBvgchange -a n vg00\fR" if the \fIAVAILABLE\fR value is \fBNO\fR.
+.IP \(bu 3
+"\fBvgchange vg00\fR" if the \fIAVAILABLE\fR value is \fB""\fR.
+.PP
+
+.RE
+
+.IP \(bu 3
+If field type is \fBSTRING\fR or \fBUCSTRING\fR and multiple
+words are inserted in the field value, then every occurrence
+.BI %{ field_id }
+in \fBaction{}\fR will be substituted as the following examples:
+
+.nf
+\fC  field {
+    id     = TEST_OPT
+    label  = Value(s)
+    type   = STRING
+    option = \fIsee the following table\fP
+  }
+  action {
+    run:mycmd %{TEST_OPT}
+  }\fP
+.fi
+
+.PP
+.TS
+box, center, tab (@);
+c | c | c
+C | L | L.
+\fBoption\fR@Value in field@Command executed
+=
+-a@one@mycmd -a one
+-a@one two@mycmd -a one -a two
+-b"@one@mycmd -b "one"
+-b"@one two@mycmd -b "one two"
+-b'@one@mycmd -b 'one'
+-b'@one two three@mycmd -b 'one two three'
+--option-c@one@mycmd --option-c one
+--option-c@one two@mycmd --option-c one --option-c two
+--option-d="@one@mycmd --option-d="one"
+--option-d="@one two@mycmd --option-d="one two"
+--option-d='@one@mycmd --option-d='one'
+--option-d='@one two@mycmd --option-d='one two'
+--option-e=@one@mycmd --option-e=one
+--option-e=@one two@mycmd --option-e=one --option-e=two
+.TE
+
+.RE
+.PP
+Obviously, multiple fields with \fBoption\fP attribute can appear in a form definition,
+mixed with fields without it, so the user can enter options and
+arguments requested by the command defined in the \fBaction\fP of the form.
+Please note that a \fIblank\fP character is insterted before every occurrence, so it is advisable
+to not insert blanks between option referenced by token
+.BI %{ field_id }
+in the \fBaction{}\fP of the form. For example, it is preferable the syntax
+.PP
+.nf
+\fC  action {
+    wget %{OPT_OUTPUT_FILE}%{OPT_DEBUG} %{URL_LIST}
+  }\fP
+.fi
+.PP
+instead of
+.PP
+.nf
+\fC  action {
+    wget %{OPT_OUTPUT_FILE} %{OPT_DEBUG} %{URL_LIST}
+  }\fP
+.fi
+.PP
+.br
+Required: No
+.br
+Types: All
+
+.SS hidden
+Hide the value of the field by substituting its characters with asteriscs.
+Useful for fields used to accept passwords.
+.PP
+Values:
+.BR NO | YES
+.br
+Required: No
+.br
+Types: \fBSTRING\fR, \fBUCSTRING\fR
+
+.SS required
+Mark the prompt with '*' to indicate which is mandatory to insert
+a value to execute the form action.
+It is used only for informational purposes: but no checks are done
+to the value of the field (this job is demanded to the \fBaction\fR), but the action
+of the form will not executed until every required field is valorized.
+.PP
+Values:
+.BR NO | YES
+.br
+Required: No
+.br
+Types: All
+
+.SS ignore_unchgd
+If the value of the field was NOT MODIFIED by the user, then the substitution
+of every occurrence of
+.BI %{ field_id }
+in the action will not be done.
+This is useful when you want to run commands specifying only the arguments
+or options related to fields effectively entered or changed by user. For example,
+you can post a form with default values but you may want to execute the command
+in the action with the changed fields only.
+.PP
+Values:
+.BR NO | YES
+.br
+Required: No
+.br
+Types: All
+
+.SS htab
+Right indents the label of the field. This integer value defines
+how many \fBtabs\fR are used for indentation. A \fItab\fR is 2 columns, so,
+for example:
+.PP
+  \fChtab = 2\fP
+.PP
+right shifts 4 columns the label of the field.
+It can be used to group logically some fields under another field or under
+a text separator (please see
+.SM
+.B separator{}
+attribute below).
+.PP
+Values:
+<positive integer value>
+.br
+Required: No
+.br
+Types: All
+
+.SS vtab
+Insert blank lines before the field e the preceeding.
+In a multi-page form, if the field bottom of the page has this attribute,
+then it will be the first of the next page, but without being preceded by
+blank lines.
+.br
+Example:
+.PP
+  \fCvtab = 1    # skip 1 line from the previous field\fP
+.PP
+Values:
+<positive integer value>
+.br
+Required: No
+.br
+Types: All
+
+
+.SS default
+Value assigned to the field when the form is posted. It overrides the default
+value dependent from the field \fBtype\fR, and is overridden by the
+\fBinit\fR form attribute (please see \fBFORM INITIALIZATION\fR below).
+.PP
+Values: must follow the syntax
+.RS
+
+.IB source : value
+
+.RE
+.br
+where
+.TP
+.I source
+can be one of the keywords:
+.RS
+.TP
+.B command
+The \fIvalue\fR is the stdout produced by an arbitrary command.
+.TP
+.B const
+The \fIvalue\fR is an arbitrary constant. Valid values depend from the \fBtype\fR of the field.
+All characters after \fB:\fR are used (alphanumeric, punctuation, etc).
+For this reason strings must not be enclosed in single or double quotes.
+.RE
+.TP
+.I value
+Constant or command, depending from \fIsource\fR.
+An invalid value (for example a string in \fBBOOLEAN\fR field
+or a command which return an error) will fill the
+field with the string "\fBERROR!\fR".
+.PP
+Examples:
+.LP
+.PD .1v
+.nf
+\fC  default = command:date "+%Y-%m-%d"
+  default = const:192.168.1.4/24
+  default = const:staff adm lpadmin
+  default = command:id -Gn | tr " " "\\n" | grep -v "`id -gn`" | tr "\\n" " "  # Secondary groups
+  default = const:1
+  default = const:          # "null" value in a NULLBOOLEAN field
+  default = const:""        # NOT valid in a NULLBOOLEAN field!\fP
+.fi
+.PD
+.PP
+Required: No
+.br
+Types: All
+
+
+.SS list_cmd
+Instructions for generate the pop-up list of values when the user
+press \fB<list key>\fR, so he/she can quickly enter in the field
+an admitted value. Every entry in the list is a \fRblank\fR separated
+pair of values (160 characters max).
+The syntax for this attribue is the following:
+.RS
+.PP
+\fIsource-type\fR \fB:\fR \fIlist-type\fR \fB:\fR \fIlist-type-arguments\fR
+.RE
+.PP
+Where:
+.PP
+.TP
+\fIsource-type\fR can be one of the following:
+.PP
+.RS
+.TP
+.B const
+\fIlist-type-arguments\fR is a list of constant values.
+.TP
+.B command
+\fIlist-type-arguments\fR is the stdout produced by a shell command.
+.RE
+.PP
+.TP
+\fIlist-type\fR can be one of the following:
+.RS
+.PP
+.TP
+.B single-val
+The user can select only one value from the list.
+.TP
+.B multi-val
+The user can select one or more values from the list.
+They are returned separated by a \fIblank\fR or by the character specified with the
+.B list_sep
+attribute, please see its description below.
+.RE
+.PP
+.TP
+\fIlist-type-arguments\fR can be one of the following:
+.RS
+.TP
+if \fIsource-type\fR is \fBcommand\fR, then the list is generated by the
+stdout of the O.S. command (it is not admitted a shell script as in the
+\fBaction {}\fR or \fBinit {}\fR attributes), which must be with the following
+format:
+.PP
+.RS
+.nf
+.I Val1 Descr1
+.I Val2 Descr2
+.I Val3 Descr3
+ ...
+.I ValN DescrN
+.fi
+.RE
+.PP
+It is possible to pass the actual value of the form fields as parameters of
+the command with the syntax
+.BI %{ field_id }
+, but only for the fields which type is neither
+.BR BOOLEAN " nor " NULLBOOLEAN .
+Please see the examples below.
+.PP
+if \fIsource-type\fR is \fBconst\fR, then \fIlist-values\fR is a list with the
+format:
+.RS
+.PP
+\fB"\fR\fIVal1\fR \fIDescr1\fR\fB","\fR\fIVal2\fR \fIDescr2\fR\fB","\fR\fIVal3\fR \fIDescr3\fR\fB",\fR...
+.RE
+PP
+\fIValN\fR is the value which will be put in the field if the item is selected
+from the list.
+.PP
+\fIDescrN\fR is optional and can contain blanks.
+It is possible to insert blanks in \fIValN\fR by protecting them with the
+backslash \fB\\\fR, for example:
+.PP
+  \fC"First\\ value Descr1","My\\ second\\ value Descr2","Val3 Descr3"\fP
+.PP
+It is also possible to insert the preferred separators between \fIValN\fR and
+\fIDescrN\fR with a simple trick as in the following examples:
+.PP
+\fC  "First : 1st description","Second : 2nd description",\fP...
+.PP
+\fC  "First --->1st description","Second --->2nd description",\fP...
+.PP
+\fC  "First ---> 1st description","Second ---> 2nd description",\fP...
+.PP
+\fC  "First\\ value : 1st description","Second\\ value : 2nd description",\fP...
+.PP
+.RE
+.B Warning:
+special characters as <TAB> in \fIValN\fR or \fIDescrN\fR strings can confuse
+the output of the the pop-up menu.
+
+.PP
+Examples:
+.PP
+.IP 1. 3
+Simple list of values without description: the definition
+.br
+  \fClist_cmd = const:single-val:"root_lv","usr_lv","var_lv","home_lv"\fP
+.br
+will produce the list:
+
+.RS
+.nf
+\fCroot_lv
+usr_lv
+home_lv\fP
+.fi
+.RE
+.PP
+
+.IP 2. 3
+List of values with description: the definition
+.PP
+  \fClist_cmd = const:single-val:"90 Expire password after 3 months","180 Expire password after 6 months","-1 Disable user password expiration"\fP
+.PP
+will produce the list:
+.PP
+.RS
+.nf
+\fC90  Expire password after 3 months
+180 Expire password after 6 months
+-1  Disable user password expiration\fP
+.fi
+.RE
+.PP
+Selecting the first item the field will be filled with the value \fI90\fR,
+selecting the second item with \fI180\fR, and \fI-1\fR selecting the last item.
+
+.IP 3. 3
+List of values with description produced by a O.S. command: the definition
+.PP
+  \fClist_cmd = command:single-val:cut -d : -f 1,5 --output-delimiter=" " /etc/passwd | sort\fP
+.PP
+will produce a list like this (username + gecos fields of \fC/etc/passwd\fR file):
+.PP
+.RS
+.nf
+\fCbin        bin
+daemon     daemon
+dhcp       DHCP subsystem
+ftp        FTP subsystem
+games      games
+gdm        Gnome Display Manager
+haldaemon  Hardware abstraction layer,,,
+hplip      HPLIP system user,,,
+irc        Internet Relay Chat subsystem
+list       Mailing List Manager
+lp         Printer spooler subsystem
+mail       Mail subsystem
+man        Online manual subsystem
+news       NNTP subsystem
+nobody     nobody
+proxy      proxy subsystem
+pulse      PulseAudio daemon,,,
+root       Super-user
+sshd
+sys        sys
+uucp       Unix-to-Unix Copy Program subsystem\fP
+.fi
+.RE
+.PP
+
+.SS list_sep
+This attribute is only used by the \fBlist_cmd\fR attribute of type
+\fBmulti-val\fR: it defines the separator to use in action.
+.PP
+Values:
+.BR \fIblank\fR | , | ; | :
+.br
+Required: No
+.br
+Types: All
+
+.SS persist
+If enabled, the next time the form is loaded, the field will be initialized
+with the value it has at the last action execution time.
+Values provided by the \fBinit{}\fR block and the \fBdefault\fR field
+attribute are overridden by persistent field value, but with one exception:
+the first time a form is used, because persistent fields have no value.
+.PP
+Values:
+.BR NO | YES
+.br
+Required: No
+.br
+Types: All
+.PP
+
+
+.SS Example of field definition:
+.PP
+.nf
+\fC  field {
+    id       = STREE
+    label    = LDAP Subtree
+    enabled  = NO
+    len      = 8
+    hscroll  = YES
+    type     = STRING
+    option   = -s
+    hidden   = NO
+    required = YES
+    htab     = 1
+    default  = const:Mail
+    list_cmd = command:single-val:userlist.sh %{STREE}
+  }\fP
+.fi
+
+
+.SH FIELDS SEPARATOR DEFINITION
+The
+.B separator {}
+form attribute defines a separator between the fields of the form.
+Valid separator attributes are:
+
+.SS id
+Identifier of the separator used to refer its value by \fBinit{}\fR and \fBaction{}\fR parameters.
+It must be unique in the scope of the form.
+.br
+If not specified, the reserved value \fBCCFEFSEP\fInnn\fR will be used (001 <= nnn <= 999).
+.PP
+Values:
+An upper case string (but in reality it is case insensitive) composed by characters A-Z,0-9,-,_
+.br
+Required: No
+
+.SS type
+Type of separator. There is not a \fIdefault separator type\fR if
+not specified, so it must be one of the following values:
+.TP
+.B TEXT
+A string of characters with left alignment. Like a field value, it is possible
+to assign a value to a \fITEXT separator\fR with the init{} form attribute.
+Please see
+.SM
+.B FIELD VALUE INITIALIZATION
+below.
+.TP
+.B TEXT_CENTER
+A string of characters with centered alignment.
+.TP
+.B LINE
+A simple line of '-' with screen width.
+.TP
+.B LINE_DOUBLE
+A simple line of '=' with screen width.
+.PP
+
+The types \fBTEXT\fR and \fBTEXT_CENTER\fR can be used to put in the form
+arbitrary text or special instructions for the user.
+
+.SS text
+String to display when the separator is of \fBtype = TEXT\fR or \fBtype = TEXT_CENTER\fR.
+.br
+Example:
+.PP
+.nf
+\fC  separator {
+    type = TEXT
+    text = This is a comment between fields of a form!
+  }\fP
+.fi
+.PP
+Values:
+A string of any charachter.
+.br
+Required: No
+
+.SS htab
+Right indents the separator. This integer value defines
+how many \fBtabs\fR are used for indentation. A \fBtab\fR is 2 columns, so,
+for example:
+.PP
+.nf
+\fC  htab = 2\fP
+.fi
+.PP
+shifts separator 4 columns to right.
+.br
+It can be used to group logically some fields under a text separator.
+.PP
+Values:
+<integer value>
+.br
+Required: No
+
+.SS vtab
+Insert blank lines before the separator and the preceeding field (or separator).
+In a multi-page form, if the separator bottom of the page has this attribute,
+then it will be the first of the next page, but without be preceded by
+blank lines.
+.br
+Example:
+.PP
+.nf
+\fC  vtab = 1    # skip 1 line from the previous field/separator\fP
+.fi
+.PP
+Values:
+<positive integer value>
+.br
+Required: No
+
+Example of separator definition:
+.PP
+.nf
+\fC  separator {
+    type = TEXT
+    text = HTTP options:
+    vtab = 1
+  }\fP
+.fi
+
+
+.SH FORM INITIALIZATION
+The 
+.B init {}
+form attribute permits to execute arbitrary commands before the form is posted.
+It can be a complete shell script or a simple call to an O.S. command.
+The standard output is used to initialize the value of the fields of the form,
+as described below.
+The syntax for this attribue is the following:
+.RS
+.PP
+
+\fBinit {\fR \fIinit-type\fR\fB:\fR \fIinit-arguments\fR \fB}\fR
+
+.RE
+Where:
+
+.TP
+.I init-type
+defines how to perform the initializations. Actually, the only
+supported type is \fBcommand\fR.
+
+.TP
+.I init-arguments
+is the O.S. command or the script executed with the shell specified by the
+parameter \fBshell\fR in the
+.BR ccfe.conf (5)
+file.
+
+.TP
+.B Using arguments
+If the form is called with arguments, they can be referred in the \fBinit {}\fR block as
+\fB%{ARGV\fR\fIn\fR\fB}\fR, exactly as in the \fBaction {}\fR block; for example, \fCcaller.form\fR can call a form with
+
+  action {
+    form:called %{HOSTNAME} %{USERNAME}
+  }
+
+and these arguments can be referred by with \fCcalled.form\fR with
+
+  init { command:
+    echo hostname: %{ARGV1}
+    echo username: %{ARGV2}
+  }
+
+.TP
+.B Fields value initialization
+Every line of the standard output produced by \fIinit-arguments\fR in the format
+.PP
+.RS
+.IB field_id = value
+.RE
+.PP
+is used to initialize with \fIvalue\fR the field with ID \fIfield_id\fR, by overriding,
+if specified, the corresponding value of the \fBdefault\fR field attribute.
+
+.TP
+.B Diagnostics and form-post control
+If the \fBinit {}\fR block produces some standard error, it will be displayed in a pop-up window.
+If the \fBinit {}\fR block produces an exit status greater than zero, then the form will not be posted.
+so you can decide to BLAH, BLAH...
+
+    DIAGNOSTICA:
+      Se i comandi in init{}
+      - producono stderr, questo verra' visualizzato in una finestra pop-up.
+      - producono un exit status > 0, allora non verra' presentata la form
+        appena chiamata.
+      Questo consente quindi di impedire all'utente di proseguire nel caso
+      init{} sia eseguito con errori gravi, oppure di ignorarli.
+      La diagnostica puo' essere disabilitata semplicemente redirezionando
+      su /dev/null l'stderr dei comandi in init{}.
+  Opzionale: Si
+  Osservazioni: Per come vengono eseguiti i comandi specificati, l'eventuale
+                presenza di un apice singolo va specificata con la sintassi '\''
+                Ad esempio, il comando bash:
+                  echo "Utente gia' definito nel sistema" > /dev/stderr
+                diventa
+                  echo "Utente gia'\'' definito nel sistema" > /dev/stderr
+
+                Preferire l'uso del costrutto $() anziche' `` per l'esecuzione
+                di comandi in subshell.
+  FORM DINAMICHE:
+    E' possibile rimuovere, disabilitare ed abilitare arbitrariamente campi dalla form
+    assegnandone gli ID separati da virgole rispettivamente alle seguenti variabili
+    fittizie:
+      CCFE_REMOVE_FIELDS
+      CCFE_ENABLE_FIELDS
+      CCFE_DISABLE_FIELDS
+    Ad esempio
+      init { command:
+        echo CCFE_REMOVE_FIELDS=F1,F3
+      }
+    rimuove dalla form i campi con ID F1 e F3
+
+  Esempio:
+    init { command:
+      if grep -qw $1 /etc/passwd; then
+        echo "Utente gia'\'' definito nel sistema" > /dev/stderr
+        exit 1     # Impedisce chiamata form successiva
+      else
+        echo UNAME=$1
+      fi
+    }
+.PP
+Please see also the \fBdefault\fR field attribute.
+
+
+
+
+.SH FORM ACTION 
+The form attribute
+.B action {}
+executes a command with the values typed in the fields of the form.
+There is no check of this attribute definition, but a form without \fBaction{}\fR is
+very useless!
+The syntax for a \fInormal action\fR of a form is the following:
+.RS
+.PP
+
+.\"\fBaction {\fR \fIaction-type\fR[\fB(\fR\fIoption0\fR\fB,\fIoption1\fR\fB,\fR...\fB)\fR] \fB}\fR
+\fBaction {\fR \fIaction-type\fR[\fB(\fR\fIoptions\fR\fB)\fR]\fB:\fR \fIaction-args\fR \fB}\fR
+
+.RE
+.PP
+It is also possible to change the action depending the item selected in the menu which called
+the form: in this case the syntax is the following:
+.RS
+
+.nf
+\fBaction {\fR
+.RS
+\fBselect-item {\fR
+.RS
+.IP \fIitem_id0\fR 10
+.\"\fB:\fR \fIaction-type\fR[\fB(\fR\fIoption0\fR\fB,\fIoption1\fR\fB,\fR...\fB)\fR]
+\fB:\fR \fIaction-type\fR[\fB(\fR\fIoptions\fR\fB)\fR]\fB:\fR \fIaction-args\fR
+.IP  \fIitem_id1\fR
+.\"\fB:\fR \fIaction-type\fR[\fB(\fR\fIoption0\fR\fB,\fIoption1\fR\fB,\fR...\fB)\fR]
+\fB:\fR \fIaction-type\fR[\fB(\fR\fIoptions\fR\fB)\fR]\fB:\fR \fIaction-args\fR
+.IP  [...]
+.IP  \fIitem_idN\fR
+.\"\fB:\fR \fIaction-type\fR[\fB(\fR\fIoption0\fR\fB,\fIoption1\fR\fB,\fR...\fB)\fR]
+\fB:\fR \fIaction-type\fR[\fB(\fR\fIoptions\fR\fB)\fR]\fB:\fR \fIaction-args\fR
+.RE
+\fB}\fR
+.RE
+\fB}\fR
+.fi
+.RE
+
+NB: con l'item selector posso specificare solamente action
+   semplici su una sola linea: questo costrutto va utilizzato
+   per selezionare la form successiva da una form comune
+   (vedi esempio).
+
+Where:
+
+.TP
+\fIaction-type\fR can be one of the following:
+
+.RS
+.TP
+.B run
+Execute \fIaction-args\fR and then show the results in the \fBOutput Browser screen\fR (please
+see the
+.BR ccfe (1)
+manpage).
+\fIaction-args\fR can be a simple command or a complete script which will
+be passed to a command shell for parsing (with "sh -c"). The shell used is the one specified in
+the \fBshell\fR parameter of the \fCccfe.conf\fR configuration file.
+
+.TP
+.B form
+Load and post the form specified in  \fIaction-args\fR. If arguments are
+present, they can be referred in the \fBinit{}\fR and \fBaction{}\fR attributes
+of the called form using the syntax
+.BI %{ARGV n }
+, with 0 < \fIn\fR < 100.
+All the
+.BI %{ARGV n }
+not passed as arguments have a null string value.
+Before the name of form, you can specify a path relative to LIB_DIR_PLACEHOLDER
+directory (for example \fCusers.d/ask_user\fR).
+A form can call another form which can call another form and so on: it
+is useful when you want to ask for parameters with special treatment
+before the final action execution.
+
+.TP
+.B system
+Temporarily exit from \fBccfe\fR, executes \fIaction-args\fR and
+returns in \fBccfe\fR.
+This is useful for actions which need user interaction: for example the
+.BR passwd (1)
+command.
+If \fBwait_key\fR is specified in \fIoptions\fP, then it is displayed
+a message reporting the exit status and wait a user keystroke before to
+return in \fBccfe\fR.
+
+.TP
+.B exec
+Terminate \fBccfe\fR and executes \fIaction-args\fR.
+This is useful to return to Operating System after calling external commands
+or applications, using \fBccfe\fR as application launcher.
+Be aware that \fIaction-args\fR are executed directly instead of via a command
+shell, so invocation errors may not be reported.
+.RE
+
+\fIoptions\fP is a comma-separated list of one or more of the following
+options:
+
+.RS
+.TP
+.B confirm
+Open a pop-up window to request a confirm before execute action.
+The option highlighted by default is "No" (not confirm).
+
+.TP
+.B log
+Save in the logfile the output of the execution of the action.
+Not valid for \fIaction-type\fR\fB=system\fR.
+
+.TP
+.B wait_key
+Valid only for \fIaction-type\fR\fB=system\fR: when action is completed, wait for
+continuing until the user presses a key.
+.RE
+
+\fIitem_idX\fP are item \fBid\fR's defined in the calling menu.
+
+.B The * metacharacter
+
+The metacharacter \fB*\fP expands all fields IDs of the form.
+This can be useful for fast form deployment: in forms with many fields and a 
+very simple action (f.e. a single command call), you can use the metacharacter
+"\fB*\fP" as \fIfield_id\fP, instead to list one by one all form fields IDs.
+For example, in a form with three fields with ID \fIID1\fP, \fIID2\fP and \fIID3\fP, the action
+
+.nf
+\fC  command %{*}\fP
+.fi
+
+is expanded as 
+
+.nf
+\fC  command %{ID1}%{ID2}%{ID3}\fP
+.fi
+
+Note that using metacharachter \fB*\fP:
+.IP \(bu 3
+Field IDs are expanded in the order of their definition in form;
+.IP \(bu 3
+\fIDynamic fields\fP are supported;
+.IP \(bu 3
+In fields with \fBoption\fP attribute defined, blanks are automatically
+inserted as described above in \fBoption\fP attribute explanation;
+.IP \(bu 3
+In fields without \fBoption\fP attribute, a blank is automatically inserted
+before its value.
+.PP
+
+
+.B Notes
+\".IP
+To refer to the value of the fields, you must use the syntax
+.BI %{ field_id }
+which will be substituted with the value of the field with ID
+.I field_id
+before the execution of the action.
+.I field_id
+are case senstitive.
+
+This solution was preferred instead to use environment variables
+(like $CCFE_FIELD_ID) to pass values to action so to not change the child
+process environment.
+
+With \fBselect-item {}\fR it is possible to run an action depending of the
+ID of the item selected in the menu which called the form.
+.TP
+
+.B Examples:
+
+.IP 1. 3
+Action with an embedded Bourne shell script:
+.PP
+.RS
+.nf
+\fCaction { run:
+  if [ "x%{VPN_NAME}" == 'xTECH' ]; then
+    conf='tech.conf'
+  elif [ "x%{VPN_NAME}" == 'xGUESTS' ]; then
+    conf='guests.conf'
+  fi
+  sudo /usr/sbin/vpnc $conf
+}\fP
+.fi
+.RE
+
+.IP 2. 3
+Ask the user to confirm its request to enable the wireless network:
+.PP
+\fC  action { run(confirm):sudo /usr/local/scripts/iw-up 2>&1 }\fP
+
+.IP 3. 3
+Call the form \fCLIB_DIR_PLACEHOLDER/ldap.d/chage.form\fR
+passing it the value of the fields with attribute \fBid\fR SUBTREE and USERNAME,
+which are processed as \fB%{ARGV1}\fR and \fB%{ARGV2}\fR by the \fBinit{}\fR
+attribute of the form \fCchage.form\fR to assign the initial
+value to the fields with the same ID:
+.PP
+\fC  action { form:ldap.d/chage %{SUBTREE} %{USERNAME} }\fP
+.PP
+Please see the section
+.B FORM INITIALIZATION
+above.
+
+.IP 4. 3
+Temporarily escape from \fBccfe\fR and execute the command
+.BR passwd (1)
+to change the password of the user specified in the field with \fBid\fR
+USERNAME. Prompt a message and wait the user hit a key before to re-enter in \fBccfe\fR,
+so the user can see if
+.BR passwd (1)
+command changed or not the password:
+.PP
+\fC  action { system:/usr/bin/passwd(wait_key) %{USERNAME} }\fP
+.PP
+If \fBccfe\fR is not running by root user, then he can change only its own password.
+
+.IP 5. 3
+Help users to connect to remote host by selecting it from a list:
+.PP
+\fC  field {
+      id       = RH
+      label    = Remote host
+      len      = 35
+      type     = STRING
+      list_cmd = const:single-val:"host1.somewere.com","host2.somelan.net"
+    }
+    field {
+      id      = PORT
+      label   = Remote port
+      len     = 5
+      type    = NUMERIC
+      default = const:22
+    }
+    action { exec: telnet %{RH} %{PORT} }\fP
+.PP
+
+.IP 6. 3
+ask_user.form:
+.LP
+.PD .1v
+.nf
+field {
+.RS
+.IP id 10
+= USERNAME
+.IP label
+= User name
+.IP type
+= STRING
+.IP len
+= 8
+.RE
+}
+action {
+.RS
+select-item {
+.RS
+.IP USERADD 10
+: form:users.d/useradd %{USERNAME}
+.IP USERMOD
+: form:users.d/usermod %{USERNAME}
+.IP USERDEL
+: form:users.d/userdel %{USERNAME}
+.IP PASSWD
+: system(wait_key):passwd %{USERNAME}
+.RE
+}
+.RE
+}
+.fi
+.PD
+.PP
+The definition of menu which called the ask_user.form is the following:
+
+.LP
+.PD .1v
+.nf
+item {
+.RS
+.IP id
+= USERADD
+.IP descr
+= Create a new user account
+.IP action
+= form:users.d/ask_user
+.RE
+}
+item {
+.RS
+.IP id
+= USERMOD
+.IP descr
+= Modify a user account
+.IP action
+= form:users.d/ask_user
+.RE
+}
+item {
+.RS
+.IP id
+= USERDEL
+.IP descr
+= Remove a user account and related files
+.IP action
+= form:users.d/ask_user
+.RE
+}
+item {
+.RS
+.IP id
+= PASSWD
+.IP descr
+= Change a user's password
+.IP action
+= form:users.d/ask_user
+.RE
+}
+.fi
+.PD
+.PP
+
+
+
+
+.SH FORM ARGUMENTS
+TODO!
+.\"  Fare?!? direi di no...
+
+.SH DYNAMIC FORMS
+It is possible to create forms that change runtime: for example, when the
+result of the initialization script is a particular value, or when you
+want to reuse the same complex form for different purposes (for add
+and edit similar values, for example).
+This is possible by:
+
+.IP \(bu 3
+using the special values
+.BR CCFE_REMOVE_FIELDS , CCFE_ENABLE_FIELDS , CCFE_DISABLE_FIELDS
+in \fBinit{}\fR attribute (please see
+.B FORM INITIALIZATION
+paragraph);
+
+.IP \(bu 3
+using the syntax \fBselect-item\fR in \fBaction{}\fR attribute
+(please see the
+.B FORM ACTION
+paragraph);
+
+.IP \(bu 3
+calling other forms with arguments and referring them in \fBinit{}\fR
+and \fBaction{}\fR attributes with
+.BR %{ARGV1} , %{ARGV2} ,..., %{ARGVn}
+syntax.
+
+.PP
+
+.SH SEE ALSO
+.BR ccfe (1),
+.BR ccfe.conf (5),
+.BR ccfe_menu (5),
+.BR ccfe_help (5),
+.BR curses (3X),
+.BR form (3X)
+
+.SH BUGS
+Many cosmetics, but the tool is stable and usable.
+
+.SH AUTHOR
+Massimo Loschi <\fIccfedevel@gmail.com\fR>

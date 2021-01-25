@@ -1,0 +1,202 @@
+#
+#  ccfe-plugin-sysmon - CCFE sample plugin
+#  Copyright (C) 2009, 2012 Massimo Loschi
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+#  Author: Massimo Loschi <ccfedevel@gmail.com>
+#
+
+# Made for sysstat version 9.0.3 (Ubuntu 9.10)
+
+field {
+  id     = DELAY
+  label  = Delay between samples (in seconds)
+  len    = 3
+  type   = NUMERIC
+}
+field {
+  id     = COUNT
+  label  = Number of updates
+  len    = 3
+  htab   = 1
+  type   = NUMERIC
+}
+field {
+  id       = INFILE
+  label    = Extract records from file
+  len      = 21
+  vtab     = 1
+  type     = STRING
+  hscroll  = YES
+  list_cmd = command:single-val:ls -1 /var/log/sysstat/sa??   # Ubuntu specific
+  option   = -f
+}
+field {
+  id     = START_TIME
+  label  = Starting time of the data to extract [hh:mm:ss]
+  len    = 8
+  htab   = 1
+  type   = STRING
+  option = -s
+}
+field {
+  id     = END_TIME
+  label  = Ending time of the report            [hh:mm:ss]
+  len    = 8
+  htab   = 1
+  type   = STRING
+  option = -e
+}
+separator {
+  type = LINE
+}
+field {
+  id     = ALL
+  label  = Report all the statistics
+  #vtab   = 1
+  type   = BOOLEAN
+  option = -A
+}
+separator {
+  type = TEXT_CENTER
+  text = OR select information about specific system activities:
+  vtab = 1
+}
+field {
+  id     = I_O
+  label  = Report I/O and transfer rate statistics
+  type   = BOOLEAN
+  vtab   = 1
+  option = -b
+}
+field {
+  id     = PAGING
+  label  = Report paging statistics
+  type   = BOOLEAN
+  option = -B
+}
+field {
+  id     = BDEV
+  label  = Report activity for each block device
+  type   = BOOLEAN
+  option = -d
+}
+field {
+  id     = PRETTY_DEVN
+  label  = Pretty-print device names
+  type   = BOOLEAN
+  htab   = 1
+  option = -p
+}
+field {
+  id       = NET
+  label    = Report network statistics
+  type     = UCSTRING
+  len      = 16
+  default  = const: NO
+  list_cmd = const:multi-val:"ALL : All the following statistics","DEV","EDEV","NFS","NFSD","SOCK","IP","EIP","ICMP","EICMP","TCP","ETCP","UDP","SOCK6","IP6","EIP6","ICMP6","EICMP6","UDP6"
+  list_sep = ","
+  option   = -n
+}
+field {
+  id     = CPU
+  label  = Report CPU utilization
+  type   = BOOLEAN
+  option = -u
+}
+field {
+  id     = CPU_ALL
+  label  = Show all the CPU fields
+  type   = BOOLEAN
+  htab   = 1
+  option = ALL
+}
+field {
+  id       = PROC
+  label    = Report statistics for the processor(s)
+  type     = UCSTRING
+  len      = 16
+  default  = const: NO
+  list_cmd = command:multi-val:echo 'ALL : All processors' ; awk '/^processor/ { print $3 " : Processor\\ " $3 }' /proc/cpuinfo
+  list_sep = ","
+  option   = -P
+}
+field {
+  id     = QUEUES
+  label  = Report queue length and load averages
+  type   = BOOLEAN
+  option = -q
+}
+field {
+  id     = MEM_USE
+  label  = Report memory utilization statistics
+  type   = BOOLEAN
+  option = -r
+}
+field {
+  id     = MEM
+  label  = Report memory statistics
+  type   = BOOLEAN
+  option = -R
+}
+field {
+  id     = SS
+  label  = Report swap space utilization statistics
+  type   = BOOLEAN
+  option = -S
+}
+field {
+  id     = INODE
+  label  = Report status inode, file and other kernel tables
+  type   = BOOLEAN
+  option = -v
+}
+field {
+  id     = TASKS
+  label  = Report task creation, system switching activity
+  type   = BOOLEAN
+  option = -w
+}
+field {
+  id     = SWAP
+  label  = Report swapping statistics
+  type   = BOOLEAN
+  option = -W
+}
+field {
+  id     = TTY
+  label  = Report TTY device activity
+  type   = BOOLEAN
+  option = -y
+}
+separator {
+  type = LINE
+}
+field {
+  id     = ORIG_TS
+  label  = Display timestamps in the original locale time
+  type   = BOOLEAN
+  option = -t
+}
+
+action { run:
+  net='%{NET}'
+  proc='%{PROC}'
+  # complicated, but more shell portable... ;-)
+  test $(echo "$net" | awk '{ print substr($0,length($0)-1) }') = 'NO' && net=''
+  test $(echo "$proc" | awk '{ print substr($0,length($0)-1) }') = 'NO' && proc=''
+  sar%{ALL}%{I_O}%{PAGING}%{BDEV}%{PRETTY_DEVN}${net}${proc}%{MEM_USE}%{MEM}%{SS}%{ORIG_TS}%{INODE}%{TASKS}%{SWAP}%{TTY}%{INFILE}%{START_TIME}%{END_TIME}%{CPU}%{CPU_ALL} %{DELAY} %{COUNT}
+}

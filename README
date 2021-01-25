@@ -1,0 +1,168 @@
+
+                   CCFE - the Curses Command Front-end
+--------------------------------------------------------------------------------
+
+CCFE is a simple tool to quickly supply an interactive screen-oriented interface
+to command line scripts and commands: it prompts users for the informations
+needed to run them, and can be programmed with your preferred shell to provide
+predefined selections and/or run-time defaults.
+
+It provides:
+
+* A generic curses form-based interface to enter options and arguments required
+  by scripts/commands;
+* A menu system to hierarchically organize them;
+* A viewer to browse the standard output and standard error of the invoked
+  script/command.
+
+In its simplest usage, you only have to describe the data type requested by the
+command and specify the command itself: user interaction and screen layout are
+automatically adapted so you don't have to care about it, but for complex
+situations, CCFE is programmable with your preferred shell command language
+interpreter and can propose lists of admitted values selectable by user for
+parameters to enter.
+
+CCFE don't need changes to called scripts or commands, so they can indifferently
+be executed with CCFE interface or CLI interface, as preferred by users.
+CCFE may be useful for:
+
+* Consolidate all your system administration scripts in an organized menu tree;
+  this is very useful to access immediately to not often used scripts, and to
+  not forget that they exists(!) and their location in the filesystem;
+* Assist the Sysadmin/Operation team when they run critical commands for system
+  operation, minimizing errors by the selection of verifiyed command options and
+  arguments value;
+* Create menus for Operation team for stopping and starting jobs;
+* Create forms for the Operations team to simply reconfigure systems or
+  applications, without directly editing text files and manually restart
+  services;
+* Provide the same administration interface to Operation team of data centers
+  with mixed O.S. (for example Linux and FreeBSD). Note that in case of Linux
+  (or FreeBSD) and AIX hosts, CCFE can be configured to appears very similar to
+  the System Management Information Tool (SMIT) of the IBM AIX Operating System.
+* Hide the CLI shell to not skilled end users or occasional users who must have
+  restricted system access.
+* Provide a user friendly interface on Linux-based appliances.
+
+
+
+FEATURES
+
+* Plugins (or modules) support: menu items, menus, forms and external scripts
+  can be packaged for software distribution or to easily add functionalities;
+* Shortcuts permits to go directly to a specific menu or form; the list of
+  available shortcuts can be obtained calling CCFE with option -s;
+* Data persistency: form fields can be defined as persistent, so their value is
+  mantained between CCFE program executions;
+* The command or script executed in CCFE can be saved as shell script
+  immediately usable from CLI;
+* If you want to distribute a software application with the CCFE interface, it
+  is possible to include the required menus and forms in its software package,
+  so it is immediately accessible in the CCFE main menu;
+* It is possible to call interactive commands or other curses-based commands
+  (for example top(1)) from a menu or a form;
+* Multilingual support is not yet available, but all messages can be completely
+  customized or translated;
+* Screen layout and video attributes can be configured;
+* Instances support: CCFE can be invoked with different names, and every one
+  have its private configuration, messages and collection of menu and forms.
+  Sometimes, this can be better than shortcuts to group functionalities that
+  requires many menus and forms;
+* Users can configure their private preferences and make their private forms and
+  menus for every CCFE instance;
+* Dynamic forms: shell scripts can be embedded in forms and can change them;
+* Dynamic menus: items of menu can be added or removed by simply adding or
+  removing a file in a directory;
+* Temporary shell escape;
+* Recursivity: a menu can call another menu or a form; a form can call another
+  form;
+* Automatic management of options and arguments associated to form fields;
+* Programmable function keys F1,F2,..,F10;
+* Activity logging: executed commands can be logged; users can dump fields data
+  in the logfile;
+* Minimal dependencies: only Perl and Perl Curses module are required.
+
+
+
+PREREQUISITES
+
+* A UNIX or UNIX-like Operating System
+* Perl version >= 5.8.x
+* Curses Perl module version >= 1.19
+
+
+
+INSTALLING
+
+RPM and DEB packages are available for Linux systems that support these formats.
+For all UNIX systems:
+
+ gzip -d < ccfe-X.YY.tar.gz | tar xvf -
+ cd ccfe-X.YY
+ ./install.sh
+
+In its most simplest form, install.sh is the CCFE interactive installation
+program. It is possible to make a batch installation invoking it with:
+ 
+ ./install.sh -b
+
+(Please see ./install.sh -h for help on available options).
+install.sh requires a POSIX.2 compatible shell, like sh(1), bash(1) or ksh(1).
+
+Please note that you may have to change the environment variable MANPATH to
+access to CCFE manual pages by man(1) command, for example:
+
+  MANPATH=/usr/local/ccfe/man:$MANPATH
+  export MANPATH
+
+
+
+UPDATING
+
+When you install CCFE, a file named ccfeinstall.conf is created in the CCFE
+configuration directory: it contains the user selected destinations for
+CCFE objects.
+
+You can update the current installation with a new version by selecting
+"Change mode" from menu: you will be promped for a list of standard directories
+where search for ccfeinstall.conf file, then the CCFE installation program will
+read from it the directories where the files to update are.
+
+The update process will not modify all user customized files (configurations,
+messages, etc.), but only:
+
+    * The ccfe Perl script
+    * All CCFE manpages
+    * All README files (README, ChangeLog, AUTHORS, etc.)
+
+If configuration and/or messages files are provided with a new release, they
+will be installed with the release number as filename extension, so your current
+configuration will be preserved. Please refer to README file for specific notes.
+
+It is possible to make a batch update with the following command:
+
+ ./install.sh -b -u <ConfigurationPath>
+
+where <ConfigurationPath> is the directory of the CCFE configuration (.conf):
+for example:
+
+ ./install.sh -b -u /etc/ccfe
+
+
+
+LICENSE
+
+This program is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License (GPL), version 2, or (at your
+option) any later version.
+
+
+
+CONTACTS
+
+To contact the author and report bugs, please send an e-mail to
+Massimo Loschi <ccfedevel@gmail.com>
+
+________________________________________________________________________________
+IBM and AIX are trademarks of International Business Machines Corporation in the
+United States, other countries, or both.

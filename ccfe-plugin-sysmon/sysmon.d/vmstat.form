@@ -1,0 +1,112 @@
+#
+#  ccfe-plugin-sysmon - CCFE sample plugin
+#  Copyright (C) 2009, 2012 Massimo Loschi
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+#  Author: Massimo Loschi <ccfedevel@gmail.com>
+#
+
+# Made for procps version 3.2.8 (Ubuntu 9.10)
+
+title {
+  Report virtual memory statistics
+}
+
+field {
+  id       = DELAY
+  label    = Delay between samples (in seconds)
+  len      = 2
+  type     = NUMERIC
+  #required = YES
+  default  = const:2
+#  htab     = 1
+}
+field {
+  id       = COUNT
+  label    = Number of updates
+  len      = 2
+  type     = NUMERIC
+  default  = const:5
+  htab     = 1
+}
+field {
+  id     = MEM
+  label  = Displays active/inactive memory
+  type   = BOOLEAN
+  option = -a
+#  htab   = 1
+}
+field {
+  id     = SLAB
+  label  = Displays slabinfo
+  type   = BOOLEAN
+  option = -m
+}
+field {
+  id       = UM
+  label    = Display statistics in
+  type     = UCSTRING
+  len      = 1
+  list_cmd = const:single-val:"K : Kilobytes","M : Megabytes"
+  option   = -S
+  #vtab     = 1
+}
+field {
+  id     = DISK
+  label  = Report disk statistics
+  type   = BOOLEAN
+  option = -d
+  #vtab   = 1
+}
+field {
+  id       = PART
+  label    = Partition name for detailed statistics
+  type     = STRING
+  len      = 16
+  list_cmd = command:single-val:ls -1 /dev/sd[a-z]?
+  option   = -p
+#  vtab     = 1
+}
+separator {
+  type = text
+  text = Non-iterative options:
+  vtab = 1
+}
+field {
+  id     = FORKS
+  label  = Displays the number of forks since boot
+  type   = BOOLEAN
+  htab   = 1
+  option = -f
+}
+field {
+  id     = MISC
+  label  = Displays various event counters and memory stats
+  type   = BOOLEAN
+  option = -s
+  htab   = 1
+}
+field {
+  id     = SDISK
+  label  = Reports some summary stats about disk activity
+  type   = BOOLEAN
+  option = -D
+  htab   = 1
+}
+
+action { run:
+  vmstat%{MEM}%{FORKS}%{MISC}%{SLAB}%{UM}%{DISK}%{SDISK}%{PART} %{DELAY} %{COUNT}
+}

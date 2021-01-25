@@ -1,0 +1,19 @@
+title { Form recursivity test }
+init { command:
+  count=%{ARGV1}
+  count=$(expr $count \+ 1)
+  echo COUNTER=$count
+}
+field {
+  id    = COUNTER
+  len   = 3
+  type  = NUMERIC
+  label = Times that form was called:
+  vtab  = 2
+}
+separator {
+  type = TEXT_CENTER
+  text = Please do not insert a value in the field, but only press <Enter>/<F3>
+  vtab = 2
+}
+action { form:demo.d/recursive %{COUNTER} }

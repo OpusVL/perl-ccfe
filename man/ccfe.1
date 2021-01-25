@@ -1,0 +1,610 @@
+.\" Copyright (C) 2009, 2016 Massimo Loschi <ccfedevel@gmail.com>
+.\"
+.\" This is is free documentation; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" The GNU General Public License's references to "object code"
+.\" and "executables" are to be interpreted as the output of any
+.\" document formatting or typesetting system, including
+.\" intermediate and printed output.
+.\"
+.\" This manual is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this manual; if not, write to the Free Software
+.\" Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+.\"
+.TH CCFE 1 "September,  4 2016" "ccfe 1.58" "User Commands"
+.SH NAME
+ccfe - the Curses Command Front-end.
+.SH SYNOPSIS
+\fBccfe\fP [\fIOPTION\fP]... [\fISHORTCUT\fP]
+.SH DESCRIPTION
+\fBccfe\fP is a simple tool to quickly supply an interactive screen-oriented
+interface to command line scripts and commands: it prompts users for the
+informations needed to run them, and can be programmed with your
+preferred shell to provide predefined selections and/or run-time defaults.
+It also provides a menu system to hierarchically organize them and
+a viewer to browse the standard output and standard error of invoked script/command.
+.SS Options
+.TP
+\fB-c\fP
+Print some configuration parameters and exit. May be useful in pre-installation scripts for packaged
+\fBccfe plugins\fR.
+.TP
+\fB-d\fP
+Enable verbose logging for debugging. It depends from the value of the
+\fBpermit_debug\fR parameter in the
+.BR ccfe.conf (5)
+configuration file.
+.TP
+\fB-h\fP
+Display help message and exit.
+.TP
+\fB-l \fIPATH\fR\fR
+Override the configured library directories (global and user) to search for menus and forms to load:
+for example, you can create in the current directory the form \fCmyapp.form\fR
+as frontend to run the script \fCmyapp.sh\fR and then run it by
+
+.nf
+\fC  ccfe -l . myapp\fP
+.fi
+
+Only one path can be specified.
+This can be useful to distribute software with \fBccfe\fP as front-end,
+or if you want to use forms and menus in a directory alternative
+to default.
+.br
+Note that \fIPATH\fR is absolute for every \fBccfe\fP instance.
+.br
+Please see also the explanation of the \fBCCFE_LIB_DIR\fP environment variable.
+.TP
+\fB-s\fP
+Print ordered list of available shortcuts to forms or menus and exit.
+A tilde character ("\fB~\fP") after shortcut name means that menu or form is user private and located
+in its home directory.
+.TP
+\fB-v\fP
+Print version and exit.
+.TP
+\fISHORTCUT\fP
+Initial form or menu name to load (without extension).
+
+.SH SCREEN DESCRIPTION
+\fBccfe\fP has the following type of screens:
+.TP
+.B Menu screens
+Show a list of items and when a user select one of them, another menu
+or form is presented, or a shell command is executed.
+.TP
+.B Form screens
+Show a list of fields, then a shell command is executed using the fields value for arguments and options.
+Each field can have some flags before and/or after them:
+.RS
+.TP
+.B *
+Indicates that a value in the field is required to proceed.
+.TP
+.B +
+Indicates that is available the pop-up list of valid values for the selection by pressing the key \fB<list key>\fR (please see the
+following section \fBKEY BINDINGS\fP).
+.TP
+.B #
+Indicates that the field accept only numeric values (please see the \fBtype\fR attribute description of the
+.BR ccfe_form (5)
+manpage).
+.PP
+Moreover, depending of the configuration in
+.BR ccfe.conf (5)
+file, the following symbols also have a specific meaning:
+.TP
+.B [ ]
+Field value size delimiters. Please see the attribute \fBvalue_delimiters\fR in the
+.BR ccfe.conf (5)
+manpage.
+.TP
+.B < >
+In the fields with the attribute \fBhscroll\fR enabled, they indicate off-screen data ahead or behind.
+Please see the attributes \fBlen\fR and \fBhscroll\fR in the
+.BR ccfe_form (5)
+manpage.
+.PP
+When the value of a field change regarding the one at the form submission, it will be highlighted according the
+attributes \fBchanged_value_fg\fR \fBchanged_value_bg\fR of the \fBfield_attr{}\fR and \fBactive_field_attr{}\fR
+stanzas in the
+.BR ccfe.conf (5)
+configuration file.
+.RE
+.TP
+.B Output Browser screens
+The stdout and stderr of a shell command executed by a menu or a form can be browsed in a user-friendly
+mode, like when they are redirected and piped to
+.BR more (1)
+or
+.BR less (1)
+or
+.BR pg (1)
+standard commands.
+.TP
+
+Each of the above \fBccfe\fP screens is divided in three areas:
+.TP
+.B Header
+The top area which contains the following informations:
+.IP
+\fBusername@hostname\fP (if enabled in 
+.BR ccfe.conf (5))
+.IP
+\fBScreen title\fP
+.IP
+\fBScreen name\fP: Filename of the form/menu in the \fIdialog area\fP (if enabled in
+.BR ccfe.conf (5))
+.IP
+\fBIns/Ovl flag\fP: Report the insert/overlay character mode in fields of forms (only in form screens)
+.IP
+\fBOp/Pg indicator\fP:
+Report the position of the highlighted menu option (in menu screens) or the page displayed of a multi-page form (in form screens
+and in the output browser screen).
+.TP
+.B Dialog area
+The middle area which contains a menu, a form or the output of a command.
+\fIstandard output\fR and \fIstandard error\fR are mixed in the output of a command, but they are
+displayed with different screen attributes (please see the parameters
+\fBstdout_attr\fR and \fBstderr_attr\fR in the
+.BR ccfe.conf (5)
+manpage).
+.TP
+.B Footer
+The bottom area which contains the list of the enabled function keys.
+.PP
+It is possible to add and remove some aesthetic attributes (lines, alignment,
+video attributes, etc.) to change the aspect of the screens: please see the
+.BR ccfe.conf (5)
+manpage.
+.TP
+.B Form pop-up list
+When you press \fB<list key>\fR key in a field with flag \fB+\fR,
+you open a pop-up window and you can select one or more (it
+depends from the \fBlist_cmd\fR options) items from its list.
+The bottom of the window shows the active keys and in the upper
+right corner there are the following informations:
+.RS
+.TP
+.B <
+Indicates that there is off-screen data in the left of the window.
+They can be viewed by scrolling the data pressing the
+\fB<Left arrow>\fR and \fB<Right arrow>\fR keys.
+.TP
+.B x/y:z
+Indicates the position of the cursor in the list of items:
+\fBx\fR is the item highlighted,
+\fBy\fR is the total number of items in the list,
+\fBz\fR is the number of the selected items.
+\fB:z\fR is displayed only if \fIlist-type\fR is \fBmulti-val\fR
+in the \fBlist_cmd\fR attribute, as described in
+.BR ccfe_form (5)
+manpage.
+.TP
+.B >
+Indicates that there is off-screen data in the right of the window.
+They can be viewed by scrolling the data pressing the
+\fB<Left arrow>\fR and \fB<Right arrow>\fR keys.
+.RE
+
+
+.SH KEY BINDINGS
+Here is described the function of the keys enabled in the \fBccfe\fR screens.
+Note that the meaning of the function keys
+.BR <F1> ,..., <F10>
+can be remapped in the \fCccfe.conf\fR configuration file. They are referred
+by their function definition:
+for example, if the key \fB<F5>\fR is defined as \fBkey_f5 = back\fR in
+\fCccfe.conf\fR, below it will be referred as \fB<back key>\fR instead
+\fB<F5>\fR. Please see the 
+.BR key_f1 ,..., key_f10
+parameters in the
+.BR ccfe.conf (5)
+man page.
+
+.TP
+.B Common Commands
+The following keys are available in every kind of screen, but enabled
+in agreement with \fCccfe.conf\fR configuration:
+.RS
+.TP
+.B <help key>
+Help/Contextual help (not yet implemented).
+.TP
+.B <redraw key>
+Refresh screen.
+.TP
+.BR "<back key>" " or " <Esc>
+Return to previous screen (Cancel current action).
+.TP
+.B <shell_escape key>
+Escape temporary to a shell (please see \fBuser_shell\fR parameter in
+.BR ccfe.conf (5)
+man page).
+.TP
+.B <exit key>
+Exit from \fBccfe\fR.
+.RE
+
+.TP
+.B Menu Commands
+In menu screens, the following keys are enabled:
+.RS
+.TP
+.B <Up arrow>
+Move the cursor to the previous option.
+.TP
+.B <Down arrow>
+Move the cursor to the next option.
+.TP
+.B <Home>
+Move the cursor to the first option of the menu.
+.TP
+.B <End>
+Move the cursor to the last option of the menu.
+.TP
+.B <Enter>
+Select the higlighted option.
+.RE
+
+.TP
+.B Form Commands
+In form screens, the following keys are enabled. Note that
+if there are off-screen data behind in the current field, a flag "\fB>\fR"
+is displayed at the end of the field, and
+if there are off-screen data ahead in the current field, a flag "\fB<\fR"
+is displayed at the beginning of the field.
+.RS
+.TP
+.B <Up arrow>
+Move the cursor to the previous field in the displayed page of the form.
+If pressed when in the first field of the page, the cursor will be moved
+to the last field of the page.
+.TP
+.B <Down arrow>
+Move the cursor to the next field in the displayed page of the form.
+If pressed when in the last field of the page, the cursor will be moved
+to the first field of the page.
+.TP
+.B <Left arrow>
+Move the cursor to the previuos character in the field value.
+.TP
+.B <Right arrow>
+Move the cursor to the next character in the field value.
+.TP
+.B <Home>
+Move the cursor to the first character in the field value.
+.TP
+.B <End>
+Move the cursor to the last character in the field value.
+.TP
+.B <PgUp>
+Show the previous page of fields (if any) and move the cursor to the last field of the page.
+.TP
+.B <PgDn>
+Show the next page of fields (if any) and move the cursor to the first field of the page.
+.TP
+.B <Enter>
+Run the action of the form.
+.TP
+.BR "<Tab>" ", " "<Shift>+<Tab>"
+Browse (forward and backward) the list of accepted values in a field of type
+\fBBOOLEAN\fR, \fBNULLBOOLEAN\fR or of any other type where attribute
+\fBlist_cmd\fP has \fIsource-type\fP \fBconst\fP and
+\fIlist-type\fP \fBsingle-val\fP, for example:
+
+.nf
+\fC  list_cmd = const:single-val:"K : Kilobytes",
+                              "M : Megabytes",
+                              "G : Gigabytes"\fP
+.fi
+
+Please see also the \fBlist_cmd\fR attribute description of the
+.BR ccfe_form (5)
+manpage.
+
+.TP
+.B <list key>
+Show in a pop-up window a list of admitted values for the field. Depending on the list type,
+it is possible to select just one value or multiple values. Keys enabled for the
+selection are:
+.RS
+.TP
+.BR "<sel_items key>" " or " <Spacebar>
+Only available in multiple values lists, select or unselect the higlighted item.
+.TP
+.BR <A> " or " <a>
+Only available in multiple values lists, select all the items.
+.TP
+.BR <U> " or " <u>
+Only available in multiple values lists, unselect all the items.
+.TP
+.BR "<Left arrow>" " and " "<Right arrow>"
+Scroll horizontally the menu if it is more wide than the pop-up window. CHECK
+.TP
+.B </>
+Find an item in the list, starting from the current and using the
+.BR menu_pattern (3X)
+menu pattern match management.
+.TP
+.BR <n> " or " <N>
+Find the next item, using the search pattern previously entered with the \fB/\fR (find) command.
+.TP
+.B <Enter>
+Put the selected value(s) in the field and close the pop-up window.
+.RE
+.TP
+.B <reset_field key>
+Reset the value of the actual field to the one at the form submission.
+.TP
+.B <show_action key>
+Show the action that will be executed pressing \fB<Enter>\fR, with the values
+at the moment in the fields.
+.TP
+.B <save key>
+Save the current value of the fields in the logfile.
+.RE
+
+.TP
+.B Output browser Commands
+.RS
+.TP
+.B <Ctrl>+C
+This combination of keys is available only during the execution of
+an action: sends a SIGINT signal to the running process.
+.TP
+.B </>
+Find a string in the output shown in the browser, starting from the current
+position. The search is case sensitive.
+.TP
+.BR <n> " or " <N>
+Find the next string occurrence of the one entered in the \fB/\fR (find) command.
+.TP
+.B <save key>
+Save in a text file the output displayed in the browser, or save the action
+in a shell script ready for execution outside \fBccfe\fR.
+.RE
+
+.SH INVOCATION
+When \fBccfe\fR is started with its name, it executes the following ordered operations:
+.IP 1. 3
+Read the main configuration file \fCETC_DIR_PLACEHOLDER/ccfe.conf\fR
+.IP 2. 3
+If exists, read the user configuration file \fC$HOME/.ccfe/ccfe.conf\fR
+.IP 3. 3
+If exists, load the main menu \fCLIB_DIR_PLACEHOLDER/ccfe.menu\fR, else
+load (if present) the user menu \fC$HOME/.ccfe/ccfe.menu\fR
+.PP
+When you specify a \fIshortcut\fR (for example \fBfoo\fR), instead to perform
+step 3 \fBccfe\fR searches the following objects in the order in which they
+appear and loads the first that matches:
+.\"If \fBccfe\fR is invoked with a \fIshortcut\fR, for example \fBfoo\fR,
+.\"in step 3, instead to search \fCccfe.menu\fR, it search the following objects
+.\"in the order in which they appear:
+.IP \(bu 3
+\fCLIB_DIR_PLACEHOLDER/\fCfoo.menu\fR
+.IP \(bu 3
+\fCLIB_DIR_PLACEHOLDER/\fCfoo.form\fR
+.IP \(bu 3
+\fC$HOME/.ccfe/\fCfoo.menu\fR
+.IP \(bu 3
+\fC$HOME/.ccfe/\fCfoo.form\fR
+.PP
+If any configuration file is found, then \fBccfe\fR starts with its predefined configuration;
+if any \fIccfe main menu\fR or \fIshortcut\fR is found, \fBccfe\fR exits.
+Private user configuration and forms/menus are read depending by \fBload_user_objects\fP
+parameter in \fCETC_DIR_PLACEHOLDER/ccfe.conf\fP file.
+.PP
+If \fBccfe\fR is started whith a different name because are configured one or more
+application instances, its behavior is different: please see the
+.B APPLICATION INSTANCES
+paragraph below.
+
+.SH SHORTCUTS 
+It is possible to load directly a specific menu or form instead the default menu (\fCccfe.menu\fR)
+when \fBccfe\fR is invoked.
+You have to specify the desired form o menu file name (without the extension),
+and it will be searched through the following ordered list of directories:
+.IP \(bu 3
+\fC$CCFE_LIB_DIR/$CALLNAME\fR  (for example \fC/usr/local/lib/ccfe\fR)
+.IP \(bu 3
+\fC$HOME/.ccfe/$CALLNAME\fR  (for example \fC/home/foo/.ccfe/ccfe\fR)
+.PP
+If a menu and a form in the same directory have identical filename, then the
+menu will be loaded. \fI$CALLNAME\fR is the name used for \fBccfe\fR
+invocation, please see \fBAPPLICATION INSTANCES\fR.
+
+
+.SH MULTILINGUAL SUPPORT
+Not yet supported. Actually, you can only translate messages in the
+\fIccfe messages definition file\fR \fCMSG_DIR_PLACEHOLDER/C/ccfe\fR.
+
+.SH APPLICATION INSTANCES
+Implemented, bud not yet documented!
+
+.SH LOGGING
+.B ccfe
+logging can be used by users to record the their actions, but is
+generally used to records detailed trace information useful when developing
+new menus or forms.
+Every user have a separate and private log file in the LOG_DIR_PLACEHOLDER
+directory, and the detail of the informations recorded can be specified
+in the \fBlog_level\fR parameter of the
+.BR ccfe.conf (5)
+configuration file.
+Normally is logged only the output of actions with the \fBlog\fR option
+specified (please see
+.BR ccfe.conf (5)
+manpage), but when \fBccfe\fR is called with \fB-d\fR option, according with
+the value of attribute \fBpermit_debug\fR in
+.BR ccfe.conf (5),
+it switches in
+"debug mode" and the maximum level of information are logged.
+
+.SH PLUGINS
+.B ccfe
+can be easily expanded by adding
+.BR plugins " (or " modules ).
+A plugin is the collection of files required to add new funcionalities.
+It can be very simple (only one file for a main menu entry) or
+very complex (a file for the new main menu entry, new menus, new
+forms and all shell scripts required by actions).
+Example of simple plugin: if your \fBccfe\fR main menu is a \fIdynamic menu\fR,
+to add the new function \fItop\fR which call the
+.BR top (1)
+command, you only have to put the file \fCLIB_DIR_PLACEHOLDER/ccfe/ccfe.menu/top.item\fR
+which the following content:
+
+.nf
+\fC  item {
+    id     = TOP
+    descr  = Display O.S. tasks
+    action = system:top
+  }\fP
+.fi
+
+In a hypothetical pre-installation script of a plugin package, you can call \fBccfe\fR to
+know the prefix directory where to install the plugin files, for example, the line:
+
+.nf
+\fC  eval $(ccfe -c | grep LIB)\fP
+
+.fi
+sets up the variable LIB_DIR with value \fI/usr/local/ccfe/lib\fP (for example), or
+the line
+
+.nf
+\fC  eval CCFE_$(ccfe -c  | grep LIB)\fP
+.fi
+
+sets up the variable CCFE_LIB_DIR.
+
+
+.BR "ccfe instances" " supports " plugins.
+Please see also the
+.B DYNAMIC MENUS
+section in the
+.BR ccfe_menu (5)
+manpage and the samples provided with \fBccfe\fR package for a more
+complex examples of \fBplugin\fR.
+
+
+.SH ENVIRONMENT
+Before the execution of an \fBaction {}\fR block, \fBccfe\fR sets up the following
+environment variables:
+
+.TP
+.B CCFE_LIB_DIR
+The \fIccfe library directory\fR (for example \fC/usr/local/ccfe/lib\fR).
+It can be used in scripts called by \fBccfe\fR to refer to absolute pathnames.
+You can also define this variable before run \fBccfe\fR to change the
+default library directory; it is an alternative to option "-l": for example,
+to load a form in current directory:
+
+.nf
+\fC  ccfe -l . myform\fR
+.fi
+
+is equivalent to
+
+.nf
+\fC  CCFE_LIB_DIR=. ccfe myform\fR
+.fi
+
+or
+
+.nf
+\fC  CCFE_LIB_DIR=. ; export CCFE_LIB_DIR
+  ccfe myform\fR
+.fi
+
+.TP
+.B CCFE_IWD
+\fICcfe invocation directory\fR, the current working directory of the shell
+when invoked \fBccfe\fP.
+
+.SH FILES
+.TP
+\fCETC_DIR_PLACEHOLDER/ccfe.conf\fR
+Global configuration.
+
+.TP
+\fCETC_DIR_PLACEHOLDER/CALLNAME.conf\fR
+Instance configuration. For example: \fCETC_DIR_PLACEHOLDER/foo.conf\fR,
+\fCETC_DIR_PLACEHOLDER/bar.conf\fR
+
+.TP
+\fC$HOME/.ccfe/ccfe.conf\fR
+User global preferences.
+
+.TP
+\fC$HOME/.ccfe/persistent/\fR
+Persistent forms data.
+
+.TP
+\fC$HOME/.ccfe/CALLNAME.conf\fR
+User instance preferences.
+For example: \fC$HOME/.ccfe/foo.conf\fR
+
+.TP
+\fCLIB_DIR_PLACEHOLDER/ccfe/\fR
+CCFE forms, menu and objects used by them.
+Forms, menus and objects used by them when CCFE is invoked as \fBccfe\fP.
+
+.TP
+\fCLIB_DIR_PLACEHOLDER/foo/\fR
+Instance configuration: forms, menus and objects used by them when CCFE is invoked as \fBfoo\fP.
+
+.TP
+\fCLIB_DIR_PLACEHOLDER/bar/\fR
+Instance configuration: forms, menus and objects used by them when CCFE is invoked as \fBbar\fP.
+
+.TP
+\fCMSG_DIR_PLACEHOLDER/LOCALE_ID/ccfe\fR
+Global messages configuration.
+For example: \fCMSG_DIR_PLACEHOLDER/C/ccfe\fR
+
+.TP
+\fCMSG_DIR_PLACEHOLDER/LOCALE_ID/CALLNAME\fR
+Instance messages configuration.
+For example: \fCMSG_DIR_PLACEHOLDER/C/foo\fR
+
+.TP
+\fCLOG_DIR_PLACEHOLDER/$USER.log\fR
+User activity logs (if enabled), useful for debug developing new forms and menus,
+form field values backup before changes and audit.
+
+.SH SECURITY
+\fBccfe\fR is only a front-end: the security of the execution of a command is based
+on the O.S. permissions of the user who invoked \fBccfe\fR.
+Execution of privileged commands is possible, for example, by using tools as
+.BR sudo (1)
+in the \fBaction\fR section of forms and menus.
+.PP
+It is possible to deny users to make their own
+.B ccfe
+interfaces and disable the temporary shell escape: please see the \fBload_user_objects\fR and
+the \fBuser_shell\fR parameters in the 
+.BR ccfe.conf (5)
+manual page.
+
+.SH SEE ALSO
+.BR ccfe.conf (5),
+.BR ccfe_form (5),
+.BR ccfe_menu (5),
+.BR sudo (1).
+.TP
+\fCDOC_DIR_PLACEHOLDER/\fR
+.\".SH BUGS
+
+.SH AUTHOR
+Massimo Loschi <\fIccfedevel@gmail.com\fR>

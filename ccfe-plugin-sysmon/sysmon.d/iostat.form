@@ -1,0 +1,123 @@
+#
+#  ccfe-plugin-sysmon - CCFE sample plugin
+#  Copyright (C) 2009, 2012 Massimo Loschi
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+#  Author: Massimo Loschi <ccfedevel@gmail.com>
+#
+
+# Made for sysstat version 9.0.3 (Ubuntu 9.10)
+title {
+  Monitor system input/output device load
+}
+
+field {
+    id       = DELAY
+    label    = Delay between each report (in seconds)
+    len      = 2
+    type     = NUMERIC
+    default  = const:2
+}
+field {
+    id       = COUNT
+    label    = Number of updates
+    len      = 2
+    type     = NUMERIC
+    required = NO
+    default  = const:5
+    htab     = 1
+}
+field {
+  id       = DEVS
+  label    = Display statistics for devices
+  type     = STRING
+  len      = 16
+  list_cmd = command:multi-val:ls -1 /dev/sd[a-z]
+  vtab     = 1
+}
+field {
+  id       = UM
+  label    = Display statistics in
+  type     = STRING
+  len      = 2
+  list_cmd = const:single-val:"KB : Kilobytes per second instead of blocks per second","MB : Megabytes per second instead of blocks per second"
+}
+field {
+  id     = CPU
+  label  = Display the CPU utilization report
+  type   = BOOLEAN
+  vtab   = 1
+  option = -c
+}
+field {
+  id     = DEV
+  label  = Display the device utilization report
+  type   = BOOLEAN
+  option = -d
+}
+field {
+  id     = NFS
+  label  = Display the network filesystem (NFS) report
+  type   = BOOLEAN
+  option = -n
+}
+field {
+  id     = NFS_EASIER
+  label  = NFS report easier to read
+  type   = BOOLEAN
+  htab   = 1
+  option = -h
+}
+field {
+  id     = DM
+  label  = Display the registered device mapper names
+  type   = BOOLEAN
+  option = -M
+}
+field {
+  id       = BDEV
+  label    = Display statistics for partitions of block devices
+  type     = STRING
+  len      = 16
+  list_cmd = command:multi-val:ls -1 /dev/sd[a-z]
+  list_sep = ","
+  option   = -p
+}
+field {
+  id     = TIME
+  label  = Print the time for each report displayed
+  type   = BOOLEAN
+  option = -t
+}
+field {
+  id     = EXT
+  label  = Display extended statistics
+  type   = BOOLEAN
+  option = -x
+}
+field {
+  id     = NO_INA
+  label  = Omit output for inactive devices
+  type   = BOOLEAN
+  option = -z
+}
+
+action { run:
+  um=''
+  test '%{UM}' = 'KB' && um=' -k'
+  test '%{UM}' = 'MB' && um=' -m'
+  iostat $um%{CPU}%{DEV}%{NFS}%{NFS_EASIER}%{DM}%{TIME}%{EXT}%{NO_INA}%{BDEV}%{DEVS} %{DELAY} %{COUNT}
+}

@@ -1,0 +1,5 @@
+item {
+  id     = RECURSIVE
+  descr  = Test form recursivity
+  action = form:demo.d/recursive
+}

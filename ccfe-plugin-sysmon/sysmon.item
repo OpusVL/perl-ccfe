@@ -1,0 +1,5 @@
+item {
+  id     = SYSMON
+  descr  = System resources usage monitors (SAMPLE PLUGIN)
+  action = menu:sysmon
+}

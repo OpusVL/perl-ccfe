@@ -1,0 +1,132 @@
+v1.58
+2016-09-04  Massimo Loschi  <ccfedevel@gmail.com>
+
+	* Fixed bug in fields value persistency.
+	* Added CCFE_IWD environment variable (CCFE Invocation Working
+	  Directory).
+	* Some cosmetics changes to several output.
+	* Some changes were made to ccfe(1), ccfe_menu(5) and ccfe_form(5)
+	  manual pages.
+
+v1.57
+2012-06-30  Massimo Loschi  <ccfedevel@gmail.com>
+
+	* Fixed bug in init{} block: bad values initialization if they
+	  contains '=' character.
+        * Added the ability to call forms from menus using arguments, (until
+	  this version, it was possible only calling forms from forms).
+	* Changed default ccfe.conf: removed terminal-dependent settings and
+	  moved old ccfe.conf as ccfe.conf.console in samples directory.
+	* Some changes were made to ccfe(1) and ccfe.conf(5) manual pages.
+
+v1.56
+2012-05-12  Massimo Loschi  <ccfedevel@gmail.com>
+
+	* Added <Shift>+<Tab> key functionality, and extended the ability to
+	  browse forward and backward the list of accepted values (with <Tab>
+	  and <Shift>+<Tab>) to any field where attribute list_cmd has
+	  source-type=const and list-type=single-val.
+	* Added the metacharacter "*" to refer to all fields IDs in form
+	  actions: now is possible to refer to them with "%{*}" instead 
+	  "%{id_0}%{id_1}...%{id_N}".
+	* Some changes were made to ccfe(1), ccfe.conf(5) and ccfe_form(5)
+	  manual pages.
+
+v1.55
+2012-04-11  Massimo Loschi  <ccfedevel@gmail.com>
+
+	* Added "-l" option to change library path.
+        * Added the ability to change library path by defining environment
+	  variable CCFE_LIB_DIR before run ccfe.
+	* Fixed bug: sometimes "ccfe -s" produces wrong shortcuts list.
+	* Added flag "~" in "ccfe -s" output to shortcuts referring menus
+	  and forms in user's home directory.
+	* Some changes were made to ccfe(1) manual page.
+
+v1.54
+2011-12-14  Massimo Loschi  <ccfedevel@gmail.com>
+
+	* Added "exec" action in menu items and forms to use ccfe as simple
+	  application launcher: run external command or application and return
+	  to O.S. when it is terminated.
+	* Some changes were made to ccfe_form(5) and ccfe_menu(5) manual pages.
+
+v1.53
+2011-12-03  Massimo Loschi  <ccfedevel@gmail.com>
+
+	* Fixed bug loading user private instance configuration.
+        * Added possibility to configure F11 and F12 keys.
+	* Changed info window horizontal position to better center-alignment.
+	* Some changes were made to ccfe(1) and ccfe.conf(5) manual pages.
+	* Some cosmetics changes to "ccfe -v" output.
+
+v1.52
+2011-09-18  Massimo Loschi  <ccfedevel@gmail.com>
+
+	* Fixed bug: segmentation fault on x86_64 architecture
+          (Thanks to Hans Vansweevelt).
+	* Some cosmetics changes to CCFE Perl source code.
+
+v1.51
+2011-07-22  Massimo Loschi  <ccfedevel@gmail.com>
+
+	* Fixed bug: log file filemode forced to 0600.
+	* Added "persist" field attribute to save fields value between
+	  CCFE executions.
+        * Added "PERS_WRITE_ERROR_TITLE" and "PERS_WRITE_ERROR_MSG" in messages
+	  definition file.
+	* Some changes were made to ccfe(1), ccfe_form(5) and ccfe_menu(5)
+	  manual pages.
+
+v1.50
+2011-05-01  Massimo Loschi  <ccfedevel@gmail.com>
+
+	* Fixed bug: sometimes CWD not correct when executing scripts located in
+          $HOME/.ccfe subdirectory.
+	* Some minor changes were made to ccfe(1) manual page.
+
+v1.49
+2011-04-16  Massimo Loschi  <ccfedevel@gmail.com>
+
+	* Fixed bug: in Output Browser screens, lines long exactly as screen
+          width are followed by an empty line.
+	* Improved configuration files parsing for better diagnostic (when
+          debugging enabled).
+	* Added "end_marker" configuration parameter in browser_global{}
+          section.
+	* Some changes were made to ccfe.conf(5) manual page.
+
+2011-04-05  Massimo Loschi  <ccfedevel@gmail.com>
+
+	* Some changes were made to documentation.
+	* Built RPM package.
+	* Built Debian package.
+
+v1.48
+2011-02-26  Massimo Loschi  <ccfedevel@gmail.com>
+
+	* Fixed bug: using %{ARGVx}, NUMERIC fields with value "0" are referred
+          as value "".
+        * Fn keys were remapped in etc/ccfe.conf and msg/C/ccfe to not place them on
+          F1 and F10 in GNOME Terminal.
+	* Some changes were made to documentation.
+
+v1.47
+2011-01-06  Massimo Loschi  <ccfedevel@gmail.com>
+
+	* Changed prepare_action() to define "option" attribute of "BOOLEAN" 
+	  fields with both formats:
+             option = -a        # return -a if YES, "" if NO
+             option = -a,-b     # return -a if YES, -b if NO
+
+v1.46
+2010-12-05  Massimo Loschi  <ccfedevel@gmail.com>
+
+	* Fixed bug in label assignment in file msg/C/ccfe.
+
+v1.45
+2010-11-13  Massimo Loschi  <ccfedevel@gmail.com>
+
+	* Fixed bug with perl 5.10.x
+
+

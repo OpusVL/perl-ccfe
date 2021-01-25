@@ -1,0 +1,13 @@
+title {
+  CCFE Installation Test
+}
+item {
+  id     = TEST
+  descr  = SELECT ME!!!
+  action = run:cat it_works.txt
+}
+item {
+  id     = DEMO
+  descr  = CCFE demo menu
+  action = menu:demo
+}

@@ -1,0 +1,180 @@
+###############################################################################
+# the Curses Command Front-end messages default definition file.
+#
+# - Empty lines are ignored.
+# - Characters from "#" to end of line are ignored.
+# - Assigned values must be enclosed by double quotes.
+# - Strings with array notation, like ERR_LITTLE_SCREEN[0] and
+#   ERR_LITTLE_SCREEN[1], are all displayed together.
+###############################################################################
+
+# Title and message string for pop-up window displayed when
+# list_cmd returns an empty list:
+NULL_LIST_TITLE  = "WARNING"
+NULL_LIST_MSG    = "Sorry, list not available for this field!"
+
+# Title and message string for pop-up window displayed when
+# a form is without action{} block or with wrong select-item{} block:
+NULL_FACTION_TITLE = "ERROR"
+NULL_FACTION_MSG   = "Undefined form action!"
+
+# Title and messages string for pop-up window displayed when
+# an error occurs during form loading or executing the init{} block:
+FORM_ERR_TITLE    = "ERROR"
+LOAD_FORM_ERR_MSG = "while loading form"       # ES_* string is automatically inserted before
+INIT_FORM_ERR_MSG = "Error initializing form"
+
+# Title and message string for pop-up window displayed when
+# an error occurs during menu loading:
+MENU_ERR_TITLE = "ERROR"
+LOAD_MENU_ERR_MSG = "while loading menu"       # ES_* string is automatically inserted before
+
+# Title and message string for pop-up window displayed when
+# an error occurs during output save:
+SAVE_ERROR_TITLE = "ERROR"
+SAVE_ERROR_MSG   = "writing file"         # Error string is automatically inserted before and
+                                          # file name is appended.
+
+# Title and message string for pop-up window displayed when
+# an error occurs writing the log file:
+LOG_WRITE_ERROR_TITLE = "LOG WRITE ERROR"
+LOG_WRITE_ERROR_MSG   = ""         # Error string is automatically inserted before
+
+# Title and message string for pop-up window displayed when
+# form field values are saved in logfile after the user had pressed <F6>:
+SAVE_FIELDVAL_TITLE = "Information"
+SAVE_FIELDVAL_MSG   = "Fields value saved in log file."
+
+# Title and message string for pop-up window displayed when
+# the output of an action block is too long for the buffer of the browser:
+BIG_OUTPUT_TITLE = "Information"
+BIG_OUTPUT_MSG   = "Output too long to display properly: save on a file and consult it"
+
+# Title and message string for pop-up window displayed when the
+# user pressed <F7> and the "user_shell" attribute in ccfe.conf(5) is invalid:
+BAD_SHELL_TITLE = "Information"
+BAD_SHELL_MSG   = "Shell escape disabled or invalid user shell definition"
+
+# Title and message string for pop-up window displayed when
+# the user press the key "Find next" and it does not find anything:
+FOUND_NONE_TITLE = "Information"
+FOUND_NONE_MSG   = "Pattern not found"
+
+# Title and message string for pop-up window displayed when
+# the user invoke action with empty required fields:
+ERR_EMPTY_FIELD_TITLE = "Field error"
+ERR_EMPTY_FIELD_MSG   = "cannot be empty"    # Label is automatically inserted before
+
+# Title and message string for pop-up window displayed when
+# an error occurs writing persistent fields values:
+PERS_WRITE_ERROR_TITLE = "ERROR"
+PERS_WRITE_ERROR_MSG   = "saving field values"  # Error string is automatically inserted before
+
+# Footer of all the previous pop-up windows:
+MSG_WIN_TITLE = ""              # Default title - ignored
+MSG_WIN_BMSG  = ">>>> Press any key to continue <<<<"
+
+# Messages displayed at the end of the execution of an action of type "system"
+# with the "wait_key" option or exited with an error:
+CALL_SYS_ES_MSG = "Command exited with status"
+CALL_SYS_MSG    = "Press any key to continue..."
+
+# Title and message string for the search pop-up window of the "output
+# browser screen":
+SEARCH_PTRN_TITLE  = "Find"
+SEARCH_PTRN_PROMPT = "Enter Search Pattern:"
+
+# Strings for error messages when load form or menu:
+ES_NO_ERR_MSG     = "NO ERRORS"           # Ignored
+ES_SYNTAX_ERR_MSG = "Syntax error"
+ES_FOPEN_ERR_MSG  = "Error opening file"
+ES_NOT_FOUND_MSG  = "File not found"
+ES_NO_ITEMS_MSG   = "No items defined"
+
+# Descriptions to display when the user press <F2> in a form field of
+# type BOOLEAN or NULLBOOLEAN:
+BFIELD_YES_DESCR  = "Yes/True/Enabled"
+BFIELD_NO_DESCR   = "No/False/Disabled"
+BFIELD_NULL_DESCR = "(Null value)"
+
+# Title and descriptions for the pop-up menu displayed for actions with
+# "confirm" option:
+CONFIRM_TITLE     = "Confirm selection/action"
+CONFIRM_DESCR_NO  = "Abort and return to the application"
+CONFIRM_DESCR_YES = "Confirm and continue"
+
+# Title for the pop-up window displayed when pressing the <F5> key,
+# which display the action to execute when user will press <Enter>:
+SHOW_ACTION_TITLE = "Action string"
+
+# Key labels to display:
+# NB: keys with empty label ("") will not be displayed
+KEY_F2_LABEL       = "List"
+KEY_F3_LABEL       = "Select"
+KEY_F4_LABEL       = "Back"
+KEY_F5_LABEL       = "Preview"
+KEY_F6_LABEL       = "Save"
+KEY_F7_LABEL       = "Shell"
+KEY_F8_LABEL       = "Redraw"
+KEY_F9_LABEL       = "Quit"
+KEY_ENTER_LABEL    = ""
+KEY_INTR_LABEL     = "Interrupt"
+KEY_FIND_LABEL     = "Find"
+KEY_FNEXT_LABEL    = "Find Next"
+KEY_SELALL_LABEL   = "Select All"
+KEY_UNSELALL_LABEL = "Unselect All"
+
+# Message displayed when the user escapes temporarary to a shell with <F7>:
+CALL_SHELL_MSG = "Spawning your default shell.  Use 'exit' to return."
+
+# Message displayed during the form initialization and during the field list
+# values generation after the user had pressed <F2>:
+WAIT_MSG_MSG = "Please wait while processing data..."
+
+# Output browser screen:
+RB_TITLE       = "Action execution"
+RB_RUNNING_MSG = "running..."       # Displayed during action{} block execution
+RB_OK_MSG      = "Ok"               # action{} block execution successful
+RB_FAILED_MSG  = "FAILED"           # action{} block execution failed
+RB_LINES_MSG = "lines"              # stderr, stdout # of lines
+RB_TIME_MSG  = "Time"               # action{} block elapsed execution time
+
+# Title and descriptions for the pop-up menu displayed for type of output
+# when user save pressing the <F6> key:
+SAVE_TYPE_TITLE     = "Select type of output"
+SAVE_SIMPLE_DESCR   = "Save only stdout and stderr"
+SAVE_DETAILED_DESCR = "Save detailed execution informations"
+SAVE_SCRIPT_DESCR   = "Save action as executable shell script"
+
+# Title and prompt for the pop-up window displayed to ask
+# the file name for save the output of the executed action{} block:
+SAVE_FNAME_TITLE    = "Save"
+SAVE_FNAME_PROMPT   = "Save to file name"
+
+# Startup error messages:
+ERR_LITTLE_SCREEN[0]  = "A minimum of 24 line by 80 column output display is required."
+ERR_LITTLE_SCREEN[1]  = "Check window size and try again."
+ERR_WRONG_FPATH[0]    = "Not found menu or form"
+ERR_WRONG_FPATH[1]    = "Please specify a valid name of the initial menu or form."
+ERR_LOAD_INITIAL_OBJ  = "while loading initial menu or form"    # ES_* string is automatically inserted before
+
+# Instructions for the list_cmd pop-up selection list:
+# ...of type "multi-val":
+LW_MULTIVAL_TOP_MSG[0] = "Move cursor to chosen item and press <F3> or <Spacebar>"
+LW_MULTIVAL_TOP_MSG[1] = "to select it. More items can be selected."
+LW_MULTIVAL_TOP_MSG[2] = "Press <Enter> when all selections are made."
+# ...of type "single-val":
+LW_SINGLEVAL_TOP_MSG[0] = "Move cursor to chosen item and press <Enter>."
+LW_SINGLEVAL_TOP_MSG[1] = ""
+LW_SINGLEVAL_TOP_MSG[2] = ""
+
+# Instructions for the pop-up windows used to preview the action{} block:
+LW_DISPLAY_TOP_MSG[0] = "Press <Enter> or <Esc> to return to the application."
+LW_DISPLAY_TOP_MSG[1] = ""
+LW_DISPLAY_TOP_MSG[2] = ""
+
+# Default menu & form top lines:
+FORM_TOP_MSG[0] = "Type a value for the entry field(s) or choose it from"
+FORM_TOP_MSG[1] = "the list. Press <Enter> when all changes are made."
+MENU_TOP_MSG[0] = "Move cursor to chosen item and press <Enter>."
+MENU_TOP_MSG[1] = ""
