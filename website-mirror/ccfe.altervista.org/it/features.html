@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <META NAME="AUTHOR" CONTENT="Massimo Loschi" />
+  <TITLE>CCFE :: the Curses Command Front-end :: Caratteristiche</TITLE>
+<link rel="stylesheet" type="text/css" href="../style.css" media="screen" />
+</head>
+<body>
+<div id="header">
+	<div id="logo">
+		<h1><a href="index.html">CCFE</a></h1>
+		<p>the Curses Command Front-end</a></p>
+<HR COLOR=WHITE SIZE=1>
+<A HREF="../it/features.html"><IMG ALT="Versione italiana" TITLE="Versione italiana" BORDER=0 SRC="../icons/flag_it.gif"></A>
+<A HREF="../en/features.html"><IMG ALT="English version" TITLE="English version" BORDER=0 SRC="../icons/flag_en.gif"></A>
+
+
+
+	</div>
+	<!-- end #logo -->
+	<div id="menu">
+		<ul>
+                        <li class="first"><A HREF="features.html">Caratteristiche</A></LI>
+                        <li><A HREF="sshots.html">Schermate</A></LI>
+                        <li><A HREF="install.html">Installazione</A></LI>
+                        <li><A HREF="docs.html">Documentazione</A></LI>
+                        <li><A HREF="faq.html">FAQ</A></LI>
+                        <li><A HREF="dnload.html">Download</A></LI>
+		</ul>
+	</div>
+	<!-- end #menu -->
+</div>
+<!-- end #header -->
+<div id="page">
+	<div id="content">
+		<div class="post">
+			<h3 class="title">Caratteristiche</h3>
+			<div class="entry">
+<UL>
+<LI>Supporto per <B>plugin</B> (o <B>moduli</B>): le voci di menu, i menu, le form e gli script
+necessari per aggiungere nuove funzionalit&agrave; a CCFE possono essere pacchettizzati per essere
+facilmente distribuiti ed installati (vedi esempio fornito col software);</LI>
+<LI>Le <B>scorciatoie (shortcuts)</B> consentono di invocare CCFE caricando direttamente uno specifico
+menu o una determinata form, evitando cos&igrave; di doverli cercare nella gerarchia dei menu;
+la lista delle scorciatoie disponibili pu&ograve; essere ottenuta invocando CCFE con l'opzione <TT>-s</TT>;</LI>
+<LI><B>Persistenza dei dati</B>: i campi delle form possono essere definiti
+come <I>persistenti</I>: in tal caso il loro valore verr&agrave; mantenuto anche alla succesiva esecuzione di CCFE;</LI>
+<LI>Il comando o lo script eseguito da CCFE pu&ograve; essere salvato come uno script shell immediatamente
+utilizzabile da linea di comando;</LI>
+<LI>Se si vuol dotare un'applicazione dell'interfaccia CCFE, &egrave; possibile includere i menu e le form CCFE necessari
+nel pacchetto software usato per la distribuzione della stessa, in modo che questa sia immediatamente
+accessibile dal menu principale di CCFE;</LI>
+<LI>&Egrave; possibile richiamare da un menu o una form dei comandi interattivi o altri comandi basati sulla
+libreria curses, come ad esempio <TT>top(1)</TT>;</LI>
+<LI>Il supporto multilingue non &egrave; ancora disponibile, ma tutti i messaggi possono essere completamente
+personalizzati o tradotti;</LI>
+<LI>Il formato dello schermo e gli attributi video possono essere configurati;</LI>
+<LI>Supporto delle <B>istanze</B>: &egrave; possibile invocare CCFE con tanti nomi distinti, ognuno dei
+quali ha la propria configurazione, i propri messaggi a video ed il proprio insieme privato di menu e form.
+Questo &egrave; un metodo pi&ugrave; efficace delle <I>scorciatoie</I> per raggruppare
+funzionalit&agrave; con molti menu e form;</LI>
+<LI>&Egrave; possibile, per ogni istanza di CCFE, permettere agli utenti di configurarsi nella propria home
+directory le <B>preferenze private</B> ed eventuali menu e form private;</LI>
+<LI><B>Form dinamiche</B>: nelle form possono essere inclusi degli script shell in grado di modificare la form stessa;</LI>
+<LI><B>Menu dinamici</B>: le voci di un menu possono essere aggiunte/rimosse semplicemente aggiungendo/rimuovendo un file in una directory;</LI>
+<LI><B>Shell escape</B>: &egrave; possibile uscire temporaneamente da CCFE caricando la shell preferita;</LI>
+<LI><B>Ricorsivit&agrave;</B>: un menu pu&ograve; richiamare un altro menu o una form; una form pu&ograve; richiamare
+un'altra form;</LI>
+<LI>Gestione automatica della sintassi delle opzioni e degli argomenti associati ai campi di una form;</LI>
+<LI>Tasti funzione <TT>F1</TT>,<TT>F2</TT>,..,<TT>F12</TT> programmabili;</LI>
+<LI><B>Tracciamento attivit&agrave;</B>: i comandi eseguiti possono essere registrati su file; gli utenti possono salvare il valore dei campi di una form nel proprio file di log;</LI>
+<!--<LI>L'installazione di CCFE ha <B>dipendenze minime</B>: oltre alla libreria standard Perl, &egrave;
+infatti richiesta solamente la presenza del modulo Curses.</LI>-->
+<LI>L'installazione di CCFE ha <B>dipendenze minime</B>: &egrave; richiesta la presenza sul sistema del solo
+interprete Perl col relativo modulo Curses.</LI>
+</UL>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- end #page -->
+<div id="footer">
+ <p>Copyright &copy; 2009-2016. Design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.</p>
+</div>
+<!-- end #footer -->
+</body>
+</html>

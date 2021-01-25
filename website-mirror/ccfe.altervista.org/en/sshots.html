@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <META NAME="AUTHOR" CONTENT="Massimo Loschi" />
+  <TITLE>CCFE :: the Curses Command Front-end :: Screenshots</TITLE>
+<link rel="stylesheet" type="text/css" href="../style.css" media="screen" />
+</head>
+<body>
+<div id="header">
+	<div id="logo">
+		<h1><a href="index.html">CCFE</a></h1>
+		<p>the Curses Command Front-end</p>
+<HR COLOR=WHITE SIZE=1>
+<A HREF="../it/sshots.html"><IMG ALT="Versione italiana" TITLE="Versione italiana" BORDER=0 SRC="../icons/flag_it.gif"></A>
+<A HREF="../en/sshots.html"><IMG ALT="English version" TITLE="English version" BORDER=0 SRC="../icons/flag_en.gif"></A>
+	</div>
+	<!-- end #logo -->
+	<div id="menu">
+		<ul>
+                        <li class="first"><A HREF="features.html">Features</A></LI>
+                        <li><A HREF="sshots.html">Screenshots</A></LI>
+                        <li><A HREF="install.html">Installing</A></LI>
+                        <li><A HREF="docs.html">Documentation</A></LI>
+                        <li><A HREF="faq.html">FAQ</A></LI>
+                        <li><A HREF="dnload.html">Download</A></LI>
+		</ul>
+	</div>
+	<!-- end #menu -->
+</div>
+<!-- end #header -->
+<div id="page">
+	<div id="content">
+		<div class="post">
+			<h3 class="title">Screenshots (and screencasts)</H3>
+<UL>
+<LI><A HREF="#es1">Example 1</A>: Basic front-end to usermod(1) command</LI>
+  <UL>
+    <LI>Basic form</LI>
+    <LI>Pop-up selector menu</LI>
+    <LI>Pop-up action viewer</LI>
+    <LI>Action output browser</LI>
+  </UL>
+<LI><A HREF="#es2">Example 2</A>: User friendly front-end to usermod(1) command</LI>
+  <B>(A <A HREF="scast1.html">screencast</A> is also available)</B>
+  <UL>
+    <LI>Pop-up window with init{} block standard error</LI>
+    <LI>Form with some fields disabled or removed by init{} block</LI>
+  </UL>
+<LI><A HREF="#es3">Example 3</A>: Menu</LI>
+<LI><A HREF="#es4">Example 4</A>: CCFE configured to be similar to AIX's SMIT</LI>
+  <B>(A <A HREF="scast2.html">screencast</A> is also available)</B>
+</UL>
+<HR NOSHADE SIZE=1>
+<I>IBM and AIX are trademarks of International Business Machines Corporation in the
+United States, other countries, or both.</I>
+<HR NOSHADE SIZE=1>
+<P>
+</P>
+
+		</div>
+		<div class="post">
+			<h3 class="title"><A NAME="es1">Example 1</A></H3>
+			<div class="entry">
+                            <B>Basic front-end to usermod(1) command</B>
+			</div>
+		</div>
+The file <A HREF="../usermods.html">usermods.form</A> defines the following front-end for
+the <TT>usermod(1)</TT> Linux command:
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermods1a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figure 1 - A basic form</I>
+</P>
+
+It's a basic form definition: a field is defined for every option supported by the <TT>usermod(1)</TT>
+command, and minimal data enter support is provided: for example,
+pressing the <TT>&lt;F1&gt;</TT> key in the first field, the list of admitted values
+appears in a pop-up menu, and its set of items is generated as specified in its <A HREF="../usermods.html#login_list_cmd"><TT>list_cmd</TT> attribute</A>:
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermods2a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figure 2 - A pop-up selector menu</I>
+</P>
+
+Entering some values in the form (note that they are displayed in bold) and pressing the <TT>&lt;F4&gt;</TT>
+key, it is possible to preview the command that will be executed when the user will press the
+<TT>&lt;Enter&gt;</TT> key:
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermods3a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figure 3 - The pop-up action viewer</I>
+</P>
+
+A successful execution of the <TT>usermod(1)</TT> command is silent, so entering bad values and
+pressing the <TT>&lt;Enter&gt;</TT> key, the output browser screen will show its standard error message
+(note which is displayed in bold; standard output lines are displayed with normal video attribute):
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermods4a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figure 4 - The action output browser</I>
+</P>
+
+		<div class="post">
+			<h3 class="title"><A NAME="es2">Example 2</A></H3>
+			<div class="entry">
+                            <B>User friendly front-end to usermod(1) command</B>
+			</div>
+		</div>
+The following sample is more complex and provide a better user friendly interface to
+<TT>usermod(1)</TT> command: the <A HREF="../ask_user.html">ask_user.form</A> requests the user name to change
+(for example the user "ccfedemo"):
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/ask_user1a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figure 5</I>
+</P>
+
+(note that the <TT>&lt;F1&gt;</TT> key is still active as in the <A HREF="#es1">example 1</A>, and the
+left angle bracket indicates characters ahead in the field), then post
+the <A HREF="../usermod.html">usermod.form</A> with all the fields filled with the current values,
+so the user can directly change them:
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermod1a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figure 6</I>
+</P>
+
+This example show you how the <TT>init{}</TT> block of 
+<A HREF="../usermod.html">this form</A> can handle some exceptions: if the user enter an invalid user name
+in the <A HREF="../ask_user.html">ask_user.form</A> form, then the following pop-up error window appears:
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermod2a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figure 7 - Pop-up window with init{} block standard error</I>
+</P>
+
+and the next form will not be posted until a valid user name is entered.
+<P>
+If CCFE is used by a non-root user (for example, from "myuname" user), the password aging and locking informations cannot be read,
+so the following pop-up error window appears:
+</P>
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermod3a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figure 8 - Another pop-up window with init{} block standard error</I>
+</P>
+
+and then the related fields are not presented to the user (in this case, only the field to
+lock/unlock the user password):
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermod4a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figure 9 - Form of figure 6 with some fields disabled or removed by init{} block</I>
+</P>
+
+Playing with file names, you can enable the <TT>usermod</TT> <I>shortcut</I>: for example, you can<UL>
+<LI>rename <TT>usermod.form</TT> to <TT>dousermod.form</TT></LI>
+<LI>rename <TT>ask_user.form</TT> to <TT>usermod.form</TT> and change its <TT>action{}</TT> block.</LI>
+</UL>
+Please see the manpages.
+<P>
+</P>
+
+		<div class="post">
+			<h3 class="title"><A NAME="es3">Example 3</A></H3>
+			<div class="entry">
+                            <B>Menu</B>
+			</div>
+		</div>
+The following screenshot is produced by the file <A HREF="../sysmon.html">sysmon.menu</A>,
+provided in the CCFE distribution package as sample plugin:
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/sysmon1a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figure 10 - A basic menu</I>
+</P>
+
+
+		<div class="post">
+			<h3 class="title"><A NAME="es4">Example 4</A></H3>
+			<div class="entry">
+                            <B>CCFE configured to be similar to AIX's SMIT</B>
+			</div>
+		</div>
+In this example are reported some of the previous screenshots, but with <TT>ccfe.conf</TT> and
+<TT>msg/C/ccfe</TT> files changed to make the look of CCFE screens similar to the ones of the
+AIX's <I>System Management Information Tool</I>:
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/ask_user1b.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figure 11</I>
+</P>
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermod1b.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figure 12</I>
+</P>
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermod2b.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figure 13</I>
+</P>
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermod3b.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figure 14</I>
+</P>
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermod4b.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figure 15</I>
+</P>
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/sysmon1b.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figure 16</I>
+</P>
+	</div>
+</div>
+<!-- end #page -->
+<div id="footer">
+  <p>Copyright &copy; 2009-2016. Design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.</p>
+</div>
+<!-- end #footer -->
+</body>
+</html>

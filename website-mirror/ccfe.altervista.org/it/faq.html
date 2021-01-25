@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <META NAME="AUTHOR" CONTENT="Massimo Loschi" />
+  <TITLE>CCFE :: the Curses Command Front-end :: Documentation</TITLE>
+<link rel="stylesheet" type="text/css" href="../style.css" media="screen" />
+</head>
+<body>
+<div id="header">
+	<div id="logo">
+		<h1><a href="index.html">CCFE</a></h1>
+		<p>the Curses Command Front-end</a></p>
+<HR COLOR=WHITE SIZE=1>
+<A HREF="../it/faq.html"><IMG ALT="Versione italiana" TITLE="Versione italiana" BORDER=0 SRC="../icons/flag_it.gif"></A>
+<A HREF="../en/faq.html"><IMG ALT="English version" TITLE="English version" BORDER=0 SRC="../icons/flag_en.gif"></A>
+
+	</div>
+	<!-- end #logo -->
+	<div id="menu">
+		<ul>
+                        <li class="first"><A HREF="features.html">Caratteristiche</A></LI>
+                        <li><A HREF="sshots.html">Schermate</A></LI>
+                        <li><A HREF="install.html">Installazione</A></LI>
+                        <li><A HREF="docs.html">Documentazione</A></LI>
+                        <li><A HREF="faq.html">FAQ</A></LI>
+                        <li><A HREF="dnload.html">Download</A></LI>
+		</ul>
+	</div>
+	<!-- end #menu -->
+</div>
+<!-- end #header -->
+<div id="page">
+	<div id="content">
+		<div class="post">
+			<h3 class="title">FAQ - Domande pi&ugrave; frequenti</h3>
+<P></P>
+<OL>
+<LI><A HREF="#q1">Che cos'&egrave; CCFE?</A></LI>
+<LI><A HREF="#q2">CCFE &egrave; un clone dello SMIT di AIX?</A></LI>
+<LI><A HREF="#q3">&Egrave; possibile installare CCFE su un host in cui non sono presenti l'interprete Perl ed il relativo modulo Curses?</A></LI>
+<LI><A HREF="#q4">Come si fa a convertire CCFE in un binario eseguibile?</A></LI>
+<LI><A HREF="#q45">"Curses function 'new_item' is not defined in your Curses library at /usr/bin/ccfe line NNNN."</A></LI>
+<LI><A HREF="#q47">Nella configurazione standard di GNOME Terminal, il tasto <TT>F10</TT> richiama il menu "File": come fare ad usarlo una volta configuratolo in CCFE?</A></LI>
+<LI><A HREF="#q5">Come permettere agli utenti di crearsi form e menu privati accessibili dal menu globale?</A></LI>
+<LI><A HREF="#q6">Come fare ad elencare in un ordine preferito le voci di un menu?</A></LI>
+<LI><A HREF="#q7">Come si fa a riassegnare le funzioni dei tasti da F1 a F12?</A></LI>
+<LI><A HREF="#q8">Come si fa ad usare CCFE come semplice application launcher?</A></LI>
+<LI><A HREF="#q9">Quale &egrave; il metodo pi&ugrave; rapido per applicare l'interfaccia CCFE ad un comando?</A></LI>
+<LI>Trucchi e suggerimenti per l'inizializzazione delle form:<UL>
+  <LI><A HREF="#q10">Come visualizzare un messaggio pop-up al caricamento di una form?</A></LI>
+  <LI><A HREF="#q11">Come condizionare il caricamento di una form?</A></LI></UL></LI>
+<LI>Trucchi e suggerimenti per le azioni delle form:<UL>
+  <LI><A HREF="#q12">Come inserire un apice singolo (<TT>'</TT>) all'interno di una stringa racchiusa tra apici singoli?</A></LI>
+</UL></LI>
+<LI>Trucchi e suggerimenti i campi delle form:<UL>
+  <LI><A HREF="#q13">Nella form voglio utilizzare un campo booleano che
+inserisca nell'action la stringa "YES" (oppure "NO"), ma utilizzando un campo
+di tipo BOOLEAN non riesco: perch&egrave;?</A></LI>
+</UL></LI>
+</OL>
+<HR SIZE=1>
+<P>
+<A NAME="q1"><B>D: Che cos'&egrave; CCFE?</B></A><BR>
+R: Il "Curses Command Front-end" &egrave; uno strumento proposto come aiuto all'utente per
+   velocizzare e ridurre gli errori nella compilazione di argomenti ed opzioni
+   da specificare nell'invocazione dei comandi Unix, ma &egrave; talmente semplice
+   e flessibile che pu&ograve; essere utilizzato anche per altri scopi.
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q2"><B>D: CCFE &egrave; un clone dello SMIT di AIX?</B></A><BR>
+R: No.<BR>
+   SMIT &egrave; un'applicazione specifica per la gestione del Sistema Operativo IBM AIX,
+   ed &egrave; basata sull'<I>Object Data Manager</I>, caratteristica peculiare di
+   tale S.O.<BR>
+   CCFE invece &egrave; uno strumento molto semplice (un singolo script Perl), &egrave; potenzialmente
+   installabile su qualsiasi sistema Unix-like,
+   e pu&ograve; essere utilizzato in molti modi, ma, nel suo utilizzo base,
+   non &egrave; altro che una interfaccia stupida.<BR>
+   Con i <I>plugin</I> &egrave; possibile aggiungere "intelligenza" a CCFE,
+   in quanto le maschere video (form) possono contenere shell script per modificarne il
+   comportamento base, e quindi dargli anche aspetto e funzionalit&agrave; simili a quelle dello SMIT.
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q3"><B>D: &Egrave; possibile installare CCFE su un host in cui non sono presenti l'interprete Perl ed il relativo modulo Curses?</B></A><BR>
+R: S&igrave;, convertendo CCFE in binario eseguibile, come spiegato nella prossima risposta, e sostituendo lo script Perl <TT>/usr/bin/ccfe</TT> con tale eseguibile.
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q4"><B>D: Come si fa a convertire CCFE in un binario eseguibile?</B></A><BR>
+R: &Egrave; possibile utilizzare il <I>PAR Packager</I> disponibile nel <A HREF="http://www.cpan.org">CPAN</A>, che non fa una vera e
+   propria compilazione, ma permette di ottenere un eseguibile standalone da programmi Perl:<BR>
+   Dopo aver installato CCFE ed il pacchetto <TT>PAR-Packer</TT> dal <A HREF="http://www.cpan.org">CPAN</A> o dal repository
+   dei pacchetti della propria distribuzione di S.O. (ad esempio, il pacchetto Ubuntu &egrave; <TT>libpar-packer-perl</TT>)
+   si procede come segue:
+    <PRE>
+     cp /usr/bin/ccfe /tmp/ccfe.pl
+     pp -o /tmp/ccfe /tmp/ccfe.pl
+    </PRE>
+   Il file binario ottenuto <TT>/tmp/ccfe</TT> pu&ograve; essere eseguito su macchine Linux senza la presenza
+   dell'interprete Perl e del relativo modulo Curses.
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q45"><B>D: Perche' eseguendo il comando "ccfe" viene restituito il seguente errore:</A></B>
+   <PRE>
+   Curses function 'new_item' is not defined in your Curses library at /usr/bin/ccfe line NNNN.
+   </PRE>
+R: Se il modulo Perl Curses &egrave; stato installato da pacchetto, probabilmente
+   questo &egrave; stato compilato senza il supporto per menu e form.
+   In particolare, per le distribuzioni RedHat, Fedora e CentOS si consiglia l'installazione
+   del pacchetto RPM <A HREF="http://dl.fedoraproject.org/pub/epel/5/i386/repoview/perl-Curses.html">perl-Curses</A>
+   presente nel repository <A HREF="http://fedoraproject.org/wiki/EPEL">EPEL</A>.
+   Se invece si compila il modulo da <A HREF="http://www.cpan.org">CPAN</A>, &egrave; necessario farne il build attivando
+   il supporto per pad, menu e form come indicato nel file INSTALL presente nel
+   tarball del modulo stesso.
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q47"><B>D: Nella configurazione standard di GNOME Terminal, il tasto <TT>F10</TT> richiama il
+   menu "File": come fare ad usarlo una volta configuratolo in CCFE?</B></A><BR>
+R: In GNOME Terminal, disabilitare l'impostazione del tasto scorciatoia per i menu (<TT>F10</TT>) nel pannello
+   richiamabile dal menu "Modifica" / "Scorciatoie da tastiera"
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q5"><B>D: Come permettere agli utenti di crearsi form e menu privati accessibili dal menu globale?</B></A><BR>
+R: Si pu&ograve; procedere, ad esempio, creando il file <TT>/usr/lib/ccfe/smit/ccfe.menu/private.item</TT> per
+   aggiungere la voce "User private menu" al menu principale di CCFE, che &egrave; anche quello globale ed accessibile
+   da tutti gli utenti del sistema:
+    <PRE>
+    item {
+      id     = PRIVATE
+      descr  = User private menu
+      action = menu:private
+    }
+    </PRE>
+  A questo punto ogni utente pu&ograve; creare nella propria home directory il proprio menu privato, ad esempio:
+    <PRE>
+    /home/john/.ccfe/ccfe/private.menu
+    /home/bill/.ccfe/ccfe/private.menu
+    </PRE>
+  da cui pu&ograve; invocare altri menu o form private. Gli altri utenti del sistema che invocheranno CCFE e dal menu
+  principale selezioneranno la voce "User private menu" otterranno invece il seguente messaggio pop-up di errore:
+  <PRE>   File not found while loading menu "private"</PRE>
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q6"><B>D: Come fare ad elencare in un ordine preferito le voci di un menu?</B></A><BR>
+R: Per default, le opzioni dei menu dinamici sono ordinate in base al nome del file dell'item (<TT>*.item</TT>), cos&igrave;, per esempio, le voci
+    <PRE>
+    one.item
+    two.item
+    three.item
+    four.item
+    five.item
+    six.item
+    </PRE>
+   vengono elencate nel menu col seguente ordine:
+    <PRE>
+    five.item
+    four.item
+    one.item
+    six.item
+    three.item
+    two.item
+    </PRE>
+  Per stabilire un ordine arbitrario &egrave; sufficiente rinominare i nomi dei file delle voci del menu, come ad esempio nel seguente modo:
+    <PRE>
+    10-one.item
+    20-two.item
+    30-three.item
+    40-four.item
+    50-five.item
+    60-six.item
+    </PRE>
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q7"><B>D: Come si fa a riassegnare le funzioni dei tasti da F1 a F12?</B></A><BR>
+A: Esempio: assegnare al tasto <TT>F12</TT> la funzione di uscita da CCFE:<UL>
+   <LI>nel file <TT>/etc/ccfe/ccfe.conf</TT> (or <TT>$HOME/.ccfe/ccfe.conf</TT>) assegnare la funzione al tasto:
+     <PRE>
+       key_f12 = exit
+     </PRE></LI>
+   <LI>e nel file <TT>/usr/share/ccfe/msg/C/ccfe</TT> definirne l'etichetta "Quit" a video:
+     <PRE>
+       KEY_F12_LABEL = "Quit"
+     </PRE></LI>
+   </UL>
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q8"><B>D: Come si fa ad usare CCFE come semplice application launcher?</B></A><BR>
+R: Invocando l'applicazione utilizzando l'azione <TT>exec</TT> nei menu o nelle form. In questo modo
+si evita l'inutile fork di un nuovo processo ed il ritorno al S.O. al termine dell'applicazione invocata.
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q9"><B>D: Quale &egrave; il metodo pi&ugrave; rapido per applicare l'interfaccia CCFE ad un comando?</B></A><BR>
+R: Utilizzando il metacarattere "<TT>*</TT>" nella form action: ad esempio, nella form
+   <A HREF="../fping.html">fping.form</A> per richiamare il comando <TT>fping(8)</TT>, l'azione &egrave; semplicemente "<TT>fping %{*}</TT>".
+</P>
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q10"><B>D: Come visualizzare un messaggio pop-up al caricamento di una form?</B></A><BR>
+R: Ogni stringa scritta nello standard error dai comandi nel blocco di inizializzazione della form (<TT>init{}</TT>)
+   viene mostrato in una finestra pop-up al caricamento della form. Ad esempio:
+  <PRE>
+  init { command:
+    echo "Welcome $(whoami)!" > /dev/stderr
+  }
+  </PRE>
+  Questo sistema &egrave; stato previsto per dare messaggi di errore/avviso in base al risultato di eventuali controlli
+  fatti in fase di inizializzazione della form.
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q11"><B>D: Come condizionare il caricamento di una form?</B></A><BR>
+R: Il processo di caricamento di una form continua se il blocco di inizializzazione (<TT>init{}</TT>) restituisce
+un exit status maggiore di zero, altrimenti abortisce. Ad esempio:
+  <PRE>
+  init { command:
+    [ "$(whoami)" != root ] && exit 1
+    exit 0
+  }
+  </PRE>
+  Riprendendo quanto detto nella precedente risposta, &egrave; possibile visualizzare un messaggio pop-up prima
+  di abortire il caricamento di una form utilizzando una tecnica come la seguente:
+  <PRE>
+  init { command:
+    [ "$(whoami)" != root ] && echo 'Only root can do this!' > /dev/stderr && exit 1
+    exit 0
+  }
+  </PRE>
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q12"><B>D: Come inserire un apice singolo (<TT>'</TT>) all'interno di una stringa racchiusa tra apici singoli?</B></A><BR>
+R: &Egrave; necessario usare la sintassi <TT>'\''</TT>; ad esempio, il costrutto:
+  <PRE>
+  action { run:
+    echo 'Error resizing logical volume '%{LV_NAME}'.' > /dev/stderr
+  }
+  </PRE>
+  &egrave; sbagliato! La forma corretta &egrave; la seguente:
+  <PRE>
+  action { run:
+    echo 'Error resizing logical volume '\''%{LV_NAME}'\''.' > /dev/stderr
+  }
+  </PRE>
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q13"><B>Nella form voglio utilizzare un campo booleano che inserisca
+nell'action la stringa "YES" (oppure "NO"), ma utilizzando un campo di tipo
+BOOLEAN non riesco: perch&egrave;?</B></A><BR>
+R: L'errore pi&ugrave; frequente &egrave; la definizione del campo come segue:
+  <PRE>
+  ### WRONG!!!
+  field {
+    id       = SHOW_CHANGED_FIELDS
+    label    = Changed fields uses different video attribute?
+    type     = BOOLEAN
+    default  = const:YES
+  } 
+  </PRE>
+che ritorna un valore nullo perch&egrave; non &egrave; stato definito
+alcun attributo <TT>option</TT> nel campo; la definizione corretta
+&grave; la seguente:
+  <PRE>
+  ### Correct!
+  field {
+    id       = SHOW_CHANGED_FIELDS
+    label    = Changed fields uses different video attribute?
+    type     = BOOLEAN
+    option   = YES,NO
+    default  = const:YES
+  } 
+  </PRE>
+Oppure, in alternativa, pu&ograve; essere utilizzato un campo di tipo
+<TT>STRING</TT>:
+  <PRE>
+  ### Correct!
+  field {
+    id       = SHOW_CHANGED_FIELDS
+    label    = Changed fields uses different video attribute?
+    type     = STRING
+    len      = 3
+    list_cmd = const:single-val:"YES","NO"
+    default  = const:YES
+  } 
+  </PRE>
+		</div>
+	</div>
+<FONT SIZE=-2><I>IBM and AIX are trademarks of International Business Machines Corporation in the
+United States, other countries, or both.</I></FONT>
+</div>
+<!-- end #page -->
+<div id="footer">
+  <p>Copyright &copy; 2009-2016. Design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.</p>
+</div>
+<!-- end #footer -->
+</body>
+</html>

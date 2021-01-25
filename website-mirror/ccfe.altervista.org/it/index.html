@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <META NAME="AUTHOR" CONTENT="Massimo Loschi" />
+  <BASE HREF="http://ccfe.altervista.org/it/index.html">
+  <TITLE>CCFE :: the Curses Command Front-end</TITLE>
+  <link rel="stylesheet" type="text/css" href="../style.css" media="screen" />
+</head>
+<body>
+<div id="header">
+	<div id="logo">
+		<h1><a href="index.html">CCFE</a></h1>
+		<p>the Curses Command Front-end</a></p>
+<HR COLOR=WHITE SIZE=1>
+<A HREF="../it/index.html"><IMG ALT="Versione italiana" TITLE="Versione italiana" BORDER=0 SRC="../icons/flag_it.gif"></A>
+<A HREF="../en/index.html"><IMG ALT="English version" TITLE="English version" BORDER=0 SRC="../icons/flag_en.gif"></A>
+
+
+
+	</div>
+	<!-- end #logo -->
+	<div id="menu">
+		<ul>
+                        <li class="first"><A HREF="features.html">Caratteristiche</A></LI>
+                        <li><A HREF="sshots.html">Schermate</A></LI>
+                        <li><A HREF="install.html">Installazione</A></LI>
+                        <li><A HREF="docs.html">Documentazione</A></LI>
+                        <li><A HREF="faq.html">FAQ</A></LI>
+                        <li><A HREF="dnload.html">Download</A></LI>
+		</ul>
+	</div>
+	<!-- end #menu -->
+</div>
+<!-- end #header -->
+<div id="page">
+	<div id="content">
+		<div class="post">
+			<div class="entry">
+<P>
+CCFE &egrave; un semplice strumento per fornire velocemente un'interfaccia
+screen-oriented a script e comandi CLI: richiede agli utenti le informazioni
+necessarie per l'esecuzione e pu&ograve; essere programmato con l'interprete di comandi shell
+preferito per proporre selezioni predefinite, anche in base a condizioni run-time.
+</P>
+Vengono forniti:<UL>
+<LI>La possibilit&agrave; di richiamare con maschere video (<I>form</I>) qualsiasi programma a linea di comando, con un
+controllo base automatico della correttezza dei parametri in input utilizzati per l'invocazione;</LI>
+<LI>Un sistema di menu per organizzare gerarchicamente tali form e/o per organizzare chiamate a comandi o programmi;</LI>
+<LI>Un visualizzatore per consultare il risultato (cio&egrave; standard output e standard error) dei comandi/script invocati.</LI>
+</UL>
+<P>
+Nel suo utilizzo pi&ugrave; semplice, CCFE richiede solamente di specificare il comando
+da richiamare e l'eventuale descrizione dei parametri necessari: l'interazione con l'utente
+ed il layout dello schermo sono adattati automaticamente cos&igrave; non
+occorre curarsene, ma per le necessit&agrave; pi&ugrave; complesse, CCFE
+&egrave; programmabile con l'interprete dei comandi shell preferito, e per ogni
+parametro da inserire pu&ograve; proporre un elenco di valori validi da cui scegliere
+quello desiderato.
+</P>
+<P>
+"Applicare" l'interfaccia di CCFE ad un comando o ad uno script non richiede alcuna
+modifica o adattamento, cos&igrave; questi possono essere indifferentemente invocati con l'interfaccia di CCFE o
+quella a linea di comando, a seconda di come preferito dall'utente.
+</P>
+<P>
+CCFE pu&ograve; essere utile per:<UL>
+<LI>
+Aggiungere velocemente un frontend ai propri script <I>bash</I>;
+</LI>
+<LI>
+Consolidare tutti i propri script di amministrazione del sistema in menu
+gerarchicamente organizzati; questo &egrave; molto utile per accedere direttamente
+a script usati raramente, e per i quali spesso se ne dimentica il nome, la posizione nel
+filesystem ed addirittura anche l'esistenza(!);
+</LI>
+<LI>
+Assistere il personale dei sistemisti o degli operatori quando &egrave; necessario
+eseguire comandi critici per l'operativit&agrave; del sistema, minimizzando gli errori
+grazie alla selezione di opzioni ad argomenti verificati precedentemente in base allo stato
+attuale del sistema;
+</LI>
+<LI>
+Creare menu a disposizione del personale operativo per fermare ed avviare dei servizi;
+</LI>
+<LI>
+Creare form per il personale operativo per riconfigurare semplicemente sistemi, applicazioni
+o servizi, senza la necessit&agrave; di modificare file di testo e successivamente di far
+ripartire i servizi manualmente, operazioni spesso fonte di problemi;
+</LI>
+<LI>
+Fornire un'identica interfaccia di amministrazione dei sistemi al personale operativo di
+data center con sistemi operativi misti (ad esempio Linux e FreeBSD); in particolare, nel
+caso di ambienti con sistemi Linux (o FreeBSD) ed AIX, CCFE pu&ograve; essere configurato per
+apparire molto simile al <I>System Management Information Tool</I> (SMIT) del Sistema
+Operativo IBM AIX.
+</LI>
+<LI>
+Proteggere dalla shell su linea di comando gli utenti finali poco esperti o gli
+utenti occasionali che devono avere un accesso ristretto al sistema.
+</LI>
+<LI>
+Fornire una pratica interfaccia utente ad appliance basati su Linux.
+</LI>
+</UL>
+</P>
+
+<!--
+<P>
+CCFE non &egrave; un altro strumento di amministrazione del sistema come <I>YaST2</I>, <I>linuxconf</I> or <I>Webmin</I>,
+ma pu&ograve; essere configurato per essere usato con tale scopo.
+CCFE non &egrave; un'alternativa al programma <I>dialog</I>: la principale differenza &egrave; che <I>dialog</I> &egrave;
+richiamato dagli script shell, mentre CCFE pu&ograve; solamente richiamare script shell.
+</P>
+-->
+
+			</div>
+		</div>
+
+
+		<div class="post">
+			<h3 class="title">Licenza</h3>
+			<div class="entry">
+<P>
+Questo programma &egrave; software libero e pu&ograve; essere ridistribuito e/o modificato
+nei termini della
+<A HREF="http://www.gnu.org/licenses/gpl-2.0.html">GNU General Public License (GPL), versione 2</A>,
+o (a propria scelta) una versione successiva.
+</P>
+			</div>
+		</div>
+
+
+		<div class="post">
+			<h3 class="title">Contatti</h3>
+			<div class="entry">
+<P>
+Per contattare l'autore e segnalare bug, si prega di far riferimento al file AUTHORS fornito col software.
+</P>
+			</div>
+		</div>
+	</div>
+<FONT SIZE=-2><I>IBM and AIX are trademarks of International Business Machines Corporation in the
+United States, other countries, or both.</I></FONT>
+</div>
+<!-- end #page -->
+<div id="footer">
+ <p>Copyright &copy; 2009-2016. Design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.</p>
+</div>
+<!-- end #footer -->
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <META NAME="AUTHOR" CONTENT="Massimo Loschi" />
+  <TITLE>CCFE :: the Curses Command Front-end :: Installing</TITLE>
+<link rel="stylesheet" type="text/css" href="../style.css" media="screen" />
+</head>
+<body>
+<div id="header">
+	<div id="logo">
+		<h1><a href="index.html">CCFE</a></h1>
+		<p>the Curses Command Front-end</a></p>
+<HR COLOR=WHITE SIZE=1>
+<A HREF="../it/install.html"><IMG ALT="Versione italiana" TITLE="Versione italiana" BORDER=0 SRC="../icons/flag_it.gif"></A>
+<A HREF="../en/install.html"><IMG ALT="English version" TITLE="English version" BORDER=0 SRC="../icons/flag_en.gif"></A>
+
+
+
+	</div>
+	<!-- end #logo -->
+	<div id="menu">
+		<ul>
+                        <li class="first"><A HREF="features.html">Features</A></LI>
+                        <li><A HREF="sshots.html">Screenshots</A></LI>
+                        <li><A HREF="install.html">Installing</A></LI>
+                        <li><A HREF="docs.html">Documentation</A></LI>
+                        <li><A HREF="faq.html">FAQ</A></LI>
+                        <li><A HREF="dnload.html">Download</A></LI>
+		</ul>
+	</div>
+	<!-- end #menu -->
+</div>
+<!-- end #header -->
+<div id="page">
+	<div id="content">
+		<div class="post">
+			<h3 class="title">Prerequisites</h3>
+<UL>
+<LI>A <I>UNIX system-based</I> or <I>Unix-like</I> Operating System</LI>
+<LI><A HREF="http://www.perl.org/">Perl</A> version &ge; 5.8.x</LI>
+<LI><A HREF="http://search.cpan.org/dist/Curses/">Curses</A> Perl module version &ge; 1.19</LI>
+</UL>
+		</div>
+
+		<div class="post">
+			<h3 class="title">Installing</h3>
+<P>
+RPM and DEB packages are available for Linux systems that support these formats.
+For all UNIX systems:
+</P>
+<TT>&nbsp;gzip -d < ccfe-X.YY.tar.gz | tar xvf -</TT><BR>
+<TT>&nbsp;cd ccfe-X.YY</TT><BR>
+<TT>&nbsp;./install.sh</TT><BR>
+<P>
+In its most simplest form, <TT>install.sh</TT> is the CCFE interactive
+installation program:
+<TABLE BGCOLOR=LIGHTGRAY BORDER=1 CELLPADDING=10 CELLSPACING=0>
+<TD>
+<PRE>
+$ <B>./install.sh</B>
+
+
+ ******************************************************************************
+                   WELCOME TO CCFE INSTALLATION PROGRAM
+ ******************************************************************************
+
+  1. Change Destination prefix                  (/usr/local/ccfe)
+  2. Change Configuration directory             (/usr/local/ccfe/etc)
+  3. Change Executables directory               (/usr/local/ccfe/bin)
+  4. Change Libraries directory                 (/usr/local/ccfe/lib)
+  5. Change Logs directory                      (/usr/local/ccfe/log)
+  6. Change Messages and localization directory (/usr/local/ccfe/msg)
+  7. Change Man pages directory                 (/usr/local/ccfe/man)
+  8. Change Documentation directory             (/usr/local/ccfe/doc)
+
+  C. Change mode (Installation or Update)
+  S. START FRESH INSTALLATION
+  Q. Quit without install
+
+Choice? [Q] <B>_</B>
+</PRE>
+</TD>
+</TABLE>
+<P>then set your desired installation subdirectories and select <B>S</B>
+to start installation.</P>
+It is possible to make a batch installation invoking it with:
+</P>
+<P>
+<TT>&nbsp;./install.sh -b</TT>
+</P>
+(Please see <TT>./install.sh -h</TT> for help on available options).
+<P>
+<TT>install.sh</TT> requires a POSIX.2 compatible shell, like <TT>sh(1)</TT>,
+<TT>bash(1)</TT> or <TT>ksh(1)</TT>.
+</P>
+<P>
+Please note that you may have to change the environment variable
+<TT>MANPATH</TT> to access to CCFE manual pages by <TT>man(1)</TT> command,
+for example:
+</P>
+<P>
+<TT>&nbsp;MANPATH=/usr/local/ccfe/man:$MANPATH</TT><BR>
+<TT>&nbsp;export MANPATH</TT>
+</P>
+		</div>
+		<div class="post">
+			<h3 class="title">Updating</h3>
+<P>
+When you install CCFE, a file named <TT>ccfeinstall.conf</TT> is created in the <U>CCFE
+configuration directory</U>: it contains the user selected destinations for CCFE objects.
+</P>
+<P>
+You can update the current installation with a new version by selecting <B>C</B><I>hange mode</I> from menu:
+you will be promped for a list of standard directories where search for <TT>ccfeinstall.conf</TT> file, 
+then the CCFE installation program will read from it the directories where the files to update are.
+</P>
+The update process will not modify all user customized files (configurations, messages, etc.), but only:
+<UL>
+<LI>The <TT>ccfe</TT> Perl script</LI>
+<LI>All CCFE manpages</LI>
+<LI>All <I>README files</I> (<TT>README</TT>, <TT>ChangeLog</TT>, <TT>AUTHORS</TT>, etc.)</LI>
+</UL>
+<P>
+If configuration and/or messages files are provided with a new release, they will be installed with the
+release number as filename extension, so your current configuration will be preserved.
+Please refer to README file for specific notes.
+</P>
+<P>
+It is possible to make a batch update with the following command:
+</P>
+<P>
+<TT>&nbsp;./install.sh -b -u <I>ConfigurationPath</I></TT>
+</P>
+where <TT><I>ConfigurationPath</I></TT> is the directory of the CCFE configuration (<TT>.conf</TT>):
+for example:
+<P>
+<TT>&nbsp;./install.sh -b -u /etc/ccfe</TT>
+</P>
+		</div>
+	</div>
+<FONT SIZE=-2><I>UNIX is a registered trade mark in the United States and other countries, licensed
+exclusively through X/Open Company Limited.</I></FONT>
+</div>
+<!-- end #page -->
+<div id="footer">
+  <p>Copyright &copy; 2009-2016. Design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.</p>
+</div>
+<!-- end #footer -->
+</body>
+</html>

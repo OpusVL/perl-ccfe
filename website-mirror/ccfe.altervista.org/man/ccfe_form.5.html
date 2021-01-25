@@ -1,0 +1,2343 @@
+<!-- Creator     : groff version 1.22.2 -->
+<!-- CreationDate: Wed Sep 21 22:16:33 2016 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CCFE FORM</title>
+
+</head>
+<body>
+
+<h1 align="center">CCFE FORM</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#GENERAL FORM ATTRIBUTES">GENERAL FORM ATTRIBUTES</a><br>
+<a href="#FIELD DEFINITION">FIELD DEFINITION</a><br>
+<a href="#FIELDS SEPARATOR DEFINITION">FIELDS SEPARATOR DEFINITION</a><br>
+<a href="#FORM INITIALIZATION">FORM INITIALIZATION</a><br>
+<a href="#FORM ACTION">FORM ACTION</a><br>
+<a href="#FORM ARGUMENTS">FORM ARGUMENTS</a><br>
+<a href="#DYNAMIC FORMS">DYNAMIC FORMS</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+<a href="#BUGS">BUGS</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ccfe form
+&minus; the Curses Command Front-end form definition
+file.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The Curses
+Command Front-end form is a tool which permit to assist the
+user to valorize options and arguments requested for the
+execution of a O.S. command or script, which can be into an
+external file or embedded in the form. It is based on the
+form library, the curses extensions for programming forms:
+please see the <b>ncurses</b>(3X) and <b>form</b>(3X)
+manpages. A <i>ccfe menu</i> is basically an ordered
+collection of fields with an <i>action</i> to execute when
+the form is posted. Each field can be associated to an
+option or an argument.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A form is
+definited in a file with name terminated with the
+<i>.form</i> extension, and the following attributes can be
+used in that file:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">title {}
+top {}
+path {}
+init {}
+field {}
+field {}
+ ...
+field {}
+action {}</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">(some of them
+are optional). <b><br>
+Comment lines</b> begin with the &quot;<b>#</b>&quot;
+character. Empty lines are ignored. Comments embedded in
+lines are not permitted so you can use the
+&quot;<b>#</b>&quot; character in commands and text of the
+form. All keywords are case insensitive.</p>
+
+<h2>GENERAL FORM ATTRIBUTES
+<a name="GENERAL FORM ATTRIBUTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The following
+attributes concern the static parts of the form.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>title
+{</b><i>STRING</i><b>}</b> <br>
+Title of the form to display. <br>
+It is also used as <i>fast path description</i> when
+<b>ccfe(1)</b> is called with <b>-f</b> option. <br>
+If title attribute is omitted, it will be used the
+<i>description</i> of the item selected from the calling
+menu, but if omitted in a form called with a <i>fast
+path</i> (see ccfe(1)), then no title will be used. <br>
+Optional: Yes <br>
+Examples:</p>
+
+<pre style="margin-left:11%; margin-top: 1em">  title { Change user password expiry information }</pre>
+
+
+<p style="margin-left:11%;">or</p>
+
+<pre style="margin-left:11%;">  title {
+    Change user password expiry information
+  }</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>top {</b>
+<i>string</i> [\n<i>string</i>] <b>}</b> <br>
+Text lines (max 2) to display on the top of the form,
+between the title and the fields. If omitted, the lines of
+the parameter <b>form_top_msg</b> in <b>ccfe.conf</b>(5)
+will be displayed. <br>
+Optional: Yes <br>
+Example:</p>
+
+<pre style="margin-left:11%; margin-top: 1em">  top {
+    Type or select a value for the entry field.
+    Press Enter AFTER making all desired changes.
+  }</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>path
+{</b><i>list</i><b>:</b><i>of</i><b>:</b><i>pathnames</i><b>}</b>
+<br>
+List of extra path (added to environment variable PATH) to
+search binaries calling the O.S. in the following
+contexts:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="22%">
+
+
+<p>field.default</p></td>
+<td width="52%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="22%">
+
+
+<p>field.list_cmd</p></td>
+<td width="52%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="22%">
+
+
+<p>form.init</p></td>
+<td width="52%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="22%">
+
+
+<p>form.action</p></td>
+<td width="52%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">Note: path{} is used only to
+search binaries, and not for forms and menus. <br>
+Optional: Yes <br>
+Formato: <br>
+- LIST:OF:PATHNAMES has the character &rsquo;:&rsquo; as
+separator; <br>
+- LIST:OF:PATHNAMES can contains relative and absolute
+subdirectories; <br>
+- le directory con path relativo sono relativizzate a
+$SCREEN_DIR <br>
+Example:</p>
+
+<pre style="margin-left:11%; margin-top: 1em">  path { ldap_lib }</pre>
+
+
+<h2>FIELD DEFINITION
+<a name="FIELD DEFINITION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <b>field
+{}</b> form attribute defines a field of the form. It must
+appear at least one time in a form definition file. Every
+field definition is a collection of attributes, with the
+following syntax:</p>
+
+<p style="margin-left:22%; margin-top: 1em">field {</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="14%">
+
+
+<p style="margin-top: 1em">attribute</p></td>
+<td width="2%"></td>
+<td width="10%">
+
+
+<p style="margin-top: 1em">= value</p></td>
+<td width="42%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="14%">
+
+
+<p>attribute</p></td>
+<td width="2%"></td>
+<td width="10%">
+
+
+<p>= value</p></td>
+<td width="42%">
+</td></tr>
+</table>
+
+<p style="margin-left:48%;">...</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="14%">
+
+
+<p style="margin-top: 1em">attribute</p></td>
+<td width="2%"></td>
+<td width="10%">
+
+
+<p style="margin-top: 1em">= value</p></td>
+<td width="42%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;">}</p>
+
+<p style="margin-left:11%; margin-top: 1em">Valid field
+attributes are explained later with the following
+format:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>attribute_name</b></p>
+
+<p style="margin-left:22%;">Attribute description.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Values:</i>
+Notes on the syntax of the value of the field. If there is a
+list of values, the first element of the list is the
+default. The <b>&quot;&quot;</b> value represents the
+<i>empty string</i> (or <i>null string</i>) value. <i><br>
+Required: Yes</i> or <i>no</i>, depending if the attribute
+is mandatory or not. <i><br>
+Types:</i> List of field <b>type</b> for which this
+attribute is valid.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>id</b> <br>
+Identifier of the field used to refer its value by
+<b>init{}</b> and <b>action{}</b> attributes. It must be
+unique in the scope of the form and cannot be one of the
+reserved values
+<b>CCFE_REMOVE_FIELDS</b>,<b>CCFE_ENABLE_FIELDS</b>,<b>CCFE_DISABLE_FIELDS</b>,<b>ARGV</b>x
+(please see <b>FORM INITIALIZATION</b> and the <b>form
+action type</b> in <b>FORM ACTION</b> below). It is also
+used as reference for contextual help (please see the
+<b>ccfe_help</b>(5) manpage).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values: A
+string composed by characters
+<b>A-Z</b>,<b>a-z</b>,<b>0-9</b>,<b>-</b>,<b>_</b>. It is
+case sensitive. <br>
+Required: Yes <br>
+Types: All</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>label</b>
+<br>
+Prompt string of the field.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values: A
+string of any charachter. <br>
+Required: Yes <br>
+Types: All</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>enabled</b>
+<br>
+Flag to enable or disable the field. It is not possible to
+move the cursor to a disabled field, and then to insert a
+value. Disabled fields ca be used to insert a comment or a
+simple label in the form.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<b>YES</b>|<b>NO</b> <br>
+Required: No <br>
+Types: All</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>len</b> <br>
+Size of the field (in characters). It is ignored for the
+fields of type <b>BOOLEAN</b> and <b>NULLBOOLEAN</b>,
+because it is automatically XX_set up_XX. If
+&quot;hscroll=YES&quot;, then the specified length is a
+&quot;window&quot; to scroll on the value of the field,
+which can be more longest of that size. <br>
+Required: No <br>
+Types: <b>NUMERIC</b>, <b>STRING</b>, <b>UCSTRING</b> <br>
+Default: 20</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>hscroll</b>
+<br>
+Please see the previous attribute.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<b>NO</b>|<b>YES</b> <br>
+Required: No <br>
+Types: <b>NUMERIC</b>, <b>STRING</b>, <b>UCSTRING</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>type</b>
+<br>
+Set of the characters accepted in the field. If none of the
+following is specified, the <b>STRING</b> is used. Available
+field types are: <b><br>
+NUMERIC</b></p>
+
+
+<p style="margin-left:22%;">&quot;&quot;|0-9,&quot;+&quot;,&quot;-&quot;,&quot;,&quot;,&quot;.&quot;
+<br>
+Note that if you want a default value of zero instead the
+<i>empty string</i> value, you can use the &quot;<b>default
+= const:0</b>&quot; field attribute or the <b>init{}</b>
+form attribute (please see <b><small>FIELD VALUE
+INITIALIZATION</small></b> below).</p>
+
+<p style="margin-left:11%;"><b>BOOLEAN</b></p>
+
+<p style="margin-left:22%;"><b>NO</b>|<b>YES</b></p>
+
+<p style="margin-left:11%;"><b>NULLBOOLEAN</b></p>
+
+
+<p style="margin-left:22%;"><b>NO</b>|<b>YES</b>|<b>&quot;&quot;</b>
+<br>
+Like the previous type, but can also assume the
+&quot;null&quot; (or &quot;nothing&quot;) value, represented
+by the <i>empty string</i> value.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>STRING</b></p></td>
+<td width="2%"></td>
+<td width="75%">
+
+
+<p>Alphanumeric string. Default value: <i>empty
+string</i>.</p> </td>
+<td width="3%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>UCSTRING</b></p>
+
+<p style="margin-left:22%;">Alphanumeric string converted
+in upper case. Default value: <i>empty string</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The fields of
+type <b>BOOLEAN</b> and <b>NULLBOOLEAN</b> have the
+following additional features:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>Navigation between all admitted values with the
+&lt;Tab&gt; key;</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>Automatic setup of the <b>list_cmd</b> attribute.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">Required:
+Yes</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>option</b>
+<br>
+Every shell command accepts options and arguments: this
+attribute let you generate a command option depending on the
+value inserted in the field. Every occurrence
+<b>%{</b><i>field_id</i><b>}</b> in the <b>action{}</b>
+attribute will be substituted by <i>OPTION VALUE</i>. If the
+field value contains blanks between tokens, then <i>OPTION
+VALUE</i> will be repeated for every token, unless is
+specified to quote it. To quote the value of a field you
+must end the option with a double quote character
+(<b>&quot;</b>) or a single quote character
+(<b>&rsquo;</b>), as explained in the examples below. <br>
+Additional features:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p style="margin-top: 1em">If field type is <b>BOOLEAN</b>,
+instead a single value, you may list the two values to
+return if the user select <b>YES</b> or <b>NO</b>, and then
+every occurrence <b>%{</b><i>field_id</i><b>}</b> in
+<b>action{}</b> will be substituted by it.</p></td></tr>
+</table>
+
+<p style="margin-left:15%;">For example, the
+definition:</p>
+
+<pre style="margin-left:15%; margin-top: 1em">  field {
+    id     = LOCK
+    label  = Lock &quot;guest&quot; user account?
+    type   = BOOLEAN
+    option = -L,-U
+  }
+  action {
+    run:usermod %{LOCK} guest
+  }</pre>
+
+
+<p style="margin-left:15%; margin-top: 1em">will execute
+the command:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p style="margin-top: 1em">&quot;<b>usermod -L
+guest</b>&quot; if the field value is <b>YES</b></p></td>
+<td width="12%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>&quot;<b>usermod -U guest</b>&quot; if the field value
+is <b>NO</b>.</p></td>
+<td width="12%">
+</td></tr>
+</table>
+
+<p style="margin-left:15%; margin-top: 1em">The second
+value of the <b>option</b> attribute is optional: it is not
+required for options which must appear only if the user
+select for them the value <b>YES</b>; for example, the
+definition:</p>
+
+<pre style="margin-left:15%; margin-top: 1em">  field {
+    id     = LONG
+    label  = Use a long listing format
+    type   = BOOLEAN
+    option = -l
+  }
+  action {
+    run:ls %{LONG}
+  }</pre>
+
+
+<p style="margin-left:15%; margin-top: 1em">will execute
+the command:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p style="margin-top: 1em">&quot;<b>ls -l</b>&quot; if the
+field value is <b>YES</b></p></td>
+<td width="29%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="51%">
+
+
+<p>&quot;<b>ls</b>&quot; if the field value is
+<b>NO</b>.</p> </td>
+<td width="29%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="51%"></td>
+<td width="29%">
+</td></tr>
+</table>
+
+<p style="margin-left:15%; margin-top: 1em">If field type
+is <b>NULLBOOLEAN</b>, then every occurrence
+<b>%{</b><i>field_id</i><b>}</b> in <b>action{}</b> will be
+substituted by:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="3%"></td>
+<td width="60%">
+
+
+<p style="margin-top: 1em">&quot;<i>option</i>
+<b>y</b>&quot; if the value inserted is <b>YES</b></p></td>
+<td width="20%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="60%">
+
+
+<p>&quot;<i>option</i> <b>n</b>&quot; if the value inserted
+is <b>NO</b></p></td>
+<td width="20%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="15%"></td>
+<td width="2%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="60%">
+
+
+<p><b>&quot;&quot;</b> otherwise.</p></td>
+<td width="20%">
+</td></tr>
+</table>
+
+<p style="margin-left:15%; margin-top: 1em">For example,
+the definition:</p>
+
+<pre style="margin-left:15%; margin-top: 1em">  field {
+    id    = VG_NAME
+    label = Volume Group Name
+    type  = STRING
+    len   = 32
+  }
+  field {
+    id      = AVAILABLE
+    label   = Activate Volume Group?
+    type    = NULLBOOLEAN
+    default = const:      # see the<b> default</b> attribute
+    option  = -a
+  }
+  action {
+    run:vgchange %{AVAILABLE} %{VG_NAME}
+  }</pre>
+
+
+<p style="margin-left:15%; margin-top: 1em"><b>will execute
+the command:</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>&bull;</b></p></td>
+<td width="3%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">&quot;<b>vgchange -a y
+vg00</b>&quot; if the <i>AVAILABLE</i> value is
+<b>YES</b>.</p> </td>
+<td width="2%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="78%">
+
+
+<p>&quot;<b>vgchange -a n vg00</b>&quot; if the
+<i>AVAILABLE</i> value is <b>NO</b>.</p></td>
+<td width="2%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="78%">
+
+
+<p>&quot;<b>vgchange vg00</b>&quot; if the <i>AVAILABLE</i>
+value is <b>&quot;&quot;</b>.</p></td>
+<td width="2%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="78%"></td>
+<td width="2%">
+</td></tr>
+</table>
+
+<p style="margin-left:15%; margin-top: 1em">If field type
+is <b>STRING</b> or <b>UCSTRING</b> and multiple words are
+inserted in the field value, then every occurrence
+<b>%{</b><i>field_id</i><b>}</b> in <b>action{}</b> will be
+substituted as the following examples:</p>
+
+<pre style="margin-left:15%; margin-top: 1em">  field {
+    id     = TEST_OPT
+    label  = Value(s)
+    type   = STRING
+    option =<i> see the following table
+</i>  }
+  action {
+    run:mycmd %{TEST_OPT}
+  }</pre>
+
+
+
+<p align="center" style="margin-top: 1em"><img src="grohtml-43051.png" alt="Image grohtml-43051.png"></p>
+
+<p style="margin-left:11%; margin-top: 1em">Obviously,
+multiple fields with <b>option</b> attribute can appear in a
+form definition, mixed with fields without it, so the user
+can enter options and arguments requested by the command
+defined in the <b>action</b> of the form. Please note that a
+<i>blank</i> character is insterted before every occurrence,
+so it is advisable to not insert blanks between option
+referenced by token <b>%{</b><i>field_id</i><b>}</b> in the
+<b>action{}</b> of the form. For example, it is preferable
+the syntax</p>
+
+<pre style="margin-left:11%; margin-top: 1em">  action {
+    wget %{OPT_OUTPUT_FILE}%{OPT_DEBUG} %{URL_LIST}
+  }</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">instead of</p>
+
+<pre style="margin-left:11%; margin-top: 1em">  action {
+    wget %{OPT_OUTPUT_FILE} %{OPT_DEBUG} %{URL_LIST}
+  }</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Required: No
+<br>
+Types: All</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>hidden</b>
+<br>
+Hide the value of the field by substituting its characters
+with asteriscs. Useful for fields used to accept
+passwords.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<b>NO</b>|<b>YES</b> <br>
+Required: No <br>
+Types: <b>STRING</b>, <b>UCSTRING</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>required</b>
+<br>
+Mark the prompt with &rsquo;*&rsquo; to indicate which is
+mandatory to insert a value to execute the form action. It
+is used only for informational purposes: but no checks are
+done to the value of the field (this job is demanded to the
+<b>action</b>), but the action of the form will not executed
+until every required field is valorized.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<b>NO</b>|<b>YES</b> <br>
+Required: No <br>
+Types: All</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ignore_unchgd</b>
+<br>
+If the value of the field was NOT MODIFIED by the user, then
+the substitution of every occurrence of
+<b>%{</b><i>field_id</i><b>}</b> in the action will not be
+done. This is useful when you want to run commands
+specifying only the arguments or options related to fields
+effectively entered or changed by user. For example, you can
+post a form with default values but you may want to execute
+the command in the action with the changed fields only.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<b>NO</b>|<b>YES</b> <br>
+Required: No <br>
+Types: All</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>htab</b>
+<br>
+Right indents the label of the field. This integer value
+defines how many <b>tabs</b> are used for indentation. A
+<i>tab</i> is 2 columns, so, for example:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><tt>htab =
+2</tt></p>
+
+<p style="margin-left:11%; margin-top: 1em">right shifts 4
+columns the label of the field. It can be used to group
+logically some fields under another field or under a text
+separator (please see <b><small>separator{}</small></b>
+attribute below).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+&lt;positive integer value&gt; <br>
+Required: No <br>
+Types: All</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>vtab</b>
+<br>
+Insert blank lines before the field e the preceeding. In a
+multi-page form, if the field bottom of the page has this
+attribute, then it will be the first of the next page, but
+without being preceded by blank lines. <br>
+Example:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><tt>vtab = 1 #
+skip 1 line from the previous field</tt></p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+&lt;positive integer value&gt; <br>
+Required: No <br>
+Types: All</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>default</b>
+<br>
+Value assigned to the field when the form is posted. It
+overrides the default value dependent from the field
+<b>type</b>, and is overridden by the <b>init</b> form
+attribute (please see <b>FORM INITIALIZATION</b> below).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values: must
+follow the syntax</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>source</i><b>:</b><i>value</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">where</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em"><i>source</i></p></td>
+<td width="2%"></td>
+<td width="41%">
+
+
+<p style="margin-top: 1em">can be one of the keywords:</p></td>
+<td width="37%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>command</b></p>
+
+<p style="margin-left:32%;">The <i>value</i> is the stdout
+produced by an arbitrary command.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="18%">
+
+
+<p><b>const</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>The <i>value</i> is an arbitrary constant. Valid values
+depend from the <b>type</b> of the field. All characters
+after <b>:</b> are used (alphanumeric, punctuation, etc).
+For this reason strings must not be enclosed in single or
+double quotes.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="18%">
+
+
+<p><i>value</i></p></td>
+<td width="3%"></td>
+<td width="68%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Constant or
+command, depending from <i>source</i>. An invalid value (for
+example a string in <b>BOOLEAN</b> field or a command which
+return an error) will fill the field with the string
+&quot;<b>ERROR!</b>&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Examples:</p>
+
+<pre style="margin-left:11%; margin-top: 1em">  default = command:date &quot;+%Y-%m-%d&quot;
+  default = const:192.168.1.4/24
+  default = const:staff adm lpadmin
+  default = command:id -Gn | tr &quot; &quot; &quot;\n&quot; | grep -v &quot;&rsquo;id -gn&rsquo;&quot; | tr &quot;\n&quot; &quot; &quot;  # Secondary groups
+  default = const:1
+  default = const:          # &quot;null&quot; value in a NULLBOOLEAN field
+  default = const:&quot;&quot;        # NOT valid in a NULLBOOLEAN field!</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Required: No
+<br>
+Types: All</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>list_cmd</b>
+<br>
+Instructions for generate the pop-up list of values when the
+user press <b>&lt;list key&gt;</b>, so he/she can quickly
+enter in the field an admitted value. Every entry in the
+list is a blank separated pair of values (160 characters
+max). The syntax for this attribue is the following:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>source-type</i>
+<b>:</b> <i>list-type</i> <b>:</b>
+<i>list-type-arguments</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">Where: <i><br>
+source-type</i> can be one of the following:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>const</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p><i>list-type-arguments</i> is a list of constant
+values.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>command</b></p>
+
+<p style="margin-left:32%;"><i>list-type-arguments</i> is
+the stdout produced by a shell command.</p>
+
+<p style="margin-left:11%;"><i>list-type</i> can be one of
+the following:</p>
+
+<p style="margin-left:22%;"><b>single-val</b></p>
+
+<p style="margin-left:32%;">The user can select only one
+value from the list.</p>
+
+<p style="margin-left:22%;"><b>multi-val</b></p>
+
+<p style="margin-left:32%;">The user can select one or more
+values from the list. They are returned separated by a
+<i>blank</i> or by the character specified with the
+<b>list_sep</b> attribute, please see its description
+below.</p>
+
+<p style="margin-left:11%;"><i>list-type-arguments</i> can
+be one of the following:</p>
+
+<p style="margin-left:22%;">if <i>source-type</i> is
+<b>command</b>, then the list is generated by the</p>
+
+<p style="margin-left:32%;">stdout of the O.S. command (it
+is not admitted a shell script as in the <b>action {}</b> or
+<b>init {}</b> attributes), which must be with the following
+format:</p>
+
+<p style="margin-left:32%; margin-top: 1em"><i>Val1 Descr1
+<br>
+Val2 Descr2 <br>
+Val3 Descr3</i> <br>
+... <i><br>
+ValN DescrN</i></p>
+
+<p style="margin-left:22%; margin-top: 1em">It is possible
+to pass the actual value of the form fields as parameters of
+the command with the syntax <b>%{</b><i>field_id</i><b>}</b>
+, but only for the fields which type is neither
+<b>BOOLEAN</b> nor <b>NULLBOOLEAN</b>. Please see the
+examples below.</p>
+
+<p style="margin-left:22%; margin-top: 1em">if
+<i>source-type</i> is <b>const</b>, then <i>list-values</i>
+is a list with the format:</p>
+
+
+<p style="margin-left:32%; margin-top: 1em"><b>&quot;</b><i>Val1
+Descr1</i><b>&quot;,&quot;</b><i>Val2
+Descr2</i><b>&quot;,&quot;</b><i>Val3
+Descr3</i><b>&quot;,</b>...</p>
+
+<p style="margin-left:22%;">PP <i>ValN</i> is the value
+which will be put in the field if the item is selected from
+the list.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>DescrN</i>
+is optional and can contain blanks. It is possible to insert
+blanks in <i>ValN</i> by protecting them with the backslash
+<b>\</b>, for example:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><tt>&quot;First\
+value Descr1&quot;,&quot;My\ second\ value
+Descr2&quot;,&quot;Val3 Descr3&quot;</tt></p>
+
+<p style="margin-left:22%; margin-top: 1em">It is also
+possible to insert the preferred separators between
+<i>ValN</i> and <i>DescrN</i> with a simple trick as in the
+following examples:</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><tt>&quot;First
+: 1st description&quot;,&quot;Second : 2nd
+description&quot;,</tt>...</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><tt>&quot;First
+---&gt;1st description&quot;,&quot;Second ---&gt;2nd
+description&quot;,</tt>...</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><tt>&quot;First
+---&gt; 1st description&quot;,&quot;Second ---&gt; 2nd
+description&quot;,</tt>...</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><tt>&quot;First\
+value : 1st description&quot;,&quot;Second\ value : 2nd
+description&quot;,</tt>...</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Warning:</b>
+special characters as &lt;TAB&gt; in <i>ValN</i> or
+<i>DescrN</i> strings can confuse the output of the the
+pop-up menu.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Examples:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>1.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>Simple list of values without description: the
+definition</p> </td></tr>
+</table>
+
+<p style="margin-left:15%;"><tt>list_cmd =
+const:single-val:&quot;root_lv&quot;,&quot;usr_lv&quot;,&quot;var_lv&quot;,&quot;home_lv&quot;</tt>
+<br>
+will produce the list:</p>
+
+<pre style="margin-left:15%; margin-top: 1em">root_lv
+usr_lv
+home_lv</pre>
+
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">2.</p></td>
+<td width="1%"></td>
+<td width="73%">
+
+
+<p style="margin-top: 1em">List of values with description:
+the definition</p></td>
+<td width="12%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><tt>list_cmd =
+const:single-val:&quot;90 Expire password after 3
+months&quot;,&quot;180 Expire password after 6
+months&quot;,&quot;-1 Disable user password
+expiration&quot;</tt></p>
+
+<p style="margin-left:11%; margin-top: 1em">will produce
+the list:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">90  Expire password after 3 months
+180 Expire password after 6 months
+-1  Disable user password expiration</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Selecting the
+first item the field will be filled with the value
+<i>90</i>, selecting the second item with <i>180</i>, and
+<i>-1</i> selecting the last item.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">3.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p style="margin-top: 1em">List of values with description
+produced by a O.S. command: the definition</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><tt>list_cmd =
+command:single-val:cut -d : -f 1,5 --output-delimiter=&quot;
+&quot; /etc/passwd | sort</tt></p>
+
+<p style="margin-left:11%; margin-top: 1em">will produce a
+list like this (username + gecos fields of
+<tt>/etc/passwd</tt> file):</p>
+
+<pre style="margin-left:22%; margin-top: 1em">bin        bin
+daemon     daemon
+dhcp       DHCP subsystem
+ftp        FTP subsystem
+games      games
+gdm        Gnome Display Manager
+haldaemon  Hardware abstraction layer,,,
+hplip      HPLIP system user,,,
+irc        Internet Relay Chat subsystem
+list       Mailing List Manager
+lp         Printer spooler subsystem
+mail       Mail subsystem
+man        Online manual subsystem
+news       NNTP subsystem
+nobody     nobody
+proxy      proxy subsystem
+pulse      PulseAudio daemon,,,
+root       Super-user
+sshd
+sys        sys
+uucp       Unix-to-Unix Copy Program subsystem</pre>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>list_sep</b>
+<br>
+This attribute is only used by the <b>list_cmd</b> attribute
+of type <b>multi-val</b>: it defines the separator to use in
+action.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<i>blank</i>|<b>,</b>|<b>;</b>|<b>:</b> <br>
+Required: No <br>
+Types: All</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>persist</b>
+<br>
+If enabled, the next time the form is loaded, the field will
+be initialized with the value it has at the last action
+execution time. Values provided by the <b>init{}</b> block
+and the <b>default</b> field attribute are overridden by
+persistent field value, but with one exception: the first
+time a form is used, because persistent fields have no
+value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<b>NO</b>|<b>YES</b> <br>
+Required: No <br>
+Types: All</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Example of
+field definition:</b></p>
+
+<pre style="margin-left:11%;">  field {
+    id       = STREE
+    label    = LDAP Subtree
+    enabled  = NO
+    len      = 8
+    hscroll  = YES
+    type     = STRING
+    option   = -s
+    hidden   = NO
+    required = YES
+    htab     = 1
+    default  = const:Mail
+    list_cmd = command:single-val:userlist.sh %{STREE}
+  }</pre>
+
+
+<h2>FIELDS SEPARATOR DEFINITION
+<a name="FIELDS SEPARATOR DEFINITION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>separator {}</b> form attribute defines a separator
+between the fields of the form. Valid separator attributes
+are:</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>id</b> <br>
+Identifier of the separator used to refer its value by
+<b>init{}</b> and <b>action{}</b> parameters. It must be
+unique in the scope of the form. <br>
+If not specified, the reserved value
+<b>CCFEFSEP</b><i>nnn</i> will be used (001 &lt;= nnn &lt;=
+999).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values: An
+upper case string (but in reality it is case insensitive)
+composed by characters A-Z,0-9,-,_ <br>
+Required: No</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>type</b>
+<br>
+Type of separator. There is not a <i>default separator
+type</i> if not specified, so it must be one of the
+following values:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p style="margin-top: 1em"><b>TEXT</b></p></td>
+<td width="5%"></td>
+<td width="78%">
+
+
+<p style="margin-top: 1em">A string of characters with left
+alignment. Like a field value, it is possible to assign a
+value to a <i>TEXT separator</i> with the init{} form
+attribute. Please see <b><small>FIELD VALUE
+INITIALIZATION</small></b> below.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>TEXT_CENTER</b></p>
+
+<p style="margin-left:22%;">A string of characters with
+centered alignment.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="6%">
+
+
+<p><b>LINE</b></p></td>
+<td width="5%"></td>
+<td width="60%">
+
+
+<p>A simple line of &rsquo;-&rsquo; with screen width.</p></td>
+<td width="18%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>LINE_DOUBLE</b></p>
+
+<p style="margin-left:22%;">A simple line of
+&rsquo;=&rsquo; with screen width.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The types
+<b>TEXT</b> and <b>TEXT_CENTER</b> can be used to put in the
+form arbitrary text or special instructions for the
+user.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>text</b>
+<br>
+String to display when the separator is of <b>type =
+TEXT</b> or <b>type = TEXT_CENTER</b>. <br>
+Example:</p>
+
+<pre style="margin-left:11%; margin-top: 1em">  separator {
+    type = TEXT
+    text = This is a comment between fields of a form!
+  }</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Values: A
+string of any charachter. <br>
+Required: No</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>htab</b>
+<br>
+Right indents the separator. This integer value defines how
+many <b>tabs</b> are used for indentation. A <b>tab</b> is 2
+columns, so, for example:</p>
+
+<pre style="margin-left:11%; margin-top: 1em">  htab = 2</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">shifts
+separator 4 columns to right. <br>
+It can be used to group logically some fields under a text
+separator.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+&lt;integer value&gt; <br>
+Required: No</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>vtab</b>
+<br>
+Insert blank lines before the separator and the preceeding
+field (or separator). In a multi-page form, if the separator
+bottom of the page has this attribute, then it will be the
+first of the next page, but without be preceded by blank
+lines. <br>
+Example:</p>
+
+<pre style="margin-left:11%; margin-top: 1em">  vtab = 1    # skip 1 line from the previous field/separator</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+&lt;positive integer value&gt; <br>
+Required: No</p>
+
+<p style="margin-left:11%; margin-top: 1em">Example of
+separator definition:</p>
+
+<pre style="margin-left:11%; margin-top: 1em">  separator {
+    type = TEXT
+    text = HTTP options:
+    vtab = 1
+  }</pre>
+
+
+<h2>FORM INITIALIZATION
+<a name="FORM INITIALIZATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <b>init
+{}</b> form attribute permits to execute arbitrary commands
+before the form is posted. It can be a complete shell script
+or a simple call to an O.S. command. The standard output is
+used to initialize the value of the fields of the form, as
+described below. The syntax for this attribue is the
+following:</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>init {</b>
+<i>init-type</i><b>:</b> <i>init-arguments</i> <b>}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Where: <i><br>
+init-type</i></p>
+
+<p style="margin-left:22%;">defines how to perform the
+initializations. Actually, the only supported type is
+<b>command</b>.</p>
+
+<p style="margin-left:11%;"><i>init-arguments</i></p>
+
+<p style="margin-left:22%;">is the O.S. command or the
+script executed with the shell specified by the parameter
+<b>shell</b> in the <b>ccfe.conf</b>(5) file.</p>
+
+<p style="margin-left:11%;"><b>Using arguments</b></p>
+
+<p style="margin-left:22%;">If the form is called with
+arguments, they can be referred in the <b>init {}</b> block
+as <b>%{ARGV</b><i>n</i><b>}</b>, exactly as in the
+<b>action {}</b> block; for example, <tt>caller.form</tt>
+can call a form with</p>
+
+<p style="margin-left:22%; margin-top: 1em">action { <br>
+form:called %{HOSTNAME} %{USERNAME} <br>
+}</p>
+
+<p style="margin-left:22%; margin-top: 1em">and these
+arguments can be referred by with <tt>called.form</tt>
+with</p>
+
+<p style="margin-left:22%; margin-top: 1em">init { command:
+<br>
+echo hostname: %{ARGV1} <br>
+echo username: %{ARGV2} <br>
+}</p>
+
+<p style="margin-left:11%;"><b>Fields value
+initialization</b></p>
+
+<p style="margin-left:22%;">Every line of the standard
+output produced by <i>init-arguments</i> in the format</p>
+
+
+<p style="margin-left:22%; margin-top: 1em"><i>field_id</i><b>=</b><i>value</i></p>
+
+<p style="margin-left:11%; margin-top: 1em">is used to
+initialize with <i>value</i> the field with ID
+<i>field_id</i>, by overriding, if specified, the
+corresponding value of the <b>default</b> field attribute.
+<b><br>
+Diagnostics and form-post control</b></p>
+
+<p style="margin-left:22%;">If the <b>init {}</b> block
+produces some standard error, it will be displayed in a
+pop-up window. If the <b>init {}</b> block produces an exit
+status greater than zero, then the form will not be posted.
+so you can decide to BLAH, BLAH...</p>
+
+<p style="margin-left:22%; margin-top: 1em">DIAGNOSTICA:
+<br>
+Se i comandi in init{} <br>
+- producono stderr, questo verra&rsquo; visualizzato in una
+finestra pop-up. <br>
+- producono un exit status &gt; 0, allora non verra&rsquo;
+presentata la form <br>
+appena chiamata. <br>
+Questo consente quindi di impedire all&rsquo;utente di
+proseguire nel caso <br>
+init{} sia eseguito con errori gravi, oppure di ignorarli.
+<br>
+La diagnostica puo&rsquo; essere disabilitata semplicemente
+redirezionando <br>
+su /dev/null l&rsquo;stderr dei comandi in init{}. <br>
+Opzionale: Si <br>
+Osservazioni: Per come vengono eseguiti i comandi
+specificati, l&rsquo;eventuale <br>
+presenza di un apice singolo va specificata con la sintassi
+&rsquo;&acute;&rsquo; <br>
+Ad esempio, il comando bash: <br>
+echo &quot;Utente gia&rsquo; definito nel sistema&quot; &gt;
+/dev/stderr <br>
+diventa <br>
+echo &quot;Utente gia&rsquo;&acute;&rsquo; definito nel
+sistema&quot; &gt; /dev/stderr</p>
+
+<p style="margin-left:22%; margin-top: 1em">Preferire
+l&rsquo;uso del costrutto $() anziche&rsquo; &rsquo;&rsquo;
+per l&rsquo;esecuzione <br>
+di comandi in subshell. <br>
+FORM DINAMICHE: <br>
+E&rsquo; possibile rimuovere, disabilitare ed abilitare
+arbitrariamente campi dalla form <br>
+assegnandone gli ID separati da virgole rispettivamente alle
+seguenti variabili <br>
+fittizie: <br>
+CCFE_REMOVE_FIELDS <br>
+CCFE_ENABLE_FIELDS <br>
+CCFE_DISABLE_FIELDS <br>
+Ad esempio <br>
+init { command: <br>
+echo CCFE_REMOVE_FIELDS=F1,F3 <br>
+} <br>
+rimuove dalla form i campi con ID F1 e F3</p>
+
+<p style="margin-left:22%; margin-top: 1em">Esempio: <br>
+init { command: <br>
+if grep -qw $1 /etc/passwd; then <br>
+echo &quot;Utente gia&rsquo;&acute;&rsquo; definito nel
+sistema&quot; &gt; /dev/stderr <br>
+exit 1 # Impedisce chiamata form successiva <br>
+else <br>
+echo UNAME=$1 <br>
+fi <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">Please see also
+the <b>default</b> field attribute.</p>
+
+<h2>FORM ACTION
+<a name="FORM ACTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The form
+attribute <b>action {}</b> executes a command with the
+values typed in the fields of the form. There is no check of
+this attribute definition, but a form without
+<b>action{}</b> is very useless! The syntax for a <i>normal
+action</i> of a form is the following:</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>action {</b>
+<i>action-type</i>[<b>(</b><i>options</i><b>)</b>]<b>:</b>
+<i>action-args</i> <b>}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">It is also
+possible to change the action depending the item selected in
+the menu which called the form: in this case the syntax is
+the following:</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>action
+{</b></p>
+
+<p style="margin-left:32%;"><b>select-item {</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="43%"></td>
+<td width="12%">
+
+
+<p><i>item_id0</i></p></td>
+<td width="3%"></td>
+<td width="42%">
+
+
+<p><b>:</b>
+<i>action-type</i>[<b>(</b><i>options</i><b>)</b>]<b>:</b>
+<i>action-args</i></p> </td></tr>
+<tr valign="top" align="left">
+<td width="43%"></td>
+<td width="12%">
+
+
+<p><i>item_id1</i></p></td>
+<td width="3%"></td>
+<td width="42%">
+
+
+<p><b>:</b>
+<i>action-type</i>[<b>(</b><i>options</i><b>)</b>]<b>:</b>
+<i>action-args</i></p> </td></tr>
+<tr valign="top" align="left">
+<td width="43%"></td>
+<td width="12%">
+
+
+<p>[...]</p></td>
+<td width="3%"></td>
+<td width="42%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="43%"></td>
+<td width="12%">
+
+
+<p><i>item_idN</i></p></td>
+<td width="3%"></td>
+<td width="42%">
+
+
+<p><b>:</b>
+<i>action-type</i>[<b>(</b><i>options</i><b>)</b>]<b>:</b>
+<i>action-args</i></p> </td></tr>
+</table>
+
+<p style="margin-left:32%;"><b>}</b></p>
+
+<p style="margin-left:22%;"><b>}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">NB: con
+l&rsquo;item selector posso specificare solamente action
+<br>
+semplici su una sola linea: questo costrutto va utilizzato
+<br>
+per selezionare la form successiva da una form comune <br>
+(vedi esempio).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Where: <i><br>
+action-type</i> can be one of the following:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>run</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Execute <i>action-args</i> and then show the results in
+the <b>Output Browser screen</b> (please see the
+<b>ccfe</b>(1) manpage). <i>action-args</i> can be a simple
+command or a complete script which will be passed to a
+command shell for parsing (with &quot;sh -c&quot;). The
+shell used is the one specified in the <b>shell</b>
+parameter of the <tt>ccfe.conf</tt> configuration file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>form</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Load and post the form specified in <i>action-args</i>.
+If arguments are present, they can be referred in the
+<b>init{}</b> and <b>action{}</b> attributes of the called
+form using the syntax <b>%{ARGV</b><i>n</i><b>}</b> , with 0
+&lt; <i>n</i> &lt; 100. All the
+<b>%{ARGV</b><i>n</i><b>}</b> not passed as arguments have a
+null string value. Before the name of form, you can specify
+a path relative to /usr/share/ccfe directory (for example
+<tt>users.d/ask_user</tt>). A form can call another form
+which can call another form and so on: it is useful when you
+want to ask for parameters with special treatment before the
+final action execution.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>system</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Temporarily exit from <b>ccfe</b>, executes
+<i>action-args</i> and returns in <b>ccfe</b>. This is
+useful for actions which need user interaction: for example
+the <b>passwd</b>(1) command. If <b>wait_key</b> is
+specified in <i>options</i>, then it is displayed a message
+reporting the exit status and wait a user keystroke before
+to return in <b>ccfe</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>exec</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Terminate <b>ccfe</b> and executes <i>action-args</i>.
+This is useful to return to Operating System after calling
+external commands or applications, using <b>ccfe</b> as
+application launcher. Be aware that <i>action-args</i> are
+executed directly instead of via a command shell, so
+invocation errors may not be reported.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><i>options</i>
+is a comma-separated list of one or more of the following
+options:</p>
+
+<p style="margin-left:22%;"><b>confirm</b></p>
+
+<p style="margin-left:32%;">Open a pop-up window to request
+a confirm before execute action. The option highlighted by
+default is &quot;No&quot; (not confirm).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p><b>log</b></p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>Save in the logfile the output of the execution of the
+action. Not valid for <i>action-type</i><b>=system</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>wait_key</b></p>
+
+<p style="margin-left:32%;">Valid only for
+<i>action-type</i><b>=system</b>: when action is completed,
+wait for continuing until the user presses a key.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><i>item_idX</i>
+are item <b>id</b>&rsquo;s defined in the calling menu.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>The *
+metacharacter</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">The
+metacharacter <b>*</b> expands all fields IDs of the form.
+This can be useful for fast form deployment: in forms with
+many fields and a very simple action (f.e. a single command
+call), you can use the metacharacter &quot;<b>*</b>&quot; as
+<i>field_id</i>, instead to list one by one all form fields
+IDs. For example, in a form with three fields with ID
+<i>ID1</i>, <i>ID2</i> and <i>ID3</i>, the action</p>
+
+<pre style="margin-left:11%; margin-top: 1em">  command %{*}</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">is expanded
+as</p>
+
+<pre style="margin-left:11%; margin-top: 1em">  command %{ID1}%{ID2}%{ID3}</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Note that using
+metacharachter <b>*</b>:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>Field IDs are expanded in the order of their definition
+in form;</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p><i>Dynamic fields</i> are supported;</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>In fields with <b>option</b> attribute defined, blanks
+are automatically inserted as described above in
+<b>option</b> attribute explanation;</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>In fields without <b>option</b> attribute, a blank is
+automatically inserted before its value.</p></td></tr>
+</table>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Notes</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">To refer to the
+value of the fields, you must use the syntax
+<b>%{</b><i>field_id</i><b>}</b> which will be substituted
+with the value of the field with ID <i>field_id</i> before
+the execution of the action. <i>field_id</i> are case
+senstitive.</p>
+
+<p style="margin-left:11%; margin-top: 1em">This solution
+was preferred instead to use environment variables (like
+$CCFE_FIELD_ID) to pass values to action so to not change
+the child process environment.</p>
+
+<p style="margin-left:11%; margin-top: 1em">With
+<b>select-item {}</b> it is possible to run an action
+depending of the ID of the item selected in the menu which
+called the form.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Examples:</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>1.</p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Action with an embedded Bourne shell script:</p></td>
+<td width="17%">
+</td></tr>
+</table>
+
+<pre style="margin-left:22%; margin-top: 1em">action { run:
+  if [ &quot;x%{VPN_NAME}&quot; == &rsquo;xTECH&rsquo; ]; then
+    conf=&rsquo;tech.conf&rsquo;
+  elif [ &quot;x%{VPN_NAME}&quot; == &rsquo;xGUESTS&rsquo; ]; then
+    conf=&rsquo;guests.conf&rsquo;
+  fi
+  sudo /usr/sbin/vpnc $conf
+}</pre>
+
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">2.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p style="margin-top: 1em">Ask the user to confirm its
+request to enable the wireless network:</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><tt>action {
+run(confirm):sudo /usr/local/scripts/iw-up 2&gt;&amp;1
+}</tt></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">3.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p style="margin-top: 1em">Call the form
+<tt>/usr/share/ccfe/ldap.d/chage.form</tt> passing it the
+value of the fields with attribute <b>id</b> SUBTREE and
+USERNAME, which are processed as <b>%{ARGV1}</b> and
+<b>%{ARGV2}</b> by the <b>init{}</b> attribute of the form
+<tt>chage.form</tt> to assign the initial value to the
+fields with the same ID:</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><tt>action {
+form:ldap.d/chage %{SUBTREE} %{USERNAME} }</tt></p>
+
+<p style="margin-left:11%; margin-top: 1em">Please see the
+section <b>FORM INITIALIZATION</b> above.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">4.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p style="margin-top: 1em">Temporarily escape from
+<b>ccfe</b> and execute the command <b>passwd</b>(1) to
+change the password of the user specified in the field with
+<b>id</b> USERNAME. Prompt a message and wait the user hit a
+key before to re-enter in <b>ccfe</b>, so the user can see
+if <b>passwd</b>(1) command changed or not the password:</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><tt>action {
+system:/usr/bin/passwd(wait_key) %{USERNAME} }</tt></p>
+
+<p style="margin-left:11%; margin-top: 1em">If <b>ccfe</b>
+is not running by root user, then he can change only its own
+password.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">5.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p style="margin-top: 1em">Help users to connect to remote
+host by selecting it from a list:</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><tt>field {
+<br>
+id = RH <br>
+label = Remote host <br>
+len = 35 <br>
+type = STRING <br>
+list_cmd =
+const:single-val:&quot;host1.somewere.com&quot;,&quot;host2.somelan.net&quot;
+<br>
+} <br>
+field { <br>
+id = PORT <br>
+label = Remote port <br>
+len = 5 <br>
+type = NUMERIC <br>
+default = const:22 <br>
+} <br>
+action { exec: telnet %{RH} %{PORT} }</tt></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p style="margin-top: 1em">6.</p></td>
+<td width="1%"></td>
+<td width="22%">
+
+
+<p style="margin-top: 1em">ask_user.form:</p></td>
+<td width="63%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">field {</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p style="margin-top: 1em">id</p></td>
+<td width="8%"></td>
+<td width="17%">
+
+
+<p style="margin-top: 1em">= USERNAME</p></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p>label</p></td>
+<td width="8%"></td>
+<td width="17%">
+
+
+<p>= User name</p></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p>type</p></td>
+<td width="8%"></td>
+<td width="17%">
+
+
+<p>= STRING</p></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p>len</p></td>
+<td width="8%"></td>
+<td width="17%">
+
+
+<p>= 8</p></td>
+<td width="46%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">} <br>
+action {</p>
+
+<p style="margin-left:22%;">select-item {</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em">USERADD</p></td>
+<td width="5%"></td>
+<td width="52%">
+
+
+<p style="margin-top: 1em">: form:users.d/useradd
+%{USERNAME}</p> </td></tr>
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="11%">
+
+
+<p>USERMOD</p></td>
+<td width="5%"></td>
+<td width="52%">
+
+
+<p>: form:users.d/usermod %{USERNAME}</p></td></tr>
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="11%">
+
+
+<p>USERDEL</p></td>
+<td width="5%"></td>
+<td width="52%">
+
+
+<p>: form:users.d/userdel %{USERNAME}</p></td></tr>
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="11%">
+
+
+<p>PASSWD</p></td>
+<td width="5%"></td>
+<td width="52%">
+
+
+<p>: system(wait_key):passwd %{USERNAME}</p></td></tr>
+</table>
+
+<p style="margin-left:22%;">}</p>
+
+<p style="margin-left:11%;">}</p>
+
+<p style="margin-left:11%; margin-top: 1em">The definition
+of menu which called the ask_user.form is the following:</p>
+
+<p style="margin-left:11%; margin-top: 1em">item {</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em">id</p></td>
+<td width="1%"></td>
+<td width="42%">
+
+
+<p style="margin-top: 1em">= USERADD</p></td>
+<td width="26%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p>descr</p></td>
+<td width="1%"></td>
+<td width="42%">
+
+
+<p>= Create a new user account</p></td>
+<td width="26%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p>action</p></td>
+<td width="1%"></td>
+<td width="42%">
+
+
+<p>= form:users.d/ask_user</p></td>
+<td width="26%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">} <br>
+item {</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em">id</p></td>
+<td width="1%"></td>
+<td width="36%">
+
+
+<p style="margin-top: 1em">= USERMOD</p></td>
+<td width="32%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p>descr</p></td>
+<td width="1%"></td>
+<td width="36%">
+
+
+<p>= Modify a user account</p></td>
+<td width="32%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p>action</p></td>
+<td width="1%"></td>
+<td width="36%">
+
+
+<p>= form:users.d/ask_user</p></td>
+<td width="32%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">} <br>
+item {</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em">id</p></td>
+<td width="1%"></td>
+<td width="63%">
+
+
+<p style="margin-top: 1em">= USERDEL</p></td>
+<td width="5%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p>descr</p></td>
+<td width="1%"></td>
+<td width="63%">
+
+
+<p>= Remove a user account and related files</p></td>
+<td width="5%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p>action</p></td>
+<td width="1%"></td>
+<td width="63%">
+
+
+<p>= form:users.d/ask_user</p></td>
+<td width="5%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">} <br>
+item {</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p style="margin-top: 1em">id</p></td>
+<td width="1%"></td>
+<td width="40%">
+
+
+<p style="margin-top: 1em">= PASSWD</p></td>
+<td width="28%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p>descr</p></td>
+<td width="1%"></td>
+<td width="40%">
+
+
+<p>= Change a user&rsquo;s password</p></td>
+<td width="28%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p>action</p></td>
+<td width="1%"></td>
+<td width="40%">
+
+
+<p>= form:users.d/ask_user</p></td>
+<td width="28%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%;">}</p>
+
+<h2>FORM ARGUMENTS
+<a name="FORM ARGUMENTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">TODO!</p>
+
+<h2>DYNAMIC FORMS
+<a name="DYNAMIC FORMS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">It is possible
+to create forms that change runtime: for example, when the
+result of the initialization script is a particular value,
+or when you want to reuse the same complex form for
+different purposes (for add and edit similar values, for
+example). This is possible by:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p style="margin-top: 1em">using the special values
+<b>CCFE_REMOVE_FIELDS</b>,<b>CCFE_ENABLE_FIELDS</b>,<b>CCFE_DISABLE_FIELDS</b>
+in <b>init{}</b> attribute (please see <b>FORM
+INITIALIZATION</b> paragraph);</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>using the syntax <b>select-item</b> in <b>action{}</b>
+attribute (please see the <b>FORM ACTION</b> paragraph);</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>calling other forms with arguments and referring them in
+<b>init{}</b> and <b>action{}</b> attributes with
+<b>%{ARGV1}</b>,<b>%{ARGV2}</b>,...,<b>%{ARGVn}</b>
+syntax.</p> </td></tr>
+</table>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ccfe</b>(1),
+<b>ccfe.conf</b>(5), <b>ccfe_menu</b>(5),
+<b>ccfe_help</b>(5), <b>curses</b>(3X), <b>form</b>(3X)</p>
+
+<h2>BUGS
+<a name="BUGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Many cosmetics,
+but the tool is stable and usable.</p>
+<hr>
+</body>
+</html>

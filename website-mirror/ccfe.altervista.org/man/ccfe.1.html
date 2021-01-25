@@ -1,0 +1,1130 @@
+<!-- Creator     : groff version 1.22.2 -->
+<!-- CreationDate: Wed Sep 21 22:16:31 2016 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CCFE</title>
+
+</head>
+<body>
+
+<h1 align="center">CCFE</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SCREEN DESCRIPTION">SCREEN DESCRIPTION</a><br>
+<a href="#KEY BINDINGS">KEY BINDINGS</a><br>
+<a href="#INVOCATION">INVOCATION</a><br>
+<a href="#SHORTCUTS">SHORTCUTS</a><br>
+<a href="#MULTILINGUAL SUPPORT">MULTILINGUAL SUPPORT</a><br>
+<a href="#APPLICATION INSTANCES">APPLICATION INSTANCES</a><br>
+<a href="#LOGGING">LOGGING</a><br>
+<a href="#PLUGINS">PLUGINS</a><br>
+<a href="#ENVIRONMENT">ENVIRONMENT</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SECURITY">SECURITY</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ccfe - the
+Curses Command Front-end.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ccfe</b>
+[<i>OPTION</i>]... [<i>SHORTCUT</i>]</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ccfe</b> is
+a simple tool to quickly supply an interactive
+screen-oriented interface to command line scripts and
+commands: it prompts users for the informations needed to
+run them, and can be programmed with your preferred shell to
+provide predefined selections and/or run-time defaults. It
+also provides a menu system to hierarchically organize them
+and a viewer to browse the standard output and standard
+error of invoked script/command.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Options</b></p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-c</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Print some configuration parameters and exit. May be
+useful in pre-installation scripts for packaged <b>ccfe
+plugins</b>.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-d</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Enable verbose logging for debugging. It depends from
+the value of the <b>permit_debug</b> parameter in the
+<b>ccfe.conf</b>(5) configuration file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-h</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Display help message and exit.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><b>-l</b> <i>PATH</i></p>
+
+<p style="margin-left:22%;">Override the configured library
+directories (global and user) to search for menus and forms
+to load: for example, you can create in the current
+directory the form <tt>myapp.form</tt> as frontend to run
+the script <tt>myapp.sh</tt> and then run it by</p>
+
+<pre style="margin-left:22%; margin-top: 1em">  ccfe -l . myapp</pre>
+
+
+<p style="margin-left:22%; margin-top: 1em">Only one path
+can be specified. This can be useful to distribute software
+with <b>ccfe</b> as front-end, or if you want to use forms
+and menus in a directory alternative to default. <br>
+Note that <i>PATH</i> is absolute for every <b>ccfe</b>
+instance. <br>
+Please see also the explanation of the <b>CCFE_LIB_DIR</b>
+environment variable.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-s</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Print ordered list of available shortcuts to forms or
+menus and exit. A tilde character (&quot;<b>~</b>&quot;)
+after shortcut name means that menu or form is user private
+and located in its home directory.</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p><b>-v</b></p></td>
+<td width="8%"></td>
+<td width="78%">
+
+
+<p>Print version and exit.</p></td></tr>
+</table>
+
+<p style="margin-left:11%;"><i>SHORTCUT</i></p>
+
+<p style="margin-left:22%;">Initial form or menu name to
+load (without extension).</p>
+
+<h2>SCREEN DESCRIPTION
+<a name="SCREEN DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ccfe</b> has
+the following type of screens: <b><br>
+Menu screens</b></p>
+
+<p style="margin-left:22%;">Show a list of items and when a
+user select one of them, another menu or form is presented,
+or a shell command is executed.</p>
+
+<p style="margin-left:11%;"><b>Form screens</b></p>
+
+<p style="margin-left:22%;">Show a list of fields, then a
+shell command is executed using the fields value for
+arguments and options. Each field can have some flags before
+and/or after them:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p><b>*</b></p></td>
+<td width="9%"></td>
+<td width="68%">
+
+
+<p>Indicates that a value in the field is required to
+proceed.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p><b>+</b></p></td>
+<td width="9%"></td>
+<td width="68%">
+
+
+<p>Indicates that is available the pop-up list of valid
+values for the selection by pressing the key <b>&lt;list
+key&gt;</b> (please see the following section <b>KEY
+BINDINGS</b>).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="1%">
+
+
+<p><b>#</b></p></td>
+<td width="9%"></td>
+<td width="68%">
+
+
+<p>Indicates that the field accept only numeric values
+(please see the <b>type</b> attribute description of the
+<b>ccfe_form</b>(5) manpage).</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">Moreover,
+depending of the configuration in <b>ccfe.conf</b>(5) file,
+the following symbols also have a specific meaning:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p style="margin-top: 1em"><b>[ ]</b></p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p style="margin-top: 1em">Field value size delimiters.
+Please see the attribute <b>value_delimiters</b> in the
+<b>ccfe.conf</b>(5) manpage.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p><b>&lt; &gt;</b></p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>In the fields with the attribute <b>hscroll</b> enabled,
+they indicate off-screen data ahead or behind. Please see
+the attributes <b>len</b> and <b>hscroll</b> in the
+<b>ccfe_form</b>(5) manpage.</p></td></tr>
+</table>
+
+<p style="margin-left:22%; margin-top: 1em">When the value
+of a field change regarding the one at the form submission,
+it will be highlighted according the attributes
+<b>changed_value_fg changed_value_bg</b> of the
+<b>field_attr{}</b> and <b>active_field_attr{}</b> stanzas
+in the <b>ccfe.conf</b>(5) configuration file.</p>
+
+<p style="margin-left:11%;"><b>Output Browser
+screens</b></p>
+
+<p style="margin-left:22%;">The stdout and stderr of a
+shell command executed by a menu or a form can be browsed in
+a user-friendly mode, like when they are redirected and
+piped to <b>more</b>(1) or <b>less</b>(1) or <b>pg</b>(1)
+standard commands.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Each of the
+above <b>ccfe</b> screens is divided in three areas:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Header</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The top area which contains the following
+informations:</p> </td></tr>
+</table>
+
+
+<p style="margin-left:22%; margin-top: 1em"><b>username@hostname</b>
+(if enabled in <b>ccfe.conf</b>(5))</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Screen
+title</b></p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Screen
+name</b>: Filename of the form/menu in the <i>dialog
+area</i> (if enabled in <b>ccfe.conf</b>(5))</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Ins/Ovl
+flag</b>: Report the insert/overlay character mode in fields
+of forms (only in form screens)</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>Op/Pg
+indicator</b>: Report the position of the highlighted menu
+option (in menu screens) or the page displayed of a
+multi-page form (in form screens and in the output browser
+screen).</p>
+
+<p style="margin-left:11%;"><b>Dialog area</b></p>
+
+<p style="margin-left:22%;">The middle area which contains
+a menu, a form or the output of a command. <i>standard
+output</i> and <i>standard error</i> are mixed in the output
+of a command, but they are displayed with different screen
+attributes (please see the parameters <b>stdout_attr</b> and
+<b>stderr_attr</b> in the <b>ccfe.conf</b>(5) manpage).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="9%">
+
+
+<p><b>Footer</b></p></td>
+<td width="2%"></td>
+<td width="78%">
+
+
+<p>The bottom area which contains the list of the enabled
+function keys.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">It is possible
+to add and remove some aesthetic attributes (lines,
+alignment, video attributes, etc.) to change the aspect of
+the screens: please see the <b>ccfe.conf</b>(5) manpage.
+<b><br>
+Form pop-up list</b></p>
+
+<p style="margin-left:22%;">When you press <b>&lt;list
+key&gt;</b> key in a field with flag <b>+</b>, you open a
+pop-up window and you can select one or more (it depends
+from the <b>list_cmd</b> options) items from its list. The
+bottom of the window shows the active keys and in the upper
+right corner there are the following informations:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>&lt;</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>Indicates that there is off-screen data in the left of
+the window. They can be viewed by scrolling the data
+pressing the <b>&lt;Left arrow&gt;</b> and <b>&lt;Right
+arrow&gt;</b> keys.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>x/y:z</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>Indicates the position of the cursor in the list of
+items: <b>x</b> is the item highlighted, <b>y</b> is the
+total number of items in the list, <b>z</b> is the number of
+the selected items. <b>:z</b> is displayed only if
+<i>list-type</i> is <b>multi-val</b> in the <b>list_cmd</b>
+attribute, as described in <b>ccfe_form</b>(5) manpage.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="7%">
+
+
+<p><b>&gt;</b></p></td>
+<td width="3%"></td>
+<td width="68%">
+
+
+<p>Indicates that there is off-screen data in the right of
+the window. They can be viewed by scrolling the data
+pressing the <b>&lt;Left arrow&gt;</b> and <b>&lt;Right
+arrow&gt;</b> keys.</p></td></tr>
+</table>
+
+<h2>KEY BINDINGS
+<a name="KEY BINDINGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Here is
+described the function of the keys enabled in the
+<b>ccfe</b> screens. Note that the meaning of the function
+keys <b>&lt;F1&gt;</b>,...,<b>&lt;F10&gt;</b> can be
+remapped in the <tt>ccfe.conf</tt> configuration file. They
+are referred by their function definition: for example, if
+the key <b>&lt;F5&gt;</b> is defined as <b>key_f5 = back</b>
+in <tt>ccfe.conf</tt>, below it will be referred as
+<b>&lt;back key&gt;</b> instead <b>&lt;F5&gt;</b>. Please
+see the <b>key_f1</b>,...,<b>key_f10</b> parameters in the
+<b>ccfe.conf</b>(5) man page. <b><br>
+Common Commands</b></p>
+
+<p style="margin-left:22%;">The following keys are
+available in every kind of screen, but enabled in agreement
+with <tt>ccfe.conf</tt> configuration: <b><br>
+&lt;help key&gt;</b></p>
+
+<p style="margin-left:32%;">Help/Contextual help (not yet
+implemented).</p>
+
+<p style="margin-left:22%;"><b>&lt;redraw key&gt;</b></p>
+
+<p style="margin-left:32%;">Refresh screen.</p>
+
+<p style="margin-left:22%;"><b>&lt;back key&gt;</b> or
+<b>&lt;Esc&gt;</b></p>
+
+<p style="margin-left:32%;">Return to previous screen
+(Cancel current action).</p>
+
+<p style="margin-left:22%;"><b>&lt;shell_escape
+key&gt;</b></p>
+
+<p style="margin-left:32%;">Escape temporary to a shell
+(please see <b>user_shell</b> parameter in
+<b>ccfe.conf</b>(5) man page).</p>
+
+<p style="margin-left:22%;"><b>&lt;exit key&gt;</b></p>
+
+<p style="margin-left:32%;">Exit from <b>ccfe</b>.</p>
+
+<p style="margin-left:11%;"><b>Menu Commands</b></p>
+
+<p style="margin-left:22%;">In menu screens, the following
+keys are enabled: <b><br>
+&lt;Up arrow&gt;</b></p>
+
+<p style="margin-left:32%;">Move the cursor to the previous
+option.</p>
+
+<p style="margin-left:22%;"><b>&lt;Down arrow&gt;</b></p>
+
+<p style="margin-left:32%;">Move the cursor to the next
+option.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>&lt;Home&gt;</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Move the cursor to the first option of the menu.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>&lt;End&gt;</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Move the cursor to the last option of the menu.</p></td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>&lt;Enter&gt;</b></p>
+
+<p style="margin-left:32%;">Select the higlighted
+option.</p>
+
+<p style="margin-left:11%;"><b>Form Commands</b></p>
+
+<p style="margin-left:22%;">In form screens, the following
+keys are enabled. Note that if there are off-screen data
+behind in the current field, a flag &quot;<b>&gt;</b>&quot;
+is displayed at the end of the field, and if there are
+off-screen data ahead in the current field, a flag
+&quot;<b>&lt;</b>&quot; is displayed at the beginning of the
+field. <b><br>
+&lt;Up arrow&gt;</b></p>
+
+<p style="margin-left:32%;">Move the cursor to the previous
+field in the displayed page of the form. If pressed when in
+the first field of the page, the cursor will be moved to the
+last field of the page.</p>
+
+<p style="margin-left:22%;"><b>&lt;Down arrow&gt;</b></p>
+
+<p style="margin-left:32%;">Move the cursor to the next
+field in the displayed page of the form. If pressed when in
+the last field of the page, the cursor will be moved to the
+first field of the page.</p>
+
+<p style="margin-left:22%;"><b>&lt;Left arrow&gt;</b></p>
+
+<p style="margin-left:32%;">Move the cursor to the previuos
+character in the field value.</p>
+
+<p style="margin-left:22%;"><b>&lt;Right arrow&gt;</b></p>
+
+<p style="margin-left:32%;">Move the cursor to the next
+character in the field value.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>&lt;Home&gt;</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Move the cursor to the first character in the field
+value.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>&lt;End&gt;</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Move the cursor to the last character in the field
+value.</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>&lt;PgUp&gt;</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Show the previous page of fields (if any) and move the
+cursor to the last field of the page.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>&lt;PgDn&gt;</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Show the next page of fields (if any) and move the
+cursor to the first field of the page.</p></td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>&lt;Enter&gt;</b></p>
+
+<p style="margin-left:32%;">Run the action of the form.</p>
+
+<p style="margin-left:22%;"><b>&lt;Tab&gt;</b>,
+<b>&lt;Shift&gt;+&lt;Tab&gt;</b></p>
+
+<p style="margin-left:32%;">Browse (forward and backward)
+the list of accepted values in a field of type
+<b>BOOLEAN</b>, <b>NULLBOOLEAN</b> or of any other type
+where attribute <b>list_cmd</b> has <i>source-type</i>
+<b>const</b> and <i>list-type</i> <b>single-val</b>, for
+example:</p>
+
+<pre style="margin-left:32%; margin-top: 1em">  list_cmd = const:single-val:&quot;K : Kilobytes&quot;,
+                              &quot;M : Megabytes&quot;,
+                              &quot;G : Gigabytes&quot;</pre>
+
+
+<p style="margin-left:32%; margin-top: 1em">Please see also
+the <b>list_cmd</b> attribute description of the
+<b>ccfe_form</b>(5) manpage.</p>
+
+<p style="margin-left:22%;"><b>&lt;list key&gt;</b></p>
+
+<p style="margin-left:32%;">Show in a pop-up window a list
+of admitted values for the field. Depending on the list
+type, it is possible to select just one value or multiple
+values. Keys enabled for the selection are: <b><br>
+&lt;sel_items key&gt;</b> or <b>&lt;Spacebar&gt;</b></p>
+
+<p style="margin-left:43%;">Only available in multiple
+values lists, select or unselect the higlighted item.</p>
+
+<p style="margin-left:32%;"><b>&lt;A&gt;</b> or
+<b>&lt;a&gt;</b></p>
+
+<p style="margin-left:43%;">Only available in multiple
+values lists, select all the items.</p>
+
+<p style="margin-left:32%;"><b>&lt;U&gt;</b> or
+<b>&lt;u&gt;</b></p>
+
+<p style="margin-left:43%;">Only available in multiple
+values lists, unselect all the items.</p>
+
+<p style="margin-left:32%;"><b>&lt;Left arrow&gt;</b> and
+<b>&lt;Right arrow&gt;</b></p>
+
+<p style="margin-left:43%;">Scroll horizontally the menu if
+it is more wide than the pop-up window. CHECK</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="5%">
+
+
+<p><b>&lt;/&gt;</b></p></td>
+<td width="6%"></td>
+<td width="57%">
+
+
+<p>Find an item in the list, starting from the current and
+using the <b>menu_pattern</b>(3X) menu pattern match
+management.</p> </td></tr>
+</table>
+
+<p style="margin-left:32%;"><b>&lt;n&gt;</b> or
+<b>&lt;N&gt;</b></p>
+
+<p style="margin-left:43%;">Find the next item, using the
+search pattern previously entered with the <b>/</b> (find)
+command.</p>
+
+<p style="margin-left:32%;"><b>&lt;Enter&gt;</b></p>
+
+<p style="margin-left:43%;">Put the selected value(s) in
+the field and close the pop-up window.</p>
+
+<p style="margin-left:22%;"><b>&lt;reset_field
+key&gt;</b></p>
+
+<p style="margin-left:32%;">Reset the value of the actual
+field to the one at the form submission.</p>
+
+<p style="margin-left:22%;"><b>&lt;show_action
+key&gt;</b></p>
+
+<p style="margin-left:32%;">Show the action that will be
+executed pressing <b>&lt;Enter&gt;</b>, with the values at
+the moment in the fields.</p>
+
+<p style="margin-left:22%;"><b>&lt;save key&gt;</b></p>
+
+<p style="margin-left:32%;">Save the current value of the
+fields in the logfile.</p>
+
+<p style="margin-left:11%;"><b>Output browser
+Commands</b></p>
+
+<p style="margin-left:22%;"><b>&lt;Ctrl&gt;+C</b></p>
+
+<p style="margin-left:32%;">This combination of keys is
+available only during the execution of an action: sends a
+SIGINT signal to the running process.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p><b>&lt;/&gt;</b></p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>Find a string in the output shown in the browser,
+starting from the current position. The search is case
+sensitive.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>&lt;n&gt;</b> or
+<b>&lt;N&gt;</b></p>
+
+<p style="margin-left:32%;">Find the next string occurrence
+of the one entered in the <b>/</b> (find) command.</p>
+
+<p style="margin-left:22%;"><b>&lt;save key&gt;</b></p>
+
+<p style="margin-left:32%;">Save in a text file the output
+displayed in the browser, or save the action in a shell
+script ready for execution outside <b>ccfe</b>.</p>
+
+<h2>INVOCATION
+<a name="INVOCATION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">When
+<b>ccfe</b> is started with its name, it executes the
+following ordered operations:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>1.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>Read the main configuration file
+<tt>/etc/ccfe/ccfe.conf</tt></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>2.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>If exists, read the user configuration file
+<tt>$HOME/.ccfe/ccfe.conf</tt></p> </td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="3%">
+
+
+<p>3.</p></td>
+<td width="1%"></td>
+<td width="85%">
+
+
+<p>If exists, load the main menu
+<tt>/usr/share/ccfe/ccfe.menu</tt>, else load (if present)
+the user menu <tt>$HOME/.ccfe/ccfe.menu</tt></p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">When you
+specify a <i>shortcut</i> (for example <b>foo</b>), instead
+to perform step 3 <b>ccfe</b> searches the following objects
+in the order in which they appear and loads the first that
+matches:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="3%"></td>
+<td width="37%">
+
+
+
+<p style="margin-top: 1em"><tt>/usr/share/ccfe/foo.menu</tt></p> </td>
+<td width="48%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="37%">
+
+
+<p><tt>/usr/share/ccfe/foo.form</tt></p></td>
+<td width="48%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="37%">
+
+
+<p><tt>$HOME/.ccfe/foo.menu</tt></p></td>
+<td width="48%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="37%">
+
+
+<p><tt>$HOME/.ccfe/foo.form</tt></p></td>
+<td width="48%">
+</td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">If any
+configuration file is found, then <b>ccfe</b> starts with
+its predefined configuration; if any <i>ccfe main menu</i>
+or <i>shortcut</i> is found, <b>ccfe</b> exits. Private user
+configuration and forms/menus are read depending by
+<b>load_user_objects</b> parameter in
+<tt>/etc/ccfe/ccfe.conf</tt> file.</p>
+
+<p style="margin-left:11%; margin-top: 1em">If <b>ccfe</b>
+is started whith a different name because are configured one
+or more application instances, its behavior is different:
+please see the <b>APPLICATION INSTANCES</b> paragraph
+below.</p>
+
+<h2>SHORTCUTS
+<a name="SHORTCUTS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">It is possible
+to load directly a specific menu or form instead the default
+menu (<tt>ccfe.menu</tt>) when <b>ccfe</b> is invoked. You
+have to specify the desired form o menu file name (without
+the extension), and it will be searched through the
+following ordered list of directories:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+
+<p style="margin-top: 1em"><tt>$CCFE_LIB_DIR/$CALLNAME</tt>
+(for example <tt>/usr/local/lib/ccfe</tt>)</p></td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p><tt>$HOME/.ccfe/$CALLNAME</tt> (for example
+<tt>/home/foo/.ccfe/ccfe</tt>)</p> </td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em">If a menu and a
+form in the same directory have identical filename, then the
+menu will be loaded. <i>$CALLNAME</i> is the name used for
+<b>ccfe</b> invocation, please see <b>APPLICATION
+INSTANCES</b>.</p>
+
+<h2>MULTILINGUAL SUPPORT
+<a name="MULTILINGUAL SUPPORT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Not yet
+supported. Actually, you can only translate messages in the
+<i>ccfe messages definition file</i>
+<tt>/usr/share/ccfe/msg/C/ccfe</tt>.</p>
+
+<h2>APPLICATION INSTANCES
+<a name="APPLICATION INSTANCES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Implemented,
+bud not yet documented!</p>
+
+<h2>LOGGING
+<a name="LOGGING"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ccfe</b>
+logging can be used by users to record the their actions,
+but is generally used to records detailed trace information
+useful when developing new menus or forms. Every user have a
+separate and private log file in the /var/log/ccfe
+directory, and the detail of the informations recorded can
+be specified in the <b>log_level</b> parameter of the
+<b>ccfe.conf</b>(5) configuration file. Normally is logged
+only the output of actions with the <b>log</b> option
+specified (please see <b>ccfe.conf</b>(5) manpage), but when
+<b>ccfe</b> is called with <b>-d</b> option, according with
+the value of attribute <b>permit_debug</b> in
+<b>ccfe.conf</b>(5), it switches in &quot;debug mode&quot;
+and the maximum level of information are logged.</p>
+
+<h2>PLUGINS
+<a name="PLUGINS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ccfe</b> can
+be easily expanded by adding <b>plugins</b> (or
+<b>modules</b>). A plugin is the collection of files
+required to add new funcionalities. It can be very simple
+(only one file for a main menu entry) or very complex (a
+file for the new main menu entry, new menus, new forms and
+all shell scripts required by actions). Example of simple
+plugin: if your <b>ccfe</b> main menu is a <i>dynamic
+menu</i>, to add the new function <i>top</i> which call the
+<b>top</b>(1) command, you only have to put the file
+<tt>/usr/share/ccfe/ccfe/ccfe.menu/top.item</tt> which the
+following content:</p>
+
+<pre style="margin-left:11%; margin-top: 1em">  item {
+    id     = TOP
+    descr  = Display O.S. tasks
+    action = system:top
+  }</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">In a
+hypothetical pre-installation script of a plugin package,
+you can call <b>ccfe</b> to know the prefix directory where
+to install the plugin files, for example, the line:</p>
+
+<pre style="margin-left:11%; margin-top: 1em">  eval $(ccfe -c | grep LIB)</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">sets up the
+variable LIB_DIR with value <i>/usr/local/ccfe/lib</i> (for
+example), or the line</p>
+
+<pre style="margin-left:11%; margin-top: 1em">  eval CCFE_$(ccfe -c  | grep LIB)</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">sets up the
+variable CCFE_LIB_DIR.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>ccfe
+instances</b> supports <b>plugins.</b> Please see also the
+<b>DYNAMIC MENUS</b> section in the <b>ccfe_menu</b>(5)
+manpage and the samples provided with <b>ccfe</b> package
+for a more complex examples of <b>plugin</b>.</p>
+
+<h2>ENVIRONMENT
+<a name="ENVIRONMENT"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Before the
+execution of an <b>action {}</b> block, <b>ccfe</b> sets up
+the following environment variables: <b><br>
+CCFE_LIB_DIR</b></p>
+
+<p style="margin-left:22%;">The <i>ccfe library
+directory</i> (for example <tt>/usr/local/ccfe/lib</tt>). It
+can be used in scripts called by <b>ccfe</b> to refer to
+absolute pathnames. You can also define this variable before
+run <b>ccfe</b> to change the default library directory; it
+is an alternative to option &quot;-l&quot;: for example, to
+load a form in current directory:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">  ccfe -l . myform</pre>
+
+
+<p style="margin-left:22%; margin-top: 1em">is equivalent
+to</p>
+
+<pre style="margin-left:22%; margin-top: 1em">  CCFE_LIB_DIR=. ccfe myform</pre>
+
+
+<p style="margin-left:22%; margin-top: 1em">or</p>
+
+<pre style="margin-left:22%; margin-top: 1em">  CCFE_LIB_DIR=. ; export CCFE_LIB_DIR
+  ccfe myform</pre>
+
+
+<p style="margin-left:11%;"><b>CCFE_IWD</b></p>
+
+<p style="margin-left:22%;"><i>Ccfe invocation
+directory</i>, the current working directory of the shell
+when invoked <b>ccfe</b>.</p>
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><tt>/etc/ccfe/ccfe.conf</tt></p>
+
+<p style="margin-left:22%;">Global configuration.</p>
+
+
+<p style="margin-left:11%;"><tt>/etc/ccfe/CALLNAME.conf</tt></p>
+
+<p style="margin-left:22%;">Instance configuration. For
+example: <tt>/etc/ccfe/foo.conf</tt>,
+<tt>/etc/ccfe/bar.conf</tt></p>
+
+
+<p style="margin-left:11%;"><tt>$HOME/.ccfe/ccfe.conf</tt></p>
+
+<p style="margin-left:22%;">User global preferences.</p>
+
+
+<p style="margin-left:11%;"><tt>$HOME/.ccfe/persistent/</tt></p>
+
+<p style="margin-left:22%;">Persistent forms data.</p>
+
+
+<p style="margin-left:11%;"><tt>$HOME/.ccfe/CALLNAME.conf</tt></p>
+
+<p style="margin-left:22%;">User instance preferences. For
+example: <tt>$HOME/.ccfe/foo.conf</tt></p>
+
+
+<p style="margin-left:11%;"><tt>/usr/share/ccfe/ccfe/</tt></p>
+
+<p style="margin-left:22%;">CCFE forms, menu and objects
+used by them. Forms, menus and objects used by them when
+CCFE is invoked as <b>ccfe</b>.</p>
+
+
+<p style="margin-left:11%;"><tt>/usr/share/ccfe/foo/</tt></p>
+
+<p style="margin-left:22%;">Instance configuration: forms,
+menus and objects used by them when CCFE is invoked as
+<b>foo</b>.</p>
+
+
+<p style="margin-left:11%;"><tt>/usr/share/ccfe/bar/</tt></p>
+
+<p style="margin-left:22%;">Instance configuration: forms,
+menus and objects used by them when CCFE is invoked as
+<b>bar</b>.</p>
+
+
+<p style="margin-left:11%;"><tt>/usr/share/ccfe/msg/LOCALE_ID/ccfe</tt></p>
+
+<p style="margin-left:22%;">Global messages configuration.
+For example: <tt>/usr/share/ccfe/msg/C/ccfe</tt></p>
+
+
+<p style="margin-left:11%;"><tt>/usr/share/ccfe/msg/LOCALE_ID/CALLNAME</tt></p>
+
+<p style="margin-left:22%;">Instance messages
+configuration. For example:
+<tt>/usr/share/ccfe/msg/C/foo</tt></p>
+
+
+<p style="margin-left:11%;"><tt>/var/log/ccfe/$USER.log</tt></p>
+
+<p style="margin-left:22%;">User activity logs (if
+enabled), useful for debug developing new forms and menus,
+form field values backup before changes and audit.</p>
+
+<h2>SECURITY
+<a name="SECURITY"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ccfe</b> is
+only a front-end: the security of the execution of a command
+is based on the O.S. permissions of the user who invoked
+<b>ccfe</b>. Execution of privileged commands is possible,
+for example, by using tools as <b>sudo</b>(1) in the
+<b>action</b> section of forms and menus.</p>
+
+<p style="margin-left:11%; margin-top: 1em">It is possible
+to deny users to make their own <b>ccfe</b> interfaces and
+disable the temporary shell escape: please see the
+<b>load_user_objects</b> and the <b>user_shell</b>
+parameters in the <b>ccfe.conf</b>(5) manual page.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ccfe.conf</b>(5),
+<b>ccfe_form</b>(5), <b>ccfe_menu</b>(5), <b>sudo</b>(1).
+<tt><br>
+ /usr/share/doc/ccfe/</tt></p>
+<hr>
+</body>
+</html>

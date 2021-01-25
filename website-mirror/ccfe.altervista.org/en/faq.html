@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <META NAME="AUTHOR" CONTENT="Massimo Loschi" />
+  <TITLE>CCFE :: the Curses Command Front-end :: Documentation</TITLE>
+<link rel="stylesheet" type="text/css" href="../style.css" media="screen" />
+</head>
+<body>
+<div id="header">
+	<div id="logo">
+		<h1><a href="index.html">CCFE</a></h1>
+		<p>the Curses Command Front-end</a></p>
+<HR COLOR=WHITE SIZE=1>
+<A HREF="../it/faq.html"><IMG ALT="Versione italiana" TITLE="Versione italiana" BORDER=0 SRC="../icons/flag_it.gif"></A>
+<A HREF="../en/faq.html"><IMG ALT="English version" TITLE="English version" BORDER=0 SRC="../icons/flag_en.gif"></A>
+
+	</div>
+	<!-- end #logo -->
+	<div id="menu">
+		<ul>
+                        <li class="first"><A HREF="features.html">Features</A></LI>
+                        <li><A HREF="sshots.html">Screenshots</A></LI>
+                        <li><A HREF="install.html">Installing</A></LI>
+                        <li><A HREF="docs.html">Documentation</A></LI>
+                        <li><A HREF="faq.html">FAQ</A></LI>
+                        <li><A HREF="dnload.html">Download</A></LI>
+		</ul>
+	</div>
+	<!-- end #menu -->
+</div>
+<!-- end #header -->
+<div id="page">
+	<div id="content">
+		<div class="post">
+			<h3 class="title">Frequently Asked Questions</h3>
+<P></P>
+<OL>
+<LI><A HREF="#q1">What is CCFE?</A></LI>
+<LI><A HREF="#q2">Is CCFE a clone of SMIT?</A></LI>
+<LI><A HREF="#q3">Can CCFE be installed on a host without Perl and Curses module installed?</A></LI>
+<LI><A HREF="#q4">How to compile CCFE to binary executable?</A></LI>
+<LI><A HREF="#q45">"Curses function 'new_item' is not defined in your Curses library at /usr/bin/ccfe line NNNN."</A></LI>
+<LI><A HREF="#q47">By default, in GNOME Terminal the <TT>F10</TT> key opens the "File" menu: how to use it with CCFE?</A></LI>
+<LI><A HREF="#q5">How to let users to make their own menus and forms and access them from global menu?</A></LI>
+<LI><A HREF="#q6">How to show dynamic menu items in your preferred order?</A></LI>
+<LI><A HREF="#q7">How to remap function keys from F1 to F12?</A></LI>
+<LI><A HREF="#q8">How to use CCFE as simple application launcher?</A></LI>
+<LI><A HREF="#q9">What is the fastest method to deploy a CCFE front-end to a command?</A></LI>
+<LI>Tips &amp; tricks for form initialization:<UL>
+  <LI><A HREF="#q10">How to display a pop-up message entering in a form?</A></LI>
+  <LI><A HREF="#q11">In certain conditions, I don't want to post a form.</A></LI></UL></LI>
+<LI>Tips &amp; tricks for form actions:<UL>
+  <LI><A HREF="#q12">How to put a single quote (<TT>'</TT>) inside a single quoted string?</A></LI>
+</UL></LI>
+<LI>Tips &amp; tricks for form fields:<UL>
+  <LI><A HREF="#q13"> I want to use a boolean field in my form which returns
+ the string "YES" or "NO" in the action, but a field of type BOOLEAN does not work: why?</A></LI>
+</UL></LI>
+</OL>
+<HR SIZE=1>
+<P>
+<A NAME="q1"><B>Q: What is CCFE?</B></A><BR>
+A: The Curses Command Front-End is a tool which aim to speed-up and
+   reduce errors in generic Unix command invocation, but can be used
+   for many other purposes.
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q2"><B>Q: Is CCFE a clone of the IBM AIX's SMIT?</B></A><BR>
+A: No.<BR>
+   SMIT is an application designed to perform AIX system management.
+   It's a complex application and based on the AIX's Object Data Manager.<BR>
+   CCFE is a very simple tool (currently a single Perl script), and can
+   be used for many purposes, but is only a dumb front-end.
+   Plugins can add features ("intelligence") to CCFE.
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q3"><B>Q: Can CCFE be installed on a host without Perl and Curses module installed?</B></A><BR>
+A: Yes, please see the next answer.
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q4"><B>Q: How to compile CCFE to binary executable?</B></A><BR>
+A: You can use the <I>PAR Packager</I> from <A HREF="http://www.cpan.org">CPAN</A>:<BR>
+   Install the <TT>PAR-Packer</TT> from <A HREF="http://www.cpan.org">CPAN</A> or from your preferred distribution
+   repository (for example, the Ubuntu package <TT>libpar-packer-perl</TT>), then
+   after installed CCFE:
+    <PRE>
+     cp /usr/bin/ccfe /tmp/ccfe.pl
+     pp -o /tmp/ccfe /tmp/ccfe.pl
+    </PRE>
+   The <TT>/tmp/ccfe</TT> binary file can run in Linux boxes without Perl
+   interpreter and Curses Perl module.
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q45"><B>Q: Why CCFE does not run and returns the following error:</A></B>
+   <PRE>
+   Curses function 'new_item' is not defined in your Curses library at /usr/bin/ccfe line NNNN.
+   </PRE>
+A: This happens using a Curses Perl module built without pads, menus and forms support.
+   For RPM-based distributions like RedHat, Fedora and CentOS, it is suggested the installation
+   of the <A HREF="http://dl.fedoraproject.org/pub/epel/5/i386/repoview/perl-Curses.html">perl-Curses</A> RPM
+   from <A HREF="http://fedoraproject.org/wiki/EPEL">EPEL</A> repository.
+   If you install Perl Curses module from <A HREF="http://www.cpan.org">CPAN</A>, you have to build it with pads, menus
+   and form support as explained in the INSTALL file included in module source tarball.
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q47"><B>Q: By default, in GNOME Terminal the <TT>F10</TT> key opens the "File" menu: how to use it with CCFE?</A></B><BR>
+A: In GNOME Terminal, disable the setting "Enable the menu shortcut key" in menu "Edit" / "Keyboard shortcuts".
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q5"><B>Q: How to let users to make their own menus and forms and access them
+   from CCFE global menu?</B></A><BR>
+A: You can create the file <TT>/usr/lib/ccfe/smit/ccfe.menu/private.item</TT> to add to main (global)
+   menu the "User private menu" item:
+    <PRE>
+    item {
+      id     = PRIVATE
+      descr  = User private menu
+      action = menu:private
+    }
+    </PRE>
+  Then, every user can create its own private menu in its home directory, for example
+    <PRE>
+    /home/john/.ccfe/ccfe/private.menu
+    /home/bill/.ccfe/ccfe/private.menu
+    </PRE>
+
+  Users without private menu will get a
+  <PRE>   File not found while loading menu "private"</PRE>
+  error by selecting "User private menu" item in CCFE main menu.
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q6"><B>Q: How to show dynamic menu items in my preferred order?</B></A><BR>
+A: By default, dynamic menu items are sorted by item filename, so items
+    <PRE>
+    one.item
+    two.item
+    three.item
+    four.item
+    five.item
+    six.item
+    </PRE>
+   appears in menu ordered as follow:
+    <PRE>
+    five.item
+    four.item
+    one.item
+    six.item
+    three.item
+    two.item
+    </PRE>
+  To force an arbitrary order, you can rename item filenames, for example:
+    <PRE>
+    10-one.item
+    20-two.item
+    30-three.item
+    40-four.item
+    50-five.item
+    60-six.item
+    </PRE>
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q7"><B>Q: How to remap function keys from F1 to F12?</B></A><BR>
+A: Example: Quit from CCFE by pressing F12 key:<UL>
+   <LI>in file <TT>/etc/ccfe/ccfe.conf</TT> (or <TT>$HOME/.ccfe/ccfe.conf</TT>) put
+     <PRE>
+       key_f12 = exit
+     </PRE></LI>
+   <LI><U>and</U> in <TT>/usr/share/ccfe/msg/C/ccfe</TT> define its label:
+     <PRE>
+       KEY_F12_LABEL = "Quit"
+     </PRE></LI>
+   </UL>
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q8"><B>Q: How to use CCFE as simple application launcher?</B></A><BR>
+A: By calling the application using <TT>exec</TT> action in menus or forms.
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q9"><B>Q: What is the fastest and simplest way to deploy a CCFE front-end to a command?</B></A><BR>
+A: By using the metacharacter "<TT>*</TT>" in form action: for example, in
+   <A HREF="../fping.html">fping.form</A>, the action is the simple call "<TT>fping %{*}</TT>".
+</P>
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q10"><B>Q: How to display a pop-up message entering in a form?</B></A><BR>
+A: You must write the message to standard error in form initialization block, for example:
+  <PRE>
+  init { command:
+    echo "Welcome $(whoami)!" > /dev/stderr
+  }
+  </PRE>
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q11"><B>Q: In certain conditions, I don't want to post a form.</B></A><BR>
+A: Form initialization block must have an exit status greather than zero, for example:
+  <PRE>
+  init { command:
+    [ "$(whoami)" != root ] && exit 1
+    exit 0
+  }
+  </PRE>
+  As explained in previous answer, if you want to display a pop-up message before exit, you can use something like this:
+  <PRE>
+  init { command:
+    [ "$(whoami)" != root ] && echo 'Only root can do this!' > /dev/stderr && exit 1
+    exit 0
+  }
+  </PRE>
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q12"><B>Q: How to put a single quote (<TT>'</TT>) inside a single quoted string?</B></A><BR>
+A: You must use the syntax <TT>'\''</TT>; for example:
+  <PRE>
+  action { run:
+    echo 'Error resizing logical volume '%{LV_NAME}'.' > /dev/stderr
+  }
+  </PRE>
+  is wrong! You must use the following syntax:
+  <PRE>
+  action { run:
+    echo 'Error resizing logical volume '\''%{LV_NAME}'\''.' > /dev/stderr
+  }
+  </PRE>
+
+</P>
+</P>
+<HR SIZE=1>
+<P>
+<A NAME="q13"><B>Q: I want to use a boolean field in my form which returns the
+string "YES" or "NO" in the action, but a field of type BOOLEAN does not work: why?</B></A><BR>
+A: The most frequent mistake is to define a field like this:
+  <PRE>
+  ### WRONG!!!
+  field {
+    id       = SHOW_CHANGED_FIELDS
+    label    = Changed fields uses different video attribute?
+    type     = BOOLEAN
+    default  = const:YES
+  } 
+  </PRE>
+which returns a null value because no "option" attribute was defined, so
+the correct definition is like the following:
+  <PRE>
+   ### Correct!
+   field {
+     id       = SHOW_CHANGED_FIELDS
+     label    = Changed fields uses different video attribute?
+     type     = BOOLEAN
+     option   = YES,NO
+     default  = const:YES
+   } 
+  </PRE>
+or you can alternatively use a string field:
+  <PRE>
+  ### Correct!
+  field {
+    id       = SHOW_CHANGED_FIELDS
+    label    = Changed fields uses different video attribute?
+    type     = STRING
+    len      = 3
+    list_cmd = const:single-val:"YES","NO"
+    default  = const:YES
+  } 
+  </PRE>
+
+		</div>
+	</div>
+<FONT SIZE=-2><I>IBM and AIX are trademarks of International Business Machines Corporation in the
+United States, other countries, or both.</I></FONT>
+</div>
+<!-- end #page -->
+<div id="footer">
+  <p>Copyright &copy; 2009-2016. Design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.</p>
+</div>
+<!-- end #footer -->
+</body>
+</html>

@@ -1,0 +1,135 @@
+<HTML BGCOLOR="WHITE">
+<HEAD>
+<TITLE>usermods.form</TITLE>
+</HEAD>
+<BODY>
+<PRE>
+# usermods.form
+
+title {
+  Modify a user account
+}
+
+field {
+  id       = LOGIN
+  label    = Login name
+  len      = 8
+  type     = STRING
+  required = YES
+  <A NAME="login_list_cmd">list_cmd = command:single-val:awk -F : '{ print $1,$5 }' /etc/passwd | sort</A>
+}
+field {
+  id       = NEW_LOGIN
+  label    = New login name
+  len      = 8
+  type     = STRING
+  option   = -l
+}
+field {
+  id       = COMMENT
+  label    = New comment
+  len      = 20
+  type     = STRING
+  hscroll  = YES
+  option   = -c'
+}
+field {
+  id       = HOME_DIR
+  label    = New home directory
+  len      = 20
+  type     = STRING
+  option   = -d
+}
+field {
+  id       = UID
+  label    = New numeric user ID
+  type     = NUMERIC
+  len      = 5
+  option   = -u
+}
+field {
+  id       = NON_UNIQUE
+  label    = Allow non-unique UID
+  type     = BOOLEAN
+  htab     = 1
+  option   = -o
+}
+field {
+  id       = GROUP
+  label    = New initial login group
+  len      = 12
+  type     = STRING
+  hscroll  = YES
+  option   = -g
+  list_cmd = command:single-val:cut -d : -f 1 /etc/group | sort
+}
+field {
+  id       = GROUPS
+  label    = Supplementary groups
+  len      = 20
+  type     = STRING
+  hscroll  = YES
+  option   = -G
+  list_cmd = command:multi-val:cut -d : -f 1 /etc/group | sort
+  list_sep = ","
+}
+field {
+  id       = APPEND
+  label    = Add the user to these supplemental group(s)
+  type     = BOOLEAN
+  htab     = 1
+  option   = -a
+}
+field {
+  id       = SHELL
+  label    = New login shell
+  len      = 15
+  type     = STRING
+  hscroll  = YES
+  option   = -s
+  list_cmd = command:single-val:cat /etc/shells |grep -v ^# | sort
+}
+field {
+  id       = EXPIRE_DATE
+  label    = Date when account will be disabled (YYYY-MM-DD)
+  len      = 10
+  type     = STRING
+  option   = -e
+  list_cmd = command:single-val:date -d '+180 days' "+%Y-%m-%d : 3 months ahead"
+}
+field {
+  id       = INACTIVE
+  label    = Days account is disabled after pwd expiration
+  len      = 3
+  type     = NUMERIC
+  option   = -f
+  list_cmd = const:single-val:"0 : Disables the account as soon as the password has expired","-1 : Never inactives"
+}
+field {
+  id       = PASSWD
+  label    = New password (encrypted as returned by crypt(1))
+  len      = 10
+  type     = STRING
+  hscroll  = YES
+  option   = -p
+}
+field {
+  id       = LOCK
+  label    = Lock the user's password
+  type     = BOOLEAN
+  vtab     = 1
+  option   = -L
+}
+field {
+  id       = UNLOCK
+  label    = Unlock the user's password
+  type     = BOOLEAN
+  option   = -U
+}
+
+action {
+  run: usermod%{NEW_LOGIN}%{COMMENT}%{HOME_DIR}%{UID}%{NON_UNIQUE}%{GROUP}%{GROUPS}%{APPEND}%{SHELL}%{EXPIRE_DATE}%{INACTIVE}%{PASSWD}%{LOCK}%{UNLOCK} %{LOGIN}
+}
+</PRE>
+</BODY>
+</HTML>

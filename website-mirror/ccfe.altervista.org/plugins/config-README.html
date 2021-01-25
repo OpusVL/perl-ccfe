@@ -1,0 +1,77 @@
+<HTML BGCOLOR="WHITE">
+<HEAD>
+<TITLE>ccfe-plugin-config README</TITLE>
+</HEAD>
+<BODY>
+<PRE>
+===============================================================================
+ccfe-plugin-config - CCFE plugin sample: CCFE configuration file editor
+===============================================================================
+
+This plugin add the shortcut "config" to CCFE, so it can be invoked with the
+command "ccfe config".
+With this plugin you can intercatively edit
+
+- CCFE Global configuration files
+  (usually /etc/ccfe/ccfe.conf) and optionally Fn keys labels definitions in
+  CCFE messages file (usually /usr/share/ccfe/msg/C/msg).
+
+- CCFE User private configuration files
+  ($HOME/.ccfe/ccfe.conf)
+
+To see your configuration changes, you have to exit from CCFE and run it again.
+You can also use this plugin to configure CCFE instances.
+
+
+CCFE FEATURES USED:
+- Field initialization by init{} block.
+- Notifications of errors detected during form initiaization.
+- init{} block checks that user has correct access permissions to configuration
+  files before post form to edit them.
+- Parameters passing from menu to form (so it needs CCFE >= 1.57)
+- Parameters passing from form to form
+- Dynamic forms:
+    Form changes if user requested Fn keys label editing
+    Form changes if user edit a new configuration file
+    Form changes if user edit a private configuration file
+- Example of forms containing informational text.
+- Example of dynamic form separators.
+
+
+LIMITATIONS:
+- Comments embedded in lines are not supported.
+- Terminal-dependent settings are not supported.
+
+
+NOTES:
+- This plugin is a beta release.
+- Before change a configuration file, this plugin backup it with extension
+  DayOfYear-HHMMSS.
+- Until CCFE 1.56, default global configuration file includes some
+  terminal-dependent settings, so you can edit it by setting the field
+  "Ignore terminal-dependent settings reading file" to "YES".
+- If you create a private CCFE configuration, to load it you need to
+  add or change the "load_user_objects" parameter to "YES" in the
+  /etc/ccfe/ccfe.conf file. Please see ccfe.conf(5) manpage.
+
+
+LICENSE:
+This program comes with ABSOLUTELY NO WARRANTY. You may redistribute copies of
+it under the terms of the GNU General Public License.
+For more information about these matters, see the file named COPYING in your
+system's documentation directory (usually /usr/share/doc/ccfe-plugin-config/).
+
+
+PLUGIN CONTENTS:
+  config.menu              : CCFE configuration type selector.
+  config.d/README          : This file.
+  config.d/ask_fname.form  : Configuration file name selector.
+  config.d/config.form     : Configuration file editor.
+  config.d/chlbls.sh       : Change Fn keys labels in message defnition file.
+  config.d/attributes.list : List of admitted screen attributes.
+  config.d/fn_key.list     : List of functions assignable to fn keys.
+  config.d/log_level.list  : List of admitted log levels.
+
+</PRE>
+</BODY>
+</HTML>

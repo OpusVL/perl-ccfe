@@ -1,0 +1,43 @@
+<HTML BGCOLOR="WHITE">
+<HEAD>
+<TITLE>usermod.form</TITLE>
+</HEAD>
+<BODY>
+<PRE>
+title {
+  System resources usage monitors
+}
+
+item {
+  id     = SAR
+  descr  = Report system activity informations
+  action = form:sysmon.d/sar
+}
+item {
+  id     = PS
+  descr  = Report current processes
+  action = run:ps axv
+}
+item {
+  id     = VMSTAT
+  descr  = Show virtual memory statistics
+  action = form:sysmon.d/vmstat
+}
+item {
+  id     = IOSTAT
+  descr  = Show Input/Output statistics
+  action = form:sysmon.d/iostat
+}
+item {
+  id     = TOP
+  descr  = Display O.S. tasks
+  action = system:top
+}
+item {
+  id     = README
+  descr  = View the README file
+  action = run:cat sysmon.d/README
+}
+</PRE>
+</BODY>
+</HTML>

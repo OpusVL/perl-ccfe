@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <META NAME="AUTHOR" CONTENT="Massimo Loschi" />
+  <TITLE>CCFE :: the Curses Command Front-end :: Download</TITLE>
+  <link rel="stylesheet" type="text/css" href="../style.css" media="screen" />
+
+  <script type="text/javascript" src="../jquery.fancybox/jquery-1.3.2.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="../jquery.fancybox/jquery.fancybox.css" media="screen" />
+  <script type="text/javascript" src="../jquery.fancybox/jquery.fancybox-1.2.1.pack.js"></script>
+  <script type="text/javascript">
+	  $(document).ready(function() {
+		  $('.fancybox').fancybox();
+          })
+  </script>
+  <style type="text/css">
+	  .fancybox-custom .fancybox-skin {
+		  box-shadow: 0 0 50px #222;
+	  }
+  </style>
+</head>
+<body>
+<div id="header">
+	<div id="logo">
+		<h1><a href="index.html">CCFE</a></h1>
+		<p>the Curses Command Front-end</a></p>
+<HR COLOR=WHITE SIZE=1>
+<A HREF="../it/dnload.html"><IMG ALT="Versione italiana" TITLE="Versione italiana" BORDER=0 SRC="../icons/flag_it.gif"></A>
+<A HREF="../en/dnload.html"><IMG ALT="English version" TITLE="English version" BORDER=0 SRC="../icons/flag_en.gif"></A>
+
+
+
+	</div>
+	<!-- end #logo -->
+	<div id="menu">
+		<ul>
+                        <li class="first"><A HREF="features.html">Features</A></LI>
+                        <li><A HREF="sshots.html">Screenshots</A></LI>
+                        <li><A HREF="install.html">Installing</A></LI>
+                        <li><A HREF="docs.html">Documentation</A></LI>
+                        <li><A HREF="faq.html">FAQ</A></LI>
+                        <li><A HREF="dnload.html">Download</A></LI>
+		</ul>
+	</div>
+	<!-- end #menu -->
+</div>
+<!-- end #header -->
+<div id="page">
+	<div id="content">
+		<div class="post">
+			<h3 class="title">Download</h3>
+			<div class="entry">
+<P></P>
+Last stable version: 1.58 (September 4, 2016)
+<UL>
+<LI><A HREF="../dnload/dnload.php?fname=ccfe-1.58.tar.gz">ccfe-1.58.tar.gz</A></LI>
+<LI><A HREF="../dnload/dnload.php?fname=ccfe-1.58-1.noarch.rpm">ccfe-1.58-1.noarch.rpm</A></LI>
+<LI><A HREF="../dnload/dnload.php?fname=ccfe_1.58-1_all.deb">ccfe_1.58-1_all.deb</A></LI>
+</UL>
+
+<P></P>
+Plugins / modules:
+<P></P>
+<TABLE BORDER=1 CELLPADDING=3 CELLSPACING=0>
+<TR BGCOLOR=LIGHTGRAY ALIGN=CENTER>
+<TH>Name</TH><TH>Version</TH><TH>Description</TH><TH>Notes</TH><TH COLSPAN=2>Package</TH>
+<TR>
+<TD ALIGN=CENTER>config</TD>
+<TD ALIGN=CENTER><I>experimental</I></TD>
+<TD ALIGN=LEFT>CCFE configuration editor. <A HREF="../plugins/config-README.html">README</A>; 
+<a class="fancybox" rel="plugin-config" href="../plugins/config-sshot0.png" title="ccfe-plugin-config main menu">Screenshots</a>
+<a class="fancybox" rel="plugin-config" href="../plugins/config-sshot10.png" title="Global configuration file selector"></a>
+<a class="fancybox" rel="plugin-config" href="../plugins/config-sshot10-1.png" title="Wait message during configuration file parsing"></a>
+<a class="fancybox" rel="plugin-config" href="../plugins/config-sshot11.png" title="Global parameters editing"></a>
+<a class="fancybox" rel="plugin-config" href="../plugins/config-sshot12.png" title="Configuration of 'F1' function key"></a>
+<a class="fancybox" rel="plugin-config" href="../plugins/config-sshot20.png" title="Private configuration file selector"></a>
+<a class="fancybox" rel="plugin-config" href="../plugins/config-sshot21.png" title="Private parameters editing (page 1)"></a>
+<a class="fancybox" rel="plugin-config" href="../plugins/config-sshot22.png" title="Private parameters editing (page 2)"></a>
+</TD>
+<TD>Full compatible from CCFE 1.57</TD>
+<TD><A HREF="../dnload/dnload.php?fname=ccfe-plugin-config-0.1-2.noarch.rpm">RPM</A></TD>
+<TD><A HREF="../dnload/dnload.php?fname=ccfe-plugin-config_0.1-2_all.deb">deb</A></TD>
+<TR>
+<TD ALIGN=CENTER>sysmon</TD>
+<TD ALIGN=CENTER>1.0</TD>
+<TD ALIGN=LEFT>System resources usage monitors. <A HREF="../plugins/sysmon-README.html">README</A>; <a class="fancybox" href="../plugins/sysmon-sshot.png" title="ccfe-plugin-sysmon screenshot">Screenshot</a></TD>
+<TD>Sample plugin provided with CCFE package; the presence of same files installed by it require to force installation (for example, using <TT>dpkg -i --force-overwrite ...</TT>)</TD>
+<TD><A HREF="../dnload/dnload.php?fname=ccfe-plugin-sysmon-1.0-1.noarch.rpm">RPM</A></TD>
+<TD><A HREF="../dnload/dnload.php?fname=ccfe-plugin-sysmon_1.0-1_all.deb">deb</A></TD>
+<TR>
+<TD ALIGN=CENTER>fping</TD>
+<TD ALIGN=CENTER>1.0</TD>
+<TD ALIGN=LEFT>Minimal front-end to fping(8) command. <a class="fancybox" href="../plugins/fping-sshot.png" title="ccfe-plugin-fping screenshot">Screenshot</a></TD>
+<TD>Requires CCFE &ge; 1.56</TD>
+<TD><A HREF="../dnload/dnload.php?fname=ccfe-plugin-fping-1.0-1.noarch.rpm">RPM</A></TD>
+<TD><A HREF="../dnload/dnload.php?fname=ccfe-plugin-fping_1.0-1_all.deb">deb</A></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER>smit</TD>
+<TD ALIGN=CENTER>1.51</TD>
+<TD ALIGN=LEFT>Plugin to add to CCFE an instance with a screen layout similar
+to AIX's System Management Interface Tool (SMIT).
+After installed, run <TT>ccfe</TT> to have the standard CCFE screen layout or
+run <TT>smit</TT> to have a screen layout like AIX's SMIT.
+<a class="fancybox" rel="plugin-smit" href="../plugins/smit-sshot1.png" title="Menu appearance sample">Screenshots</a>
+<a class="fancybox" rel="plugin-smit" href="../plugins/smit-sshot2.png" title="Form appearance sample"></a>
+</TD>
+<TD>Requires CCFE &ge; 1.51</TD>
+<TD><A HREF="../dnload/dnload.php?fname=ccfe-plugin-smit-1.51-1.noarch.rpm">RPM</A></TD>
+<TD><A HREF="../dnload/dnload.php?fname=ccfe-plugin-smit_1.51-1_all.deb">deb</A></TD>
+</TABLE>
+
+		        </div>
+		</div>
+	</div>
+</div>
+<!-- end #page -->
+<div id="footer">
+  <p>Copyright &copy; 2009-2016. Design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.</p>
+</div>
+<!-- end #footer -->
+</body>
+</html>

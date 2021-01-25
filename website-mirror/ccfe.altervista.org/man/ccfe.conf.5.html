@@ -1,0 +1,1010 @@
+<!-- Creator     : groff version 1.22.2 -->
+<!-- CreationDate: Wed Sep 21 22:16:33 2016 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CCFE.CONF</title>
+
+</head>
+<body>
+
+<h1 align="center">CCFE.CONF</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#GLOBAL CONFIGURATION SECTION">GLOBAL CONFIGURATION SECTION</a><br>
+<a href="#FORM CONFIGURATION SECTION">FORM CONFIGURATION SECTION</a><br>
+<a href="#FORM FIELD ATTRIBUTES CONFIGURATION SECTION">FORM FIELD ATTRIBUTES CONFIGURATION SECTION</a><br>
+<a href="#MENU CONFIGURATION SECTION">MENU CONFIGURATION SECTION</a><br>
+<a href="#OUTPUT BROWSER CONFIGURATION SECTION">OUTPUT BROWSER CONFIGURATION SECTION</a><br>
+<a href="#TERMINAL-DEPENDENT SETTINGS">TERMINAL-DEPENDENT SETTINGS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#FILES">FILES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ccfe.conf
+&minus; the Curses Command Front-end configuration file.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ccfe.conf</b>
+is the main configuration file for <b>ccfe</b>. It
+determines the aspect of the screens provided by the Curses
+Command Front-end and some other features.</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <i>ccfe
+configuration file</i> contains entries in the form:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">global {}
+menu_global {}
+form_global {}
+field_attr {}
+browser_global {}</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">The order in
+which they appear is not important. <b>Comments</b> begin
+with the &quot;<b>#</b>&quot; character, and continue until
+the end of the line. Empty lines are ignored. Keywords are
+not case sensitive. Every <i>configuration section</i> is a
+collection of <i>parameters</i> with the following
+syntax:</p>
+
+<pre style="margin-left:22%; margin-top: 1em">  configuration_section {
+    parameter = value
+    parameter = value
+     ...
+    parameter = value
+  }</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">Valid
+parameters are explained later with the following
+format:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>parameter_name</b></p>
+
+<p style="margin-left:22%;">Parameter description.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Values:</i>
+Notes on the syntax of the value of the field. If is present
+a list of values, the first element of the list is the
+default. The <b>&quot;&quot;</b> value represents the null
+value. <i><br>
+Required: Yes</i> or <i>no</i>, depending if the parameter
+is mandatory or not.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Program
+instances</b> <br>
+Implemented, but not yet documented!</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Configuration
+overrides</b> <br>
+It is possible to run CCFE by calling it with alternative
+names, so you can have a CCFE with a particular
+configuration for specific tasks: for example, you can
+configure CCFE to appear as the IBM AIX&rsquo;s System
+Management Interface Tool (SMIT), and invoke it with the
+<b>smit</b> command, so your operations people can have a
+similar interface to administer both AIX and both Linux
+hosts. In this case you simply need to make symbolic link
+(or a hard link) called <b>smit</b> to <b>ccfe</b>, so CCFE
+will refer all its objects with the name used to call it: it
+read the global configuration file <b>ccfe.conf</b> and next
+the <i>instance configuration file</i> smit.conf, then it
+refers for menus and forms to the directory $PREFIX/lib/smit
+instead the default <tt>$PREFIX/lib/ccfe</tt>, then load the
+default menu <tt>$PREFIX/lib/smit/ccfe.menu</tt></p>
+
+<h2>GLOBAL CONFIGURATION SECTION
+<a name="GLOBAL CONFIGURATION SECTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The <b>global
+{}</b> section defines general configuration parameters.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>screen_layout</b>
+<br>
+Defines the layout of the screen: <b>normal</b> if you want
+reverse background of the pop-up windows, centered menu
+options, screen areas separated by horizontal lines and
+titles in bold font, but if you plan to use <b>ccfe</b> with
+low functions terminals and you don&rsquo;t want these
+features, you can set it as <b>simple</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<b>normal</b>|<b>simple</b> <br>
+Required: No</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hide_cursor</b>
+<br>
+Show or hide the cursor.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<b>YES</b>|<b>NO</b> <br>
+Required: No</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>show_screen_name</b>
+<br>
+Show the file name of menu or form in the right of the top
+line of the screen.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<b>YES</b>|<b>NO</b> <br>
+Required: No</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>path</b>
+<br>
+Values: <b>YES</b>|<b>NO</b> <br>
+Required: No</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>shell</b>
+<br>
+The shell used for the execution of every command string
+specified in forms and menus. <b>WARNING: no check is
+actually made on the validity of the shell:</b> for example,
+it is not verified that it is listed in <tt>/etc/shells</tt>
+system file.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>user_shell</b>
+<br>
+The shell called when user presses <b>&lt;shell_escape
+key&gt;</b> key. If <b>user_shell</b> is not present in
+configuration file, then the user&rsquo;s shell in
+<tt>/etc/passwd</tt> system file will be used. Else, if it
+is present but it is not valid (that is, not listed in
+<tt>/etc/shells</tt> system file), then the message with ID
+<b>BAD_SHELL_MSG</b> (see the <b>MULTILINGUAL SUPPORT</b>
+section in <b>ccfe</b>(1) manpage) will be displayed in a
+pop-up window. So, if you want to disable the user escape
+shell, you simply have to set an invalid value to
+<b>user_shell</b> parameter. For example</p>
+
+<p style="margin-left:22%; margin-top: 1em">user_shell =
+DISABLED</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>log_level</b>
+<br>
+Define the verbosity of the log file. The default
+configuration only log actions with <b>log</b> option.
+Except the first level, which can be used to trace user
+activity, all other details are useful for debugging
+purposes during new menus or forms development. Invoking
+<b>ccfe</b> with <b>-d</b> option enables the maximum log
+detail, depending by <b>permit_debug</b> parameter explained
+below. <b><br>
+1</b> (LOG_NORMAL)</p>
+
+<p style="margin-left:22%;">Write to logfile the commands
+executed by the actions with the <b>log</b> attribute
+specified.</p>
+
+<p style="margin-left:11%;"><b>2</b> (LOG_LIST_CMD)</p>
+
+<p style="margin-left:22%;">Write to logfile informations
+related <b>list_cmd</b> of type <b>command</b> attributes:
+executed commands and their output.</p>
+
+<p style="margin-left:11%;"><b>4</b> (LOG_DEFAULT_CMD)</p>
+
+<p style="margin-left:22%;">Write to logfile details of
+commands executed to setup the default value of forms
+fields.</p>
+
+<p style="margin-left:11%;"><b>8</b> (LOG_ACTION_CMD)</p>
+
+<p style="margin-left:22%;">Write to logfile the commands
+invoked by action blocks.</p>
+
+<p style="margin-left:11%;"><b>16</b> (LOG_FIELD_VALS)</p>
+
+<p style="margin-left:22%;">Write to logfile the value of
+fields before execute action blocks.</p>
+
+<p style="margin-left:11%;"><b>32</b> (LOG_MENU_CHOICE)</p>
+
+<p style="margin-left:22%;">Write to logfile selections in
+menus and pop-up menus.</p>
+
+<p style="margin-left:11%;"><b>64</b> (LOG_ACTION_OUT)</p>
+
+<p style="margin-left:22%;">Write to logfile the output of
+executed action blocks.</p>
+
+<p style="margin-left:11%;"><b>128</b>
+(LOG_SYSCALL_ENV)</p>
+
+<p style="margin-left:22%;">Write to logfile the
+environment used to execute external commands.</p>
+
+<p style="margin-left:11%;"><b>256</b> (LOG_SCAN_PATHS)</p>
+
+<p style="margin-left:22%;">Write to logfile the search
+path used to look for forms, menus, and configuration
+files.</p>
+
+<p style="margin-left:11%;"><b>512</b>
+(LOG_INITFORM_OUT)</p>
+
+<p style="margin-left:22%;">Write to logfile the output of
+executed init blocks.</p>
+
+<p style="margin-left:22%; margin-top: 1em">Examples:</p>
+
+<p style="margin-left:22%; margin-top: 1em"><tt>log_level =
+1 # Log only actions with</tt> <b>log</b> attribute</p>
+
+<p style="margin-left:22%; margin-top: 1em">log_level = 577
+# 577 = 1 + 64 + 512</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>permit_debug</b>
+<br>
+If <b>YES</b>, users can enable debugging messages in their
+logfiles by invoking <b>ccfe</b> with <b>-d</b> option.
+Please see the <b>ccfe</b>(1) manpage.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<b>YES</b>|<b>NO</b> <br>
+Required: No</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>load_user_objects</b>
+<br>
+Define if $HOME/.ccfe directory has to be scanned when load
+<b>ccfe</b> configuration, forms and menus.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<b>NO</b>|<b>YES</b> <br>
+Required: No</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>key_f1 <br>
+key_f2 <br>
+key_f3 <br>
+key_f4 <br>
+key_f5 <br>
+key_f6 <br>
+key_f7 <br>
+key_f8 <br>
+key_f9 <br>
+key_f10 <br>
+key_f11 <br>
+key_f12</b> <br>
+Assign a function to keyboard standard programmable keys.
+The functions available are the following:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p><b>back</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>Exits from current form or menu or pop-up window and go
+to the previous (if any) without executing action.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p><b>exit</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>Exit from <b>ccfe</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p><b>help</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>Show the contextual help. Please see the
+<b>ccfe_help</b>(5) manual page.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p><b>list</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>Show a pop-up window with a list of admitted values for
+the entry field to select from. Depending on the list type,
+it is possible to select just one value or multiple values.
+Keys enabled for the selection are:</p></td></tr>
+</table>
+
+<p style="margin-left:32%;"><b>&lt;sel_items key&gt;</b> or
+<b>&lt;Spacebar&gt;</b></p>
+
+<p style="margin-left:43%;">Please see the explanation of
+the function <b>sel_items</b> below.</p>
+
+<p style="margin-left:32%;"><b>&lt;A&gt;</b> or
+<b>&lt;a&gt;</b></p>
+
+<p style="margin-left:43%;">Only available in multiple
+values lists, select all the items.</p>
+
+<p style="margin-left:32%;"><b>&lt;U&gt;</b> or
+<b>&lt;u&gt;</b></p>
+
+<p style="margin-left:43%;">Only available in multiple
+values lists, unselect all the items.</p>
+
+<p style="margin-left:32%;"><b>&lt;Left arrow&gt;</b> and
+<b>&lt;Right arrow&gt;</b></p>
+
+<p style="margin-left:43%;">Scroll horizontally the menu if
+it is more wider than the pop-up window.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="5%">
+
+
+<p><b>&lt;/&gt;</b></p></td>
+<td width="6%"></td>
+<td width="57%">
+
+
+<p>Find an item in the list, starting from the current and
+using the <b>menu_pattern</b>(3X) menu pattern match
+management.</p> </td></tr>
+</table>
+
+<p style="margin-left:32%;"><b>&lt;n&gt;</b> or
+<b>&lt;N&gt;</b></p>
+
+<p style="margin-left:43%;">Find the next item, using the
+search pattern previously entered with the <b>/</b> (find)
+command.</p>
+
+<p style="margin-left:32%;"><b>&lt;Enter&gt;</b></p>
+
+<p style="margin-left:43%;">Close the pop-up window and put
+the selected value(s) in the field.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>redraw</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Refresh the screen if it has been accidentally
+overwritten, for example, by a <b>write</b>(1) command from
+another user.</p></td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>reset_field</b></p>
+
+<p style="margin-left:32%;">Resets the value of the actual
+field to the one at the form submission.</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="6%">
+
+
+<p><b>save</b></p></td>
+<td width="4%"></td>
+<td width="68%">
+
+
+<p>In form screens: save the actual value of the fields in
+the logfile. In output browser screen: save in a text file
+the displayed output, or save the action in a shell script
+ready for execution outside <b>ccfe</b>.</p></td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>sel_items</b></p>
+
+<p style="margin-left:32%;">Only available in multiple
+values lists, select or unselect the higlighted item.</p>
+
+<p style="margin-left:22%;"><b>shell_escape</b></p>
+
+<p style="margin-left:32%;">Escapes temporary to a shell
+(please see <b>user_shell</b> parameter in
+<b>ccfe.conf</b>(5) man page).</p>
+
+<p style="margin-left:22%;"><b>show_action</b></p>
+
+<p style="margin-left:32%;">In a <i>form screen</i>,
+displays a pop-up window with the action that will be
+executed by pressing <b>&lt;Enter&gt;</b>, with the values
+actually in the fields. In a <i>output browser screen</i>,
+displays a pop-up window with the executed action.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Please note
+that these parameters does not change the label of the
+function key on the screens: you have to modify the
+corrisponding definition <b>KEY_xxxx_LABEL</b> in the
+<i>global messages configuration file</i>
+<tt>/usr/share/ccfe/msg/LOCALE_ID/ccfe</tt>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Example:</p>
+
+<pre style="margin-left:11%; margin-top: 1em">  In /etc/ccfe/ccfe.conf:</pre>
+
+
+<p style="margin-left:22%;"><b>key_f10 = exit</b></p>
+
+<pre style="margin-left:11%; margin-top: 1em">  and in /usr/lib/ccfe/msg/C/ccfe:</pre>
+
+
+<p style="margin-left:22%;"><b>KEY_F10_LABEL =
+&quot;Quit&quot;</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Required:
+No</p>
+
+<h2>FORM CONFIGURATION SECTION
+<a name="FORM CONFIGURATION SECTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>form_global {}</b> block defines the parameters common to
+all <b>ccfe</b> instance forms. Some parameters can depend
+by terminal name in which <b>ccfe</b> is running: please see
+the <b>TERMINAL-DEPENDENT SETTINGS</b> section below.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>field_pad</b>
+<br>
+Defines the character used to fill normal fields. Be careful
+to conversion to blanks performed by <b>ncurses</b>(3X)
+library: for example, if <b>field_pad=&quot;_&quot;</b> and
+the user inserts the value &quot;root_vg usr_vg var_vg&quot;
+in a field, it appears on screen as
+&quot;root_vg_usr_vg_var_vg&quot;, but the string &quot;root
+vg usr vg var vg&quot; will be passed to <b>action {}</b>
+block!</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values: A
+charachter delimited by double quote, for example:
+<b>field_pad = &quot; &quot;</b> <br>
+Default: <b>&quot; &quot;</b> <br>
+Required: No</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>hidden_field_pad</b>
+<br>
+Defines the character used to fill fields of <b>hidden</b>
+type.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values: A
+charachter delimited by double quote, for example:
+<b>hidden_field_pad = &quot;X&quot;</b> <br>
+Default: <b>&quot;*&quot;</b> <br>
+Required: No</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>initial_ovl_mode</b>
+<br>
+Set the overlay mode at program startup to input characters
+in the fields; if <b>NO</b> the insert mode is selected.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<b>YES</b>|<b>NO</b> <br>
+Required: No</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>show_changed_fields</b>
+<br>
+Display with a different video attribute the value of the
+fields changed by the user. Please see the
+<b>changed_value_fg</b> and <b>changed_value_bg</b>
+parameters in the <b>FORM FIELD ATTRIBUTES CONFIGURATION
+SECTION</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<b>YES</b>|<b>NO</b> <br>
+Required: No</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>show_field_flags</b>
+<br>
+Show flags (for instance, the <b>*</b> character before
+fields with required value) for every field.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<b>YES</b>|<b>NO</b> <br>
+Required: No</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>show_dots</b>
+<br>
+Fill with some dots the gap between prompt and value of
+fields of forms.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<b>YES</b>|<b>NO</b> <br>
+Required: No</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>value_delimiters</b>
+<br>
+Specify the characters to use to show when starts and ends
+the value of the field. Useful when <b>field_pad</b> is a
+blank.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values: A
+couple of charachters delimited by double quote and
+separated by a comma: for example: <b>value_delimiters =
+&quot;[&quot;,&quot;]&quot;</b> <br>
+Default: <b>&quot; &quot;,&quot; &quot;</b> <br>
+Required: No</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>field_value_pos</b>
+<br>
+Define the column position of the screen for the fields
+value of the forms. The special value <b>-1</b> (default)
+means they will be right aligned.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<i>integer value</i> <br>
+Default: <b>-1</b> <br>
+Required: No</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>fnkeys_rows</b>
+<br>
+Define the number of bottom rows of the screen used to
+display the function key labels defined in the <i>ccfe
+message file definition</i>. Warning: no check is made on
+this value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<i>integer value</i> <br>
+Default: <b>1</b> <br>
+Required: No</p>
+
+<h2>FORM FIELD ATTRIBUTES CONFIGURATION SECTION
+<a name="FORM FIELD ATTRIBUTES CONFIGURATION SECTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>field_attr {}</b> and <b>active_field_attr {}</b> blocks
+defines the video attributes common to all <b>ccfe</b>
+instance forms. The accepted values are the standard
+<b>ncurses</b>(3X) video attributes, as defined in
+<b>&lt;ncurses.h&gt;</b>: for example</p>
+
+<p style="margin-left:22%; margin-top: 1em">field_attr {
+<br>
+label_fg = A_NORMAL <br>
+}</p>
+
+<p style="margin-left:11%; margin-top: 1em">Please see them
+in the <b>curs_attr</b>(3X) manpage. It is possible to
+define <b>field_attr {}</b> and <b>active_field_attr {}</b>
+blocks for several terminal types: <b>ccfe</b> use the one
+with the terminal type where it is running; please see the
+<b>TERMINAL-DEPENDENT SETTINGS</b> section below.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>label_fg
+<br>
+label_bg</b> <br>
+Fields label foreground and background video attributes.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>value_fg
+<br>
+value_bg</b> <br>
+Fields initial value foreground and background video
+attributes.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>changed_value_fg
+<br>
+changed_value_bg</b> <br>
+Foreground and background video attributes for fields value
+changed by user.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Please see the
+<b>EXAMPLES</b> section below.</p>
+
+<h2>MENU CONFIGURATION SECTION
+<a name="MENU CONFIGURATION SECTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>menu_global {}</b> block defines the parameters common to
+all <b>ccfe</b> instance menus.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>mark_noaction_items</b>
+<br>
+Options without defined action will be displayed inside
+parentheses.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<b>NO</b>|<b>YES</b> <br>
+Required: No</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>fnkeys_rows</b>
+<br>
+Define the number of bottom rows of the screen used to
+display the function key labels defined in the <i>ccfe
+message file definition</i>. Warning: no check is made on
+this value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<i>integer value</i> <br>
+Default: 1 <br>
+Required: No</p>
+
+<h2>OUTPUT BROWSER CONFIGURATION SECTION
+<a name="OUTPUT BROWSER CONFIGURATION SECTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The
+<b>browser_global {}</b> block defines the parameters for
+the screen used to browse the output of an executed menu or
+form action. Available parameters are:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>max_rows</b>
+<br>
+Size of the buffer used to display the standard output and
+error of the action executed. If the action produces a
+bigger output, then a pop-up message window will inform the
+user how to view it for entire.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>info_attr</b>
+<br>
+Video attribute used to display the <b>ccfe</b> generated
+messages (for example, when an action is interrupted with
+<b>&lt;Ctrl&gt;+C</b>).</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values: a
+standard <b>ncurses</b>(3X) video attribute, as defined in
+<b>&lt;ncurses.h&gt;</b>. Please see them in the
+<b>curs_attr</b>(3X) manpage. <br>
+Default: <b>A_REVERSE</b> <br>
+Required: No</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>end_marker</b>
+<br>
+String to show at the end of the output produced by
+<b>action{}</b> block. <b>info_attr</b> is used as video
+attribute. <br>
+To disable it, please set it to a null value:</p>
+<pre style="margin-left:11%;">  end_marker =</pre>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<i>string value</i> <br>
+Default: <b>**** end of output ****</b> <br>
+Required: No</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>stderr_attr</b>
+<br>
+Video attribute used to display the standard error rows.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values: a
+standard <b>ncurses</b>(3X) video attribute, as defined in
+<b>&lt;ncurses.h&gt;</b>. Please see them in the
+<b>curs_attr</b>(3X) manpage. <br>
+Default: <b>A_BOLD</b> <br>
+Required: No</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>stdout_attr</b>
+<br>
+Video attribute used to display the standard output
+rows.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values: a
+standard <b>ncurses</b>(3X) video attribute, as defined in
+<b>&lt;ncurses.h&gt;</b>. Please see them in the
+<b>curs_attr</b>(3X) manpage. <br>
+Default: <b>A_NORMAL</b> <br>
+Required: No</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>fnkeys_rows</b>
+<br>
+Define the number of bottom rows of the screen used to
+display the function key labels defined in the <i>ccfe
+message file definition</i>. Warning: no check is made on
+this value.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values:
+<i>integer value</i> <br>
+Default: <b>1</b> <br>
+Required: No</p>
+
+<h2>TERMINAL-DEPENDENT SETTINGS
+<a name="TERMINAL-DEPENDENT SETTINGS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Some settings
+can depend on terminal type used to run <b>ccfe</b>. For
+example</p>
+
+<pre style="margin-left:11%; margin-top: 1em">  form_global { field_pad.linux = &quot;_&quot; }</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">sets the
+parameter <b>field_pad</b> only for terminals of type
+<b>linux</b>. The <i>terminal ID</i> to use is the same of
+the environment variable TERM, case sensitive. The effective
+parameter value depends by the order of its configuration:
+for example:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p>Sets <b>field_pad=&quot; &quot;</b> for all terminal
+types except <b>linux</b> field_pad=&quot;_&quot;.</p></td></tr>
+</table>
+
+<pre style="margin-left:15%; margin-top: 1em">  form_global {
+    field_pad        = &quot; &quot;
+    field_pad.linux  = &quot;_&quot;
+    hidden_field_pad = &quot;*&quot;
+  }</pre>
+
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+<p style="margin-top: 1em">Sets <b>field_pad=&quot;
+&quot;</b> for every terminal type: the <b>field_pad</b>
+overrides the preceding <b>field_pad.xterm</b> and
+<b>field_pad.linux</b>:</p> </td></tr>
+</table>
+
+<pre style="margin-left:15%; margin-top: 1em">  form_global {
+    field_pad.linux  = &quot;_&quot;
+    field_pad.xterm  = &quot;.&quot;
+    field_pad        = &quot; &quot;
+    hidden_field_pad = &quot;*&quot;
+  }</pre>
+
+
+
+<p style="margin-left:11%; margin-top: 1em">Terminal-dependent
+settings are:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="3%"></td>
+<td width="39%">
+
+
+<p style="margin-top: 1em">form_global { field_pad }</p></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="39%">
+
+
+<p>field_attr {}</p></td>
+<td width="46%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="39%">
+
+
+<p>active_field_attr {}</p></td>
+<td width="46%">
+</td></tr>
+</table>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+<pre style="margin-left:11%; margin-top: 1em">  # The Curses Command Front-end default configuration file.
+
+  global {
+    screen_layout       = Normal
+    hide_cursor         = YES
+    shell               = /bin/sh
+    log_level           = 1
+    #path                = /path/to/add:/another/path/to/add
+    #user_shell          = /bin/ksh
+  }
+
+  browser_global {
+    max_rows    = 5000
+    info_attr   = A_REVERSE
+    stderr_attr = A_BOLD
+    stdout_attr = A_NORMAL
+    end_marker  = **** end of output ****
+  }
+
+  menu_global {
+    mark_noaction_items = YES
+  }
+
+  form_global {
+    field_pad           = &quot; &quot;
+    field_pad.linux     = &quot;_&quot;
+    hidden_field_pad    = &quot;*&quot;
+    show_changed_fields = YES
+    show_field_flags    = YES
+    initial_ovl_mode    = YES
+  }
+
+  field_attr {
+    label_fg         = A_NORMAL
+    label_bg         = A_NORMAL
+    value_fg         = A_NORMAL
+    value_bg         = A_UNDERLINE
+    changed_value_fg = A_BOLD
+    changed_value_bg = A_UNDERLINE
+  }
+  field_attr.linux {
+    label_fg         = A_NORMAL
+    label_bg         = A_NORMAL
+    value_fg         = A_NORMAL
+    value_bg         = A_NORMAL
+    changed_value_fg = A_BOLD
+    changed_value_bg = A_NORMAL
+  }
+
+
+  active_field_attr {
+    label_fg         = A_BOLD
+    label_bg         = A_NORMAL
+    value_fg         = A_NORMAL
+    value_bg         = A_REVERSE
+    changed_value_fg = A_NORMAL
+    changed_value_bg = A_REVERSE
+  }</pre>
+
+
+<h2>FILES
+<a name="FILES"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><tt>/etc/ccfe/ccfe.conf</tt></p>
+
+<p style="margin-left:22%;">Global configuration.</p>
+
+
+<p style="margin-left:11%;"><tt>/etc/ccfe/CALLNAME.conf</tt></p>
+
+<p style="margin-left:22%;">Instance configuration. For
+example: <tt>/etc/ccfe/foo.conf</tt>,
+<tt>/etc/ccfe/bar.conf</tt></p>
+
+
+<p style="margin-left:11%;"><tt>$HOME/.ccfe/ccfe.conf</tt></p>
+
+<p style="margin-left:22%;">User global preferences.</p>
+
+
+<p style="margin-left:11%;"><tt>$HOME/.ccfe/CALLNAME.conf</tt></p>
+
+<p style="margin-left:22%;">User instance preferences. For
+example: <tt>$HOME/.ccfe/foo.conf</tt></p>
+
+
+<p style="margin-left:11%;"><tt>/usr/share/ccfe/msg/LOCALE_ID/CALLNAME</tt></p>
+
+<p style="margin-left:22%;">Instance messages
+configuration.</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ccfe</b>(1),
+<b>ccfe_form</b>(5), <b>ccfe_menu</b>(5),
+<b>ncurses</b>(3X), <b>curs_attr</b>(3X), <b>form</b>(3X),
+<b>shells</b>(5)</p>
+<hr>
+</body>
+</html>

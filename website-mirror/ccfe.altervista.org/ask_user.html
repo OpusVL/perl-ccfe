@@ -1,0 +1,26 @@
+</HTML BGCOLOR="WHITE">
+<HEAD>
+<TITLE>ask_user.form</TITLE>
+</HEAD>
+</BODY>
+<PRE>
+# ask_user.form
+
+title {
+  Modify a user account
+}
+
+field {
+  id       = UNAME
+  label    = Login name
+  type     = STRING
+  required = YES
+  len      = 8
+  hscroll  = YES
+  list_cmd = command:single-val:cut -d : -f 1,5 --output-delimiter=" " /etc/passwd | sort
+}
+
+action { form:usermod %{UNAME} }
+</PRE>
+</BODY>
+</HTML>

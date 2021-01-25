@@ -1,0 +1,513 @@
+<!-- Creator     : groff version 1.22.2 -->
+<!-- CreationDate: Wed Sep 21 22:16:33 2016 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta name="generator" content="groff -Thtml, see www.gnu.org">
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="Content-Style" content="text/css">
+<style type="text/css">
+       p       { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       pre     { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       table   { margin-top: 0; margin-bottom: 0; vertical-align: top }
+       h1      { text-align: center }
+</style>
+<title>CCFE MENU</title>
+
+</head>
+<body>
+
+<h1 align="center">CCFE MENU</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#GENERAL MENU ATTRIBUTES">GENERAL MENU ATTRIBUTES</a><br>
+<a href="#ITEM DEFINITION">ITEM DEFINITION</a><br>
+<a href="#DYNAMIC MENUS">DYNAMIC MENUS</a><br>
+<a href="#EXAMPLES">EXAMPLES</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<h2>NAME
+<a name="NAME"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">ccfe menu
+&minus; the Curses Command Front-end menu definition
+file.</p>
+
+<h2>DESCRIPTION
+<a name="DESCRIPTION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The Curses
+Command Front-end menu is a tool which permits to collect
+scripts or CCFE forms in hierarchical menus. When the user
+selects an item of a menu, then is executed the
+corresponding <b>action</b>, which can be an O.S. command,
+an external script, a <b>CCFE form</b> or another <b>CCFE
+menu</b>. It is based on the menu library, the curses
+extensions for programming menus: please see the
+<b>ncurses</b>(3X) and <b>menu</b>(3X) manpages. A CCFE menu
+can be a <i>static menu</i> or a <i>dynamic menu</i>: in the
+first case all the menu definition (both general definition
+and items definition) is contained in a single file, in the
+second case they are splitted in many files: it is a simple
+way to distribute software managed by CCFE (please see
+<b>DYNAMIC MENUS</b> below).</p>
+
+<h2>SYNOPSIS
+<a name="SYNOPSIS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A menu is
+definited in a file with name terminated with the
+<i>.menu</i> extension, and the following attributes can be
+used in that file:</p>
+
+<p style="margin-left:22%; margin-top: 1em">title {} <br>
+top {} <br>
+path {} <br>
+item {} <br>
+item {} <br>
+... <br>
+item {}</p>
+
+<p style="margin-left:11%; margin-top: 1em">(some of them
+are optional). <b><br>
+Comments</b> begins with the &quot;<b>#</b>&quot; character,
+and continue until the end of the line. Empty lines are
+ignored.</p>
+
+<h2>GENERAL MENU ATTRIBUTES
+<a name="GENERAL MENU ATTRIBUTES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>title {
+STRING }</b></p>
+
+<p style="margin-left:22%;">Title of the menu to display.
+<br>
+It is also used as <i>fast path description</i> when
+<b>ccfe(1)</b> is called with <b>-f</b> option. <br>
+If title attribute is omitted, it will be used the
+<i>description</i> of the item selected from the calling
+menu, but if omitted in a menu called with a <i>fast
+path</i> (see ccfe(1)), then no title will be used. <br>
+Optional: Yes <br>
+Examples: <br>
+title { Configure System Services } <br>
+or <br>
+title { <br>
+Configure System Services <br>
+}</p>
+
+<p style="margin-left:11%;"><b>top { STRING1\nSTRING2
+}</b></p>
+
+<p style="margin-left:22%;">Text lines (max 2) to display
+on the bottom of the menu, between the title and the items
+of the menu. If omitted, the lines of the parameter
+<i>form_top_msg</i> in <b>ccfe.conf</b>(5) will be
+displayed. <br>
+Optional: Yes <br>
+Examples: <br>
+top { <br>
+Move cursor to desired item and press Enter. <br>
+}</p>
+
+<p style="margin-left:11%;"><b>bottom { STRING1\nSTRING2
+}</b></p>
+
+<p style="margin-left:22%;">Not yet implemented.</p>
+
+<p style="margin-left:11%;"><b>path { LIST:OF:PATHNAMES
+}</b></p>
+
+<p style="margin-left:22%;">List of extra path (added to
+environment variable PATH) to search binaries calling the
+O.S. in the menu <b>action{}</b>. Note: <b>path{}</b> is
+used only to search binaries, and not for forms and menus.
+<br>
+Optional: Yes <br>
+Formato: <br>
+- LIST:OF:PATHNAMES has the character &rsquo;:&rsquo; as
+separator; <br>
+- LIST:OF:PATHNAMES can contain relative and absolute
+subdirectories; <br>
+- le directory con path relativo sono relativizzate a
+$SCREEN_DIR <br>
+Examples: <br>
+path { ldap_lib }</p>
+
+<p style="margin-left:11%; margin-top: 1em">NB: XX_abc_XX
+indica una frase da rivedere o tradurre.</p>
+
+<h2>ITEM DEFINITION
+<a name="ITEM DEFINITION"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>item {}</b>
+Defines an item of the menu. It must appear at least one
+time in a menu definition file. Every item definition is a
+collection of attributes, with the following syntax:</p>
+
+<p style="margin-left:22%; margin-top: 1em">item {</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="14%">
+
+
+<p>attribute</p></td>
+<td width="2%"></td>
+<td width="10%">
+
+
+<p>= value</p></td>
+<td width="42%">
+</td></tr>
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="14%">
+
+
+<p>attribute</p></td>
+<td width="2%"></td>
+<td width="10%">
+
+
+<p>= value</p></td>
+<td width="42%">
+</td></tr>
+</table>
+
+<p style="margin-left:48%;">...</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="32%"></td>
+<td width="14%">
+
+
+<p style="margin-top: 1em">attribute</p></td>
+<td width="2%"></td>
+<td width="10%">
+
+
+<p style="margin-top: 1em">= value</p></td>
+<td width="42%">
+</td></tr>
+</table>
+
+<p style="margin-left:22%;">}</p>
+
+<p style="margin-left:11%; margin-top: 1em">Valid item
+attributes are explained later with the following
+format:</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>attribute_name</b></p>
+
+<p style="margin-left:22%;">Attribute description.</p>
+
+<p style="margin-left:22%; margin-top: 1em"><i>Values:</i>
+Notes on the syntax of the value of the field. If there is a
+list of values, the first element of the list is the
+default. The <b>&quot;&quot;</b> value represents the null
+value. <i><br>
+Required: Yes</i> or <i>no</i>, depending if the attribute
+is mandatory or not. <i><br>
+Types:</i> List of field <b>type</b> for which this
+attribute is valid.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>id</b> <br>
+Identifier of the item used to refer its value by help
+procedure. It must be unique in the scope of the menu.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values: An
+upper case string (but it is case insensitive) composed by
+characters A-Z,0-9,-,_ <br>
+Required: Yes <br>
+Types: All</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>descr</b>
+<br>
+Text of the item to put in the menu.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Values: A
+string of any charachter. <br>
+Required: Yes</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>action</b>
+<br>
+Action to execute when this item is highlighted and the
+<b>&lt;Enter&gt;</b> key is pressed. The selection of items
+without this attribute have the same effect to press the
+<b>&lt;back key&gt;</b>. Items without this attribute
+defined can be marked; please see the
+<b>mark_noaction_items</b> parameter in the
+<b>ccfe.conf</b>(5) manual page. The syntax for a menu
+action is the following:</p>
+
+<p style="margin-left:22%; margin-top: 1em"><b>action {</b>
+<i>action-type</i>[<b>(</b><i>options</i><b>)</b>]<b>:</b>
+<i>action-args</i> <b>}</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Where: <i><br>
+action-type</i> can be one of the following:</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>run</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Execute <i>action-args</i> and then show the results in
+the <b>Output Browser screen</b> (please see the
+<b>ccfe</b>(1) manpage). <i>action-args</i> can be a simple
+command or a complete script which will be passed to a
+command shell for parsing (with &quot;sh -c&quot;). The
+shell used is the one specified in the <b>shell</b>
+parameter of the <tt>ccfe.conf</tt> configuration file.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>menu</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Load and display the specified menu. Before the name of
+menu, you can specify a path relative to /usr/share/ccfe
+directory (for example <tt>demo.d/sysmon</tt>).</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>form</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Load and post the specified form. Note that it is not
+possible to pass arguments as when calling a form from
+another form. Before the name of form, you can specify a
+path relative to /usr/share/ccfe directory (for example
+<tt>users.d/ask_user</tt>).</p> </td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>system</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Temporarily exit from <b>ccfe</b>, executes
+<i>action-args</i> and returns in <b>ccfe</b>. This is
+useful for actions which need user interaction: for example
+the <b>passwd</b>(1) command. If <b>wait_key</b> is
+specified in <i>options</i>, then it is displayed a message
+reporting the exit status and wait a user keystroke before
+to return in <b>ccfe</b>.</p></td></tr>
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="9%">
+
+
+<p><b>exec</b></p></td>
+<td width="1%"></td>
+<td width="68%">
+
+
+<p>Terminate <b>ccfe</b> and executes <i>action-args</i>.
+This is useful to return to Operating System after calling
+external commands or applications. Be aware that
+<i>action-args</i> are executed directly instead of via a
+command shell, so invocation errors may not be reported.</p></td></tr>
+</table>
+
+<p style="margin-left:11%; margin-top: 1em"><i>options</i>
+is a comma-separated list of one or more of the following
+options:</p>
+
+<p style="margin-left:22%;"><b>confirm</b></p>
+
+<p style="margin-left:32%;">Open a pop-up window to request
+a confirm before execute action. The option highlighted by
+default is &quot;No&quot; (not confirm).</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="22%"></td>
+<td width="4%">
+
+
+<p><b>log</b></p></td>
+<td width="6%"></td>
+<td width="68%">
+
+
+<p>Save in the logfile the output of the execution of the
+action.</p> </td></tr>
+</table>
+
+<p style="margin-left:22%;"><b>wait_key</b></p>
+
+<p style="margin-left:32%;">Valid only for
+<i>action-type</i><b>=system</b>: when action is completed,
+wait for continuing until the user presses a key.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Required:
+No</p>
+
+<h2>DYNAMIC MENUS
+<a name="DYNAMIC MENUS"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">A <i>dynamic
+menu</i> is a directory whose files are used to build the
+menu description: the file named <b>definition</b> must
+exists and contains general menu attributes (like
+<b>title{}</b>, <b>top{}</b> and <b>bottom{}</b> blocks).
+Every item description is contained in a file: its name is
+user defined, but the extension must be <b>.item</b>.
+<b>*.item</b> files are sorted, so you can establish the
+items order by the name of their files definition. At least
+one <b>.item</b> file must exists.</p>
+
+<p style="margin-left:11%; margin-top: 1em">For example,
+the dynamic menu <i>demo</i> is defined by the following
+files:</p>
+
+<pre style="margin-left:11%;">  /usr/lib/ccfe/ccfe/demo.menu/
+  /usr/lib/ccfe/ccfe/demo.menu/definition
+  /usr/lib/ccfe/ccfe/demo.menu/recursive.item
+  /usr/lib/ccfe/ccfe/demo.menu/sysmon.item</pre>
+
+
+<p style="margin-left:11%; margin-top: 1em">where</p>
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p>&bull;</p></td>
+<td width="3%"></td>
+<td width="79%">
+
+
+<p><tt>/usr/lib/ccfe/ccfe/demo.menu/definition</tt> content
+is:</p> </td>
+<td width="6%">
+</td></tr>
+</table>
+
+<pre style="margin-left:15%;">  title {
+    CCFE Demo Menu
+  }</pre>
+
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="3%"></td>
+<td width="85%">
+
+
+
+<p style="margin-top: 1em"><tt>/usr/lib/ccfe/ccfe/demo.menu/recursive.item</tt>
+content is:</p></td></tr>
+</table>
+
+<pre style="margin-left:15%;">  item {
+    id     = RECURSIVE
+    descr  = Test form recursivity
+    action = form:demo.d/recursive
+  }</pre>
+
+
+
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="1%">
+
+
+<p style="margin-top: 1em">&bull;</p></td>
+<td width="3%"></td>
+<td width="80%">
+
+
+
+<p style="margin-top: 1em"><tt>/usr/lib/ccfe/ccfe/demo.menu/sysmon.item</tt>
+content is:</p></td>
+<td width="5%">
+</td></tr>
+</table>
+<pre style="margin-left:15%;">  item {
+    id     = SYSMON
+    descr  = System resources usage monitors
+    action = menu:sysmon
+  }
+
+</pre>
+
+<p style="margin-left:11%; margin-top: 1em">Please see the
+samples included in the CCFE distribution package.</p>
+
+<h2>EXAMPLES
+<a name="EXAMPLES"></a>
+</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">To be filled
+in!</p>
+
+<h2>SEE ALSO
+<a name="SEE ALSO"></a>
+</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>ccfe</b>(1),
+<b>ccfe.conf</b>(5), <b>ccfe_form</b>(5),
+<b>ccfe_help</b>(5), <b>curses</b>(3X), <b>menu</b>(3X)</p>
+<hr>
+</body>
+</html>

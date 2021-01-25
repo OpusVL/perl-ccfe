@@ -1,0 +1,164 @@
+<HTML BGCOLOR="WHITE">
+<HEAD>
+<TITLE>usermod.form</TITLE>
+</HEAD>
+<BODY>
+<PRE>
+# Works for sure in Ubuntu Linux, not in BSD systems (some commands used
+# like cut(1) have different syntax or does not exists, like chage(1)).
+title {
+  Modify a user account
+}
+
+init { command:
+  sleep 1  # Wait only for demo...
+  uname=%{ARGV1}
+  if id $uname > /dev/null 2>&1; then
+    echo LOGIN=$uname
+    echo COMMENT="$(grep -w $uname /etc/passwd|cut -d: -f5)"
+    echo HOME_DIR="$(grep -w $uname /etc/passwd|cut -d: -f6)"
+    echo SHELL="$(grep -w $uname /etc/passwd|cut -d: -f7)"
+    echo UID="$(grep -w $uname /etc/passwd|cut -d: -f3)"
+    echo GROUP="$(id -gn $uname)"
+    echo GROUPS="$(id -Gn $uname | cut -d \  -f 2- | tr ' ' ',')"
+    
+    exp_date=$(LANG=C chage -l $uname | awk -F: '/Password expires/ { if ($2 ~ 'never') { print "-1" } else { print $2 } }')
+    if [ ! -z "$exp_date" ]; then
+      if [ "$exp_date" != '-1' ]
+      then
+	echo EXPIRE_DATE=$(date -d "$exp_date" "+%Y-%m-%d")
+      else
+	echo EXPIRE_DATE=$exp_date
+      fi
+      echo INACTIVE=$(chage -l $uname | awk -F: '/Password inactive/ { if ($2 ~ 'never') { print "-1" } else { print $2 } }')
+    else
+      echo "Unable to read password expiration informations." > /dev/stderr
+      # Disable 2 fields (show them but user cannot change their value):
+      echo CCFE_DISABLE_FIELDS=EXPIRE_DATE,INACTIVE
+    fi
+
+    lock_status=$(awk -F : -v uname=$uname " { if (\$1 == uname) { if (\$2 ~ /^\!/) { print \"YES\" } else { print \"NO\" } } } " /etc/shadow 2> /dev/null)
+    if [ $? -ne 0 ]; then
+      # Remove field with ID "LOCKED" from form:
+      echo CCFE_REMOVE_FIELDS=LOCKED
+      echo "Unable to read password lock status." > /dev/stderr
+    else
+      echo LOCKED=$lock_status
+    fi
+  else
+    echo "Username does not exist." > /dev/stderr
+    exit 1      # Don't post form
+  fi
+  exit 0
+}
+
+field {
+  id       = LOGIN
+  label    = Login name
+  len      = 8
+  type     = STRING
+  option   = -l
+  ignore_unchgd = YES
+}
+field {
+  id       = COMMENT
+  label    = Comment
+  len      = 20
+  type     = STRING
+  hscroll  = YES
+  option   = -c'
+  ignore_unchgd = YES
+}
+field {
+  id       = HOME_DIR
+  label    = Home directory
+  len      = 20
+  type     = STRING
+  option   = -d
+  ignore_unchgd = YES
+}
+field {
+  id       = UID
+  label    = Numeric user ID
+  type     = NUMERIC
+  len      = 5
+  option   = -u
+  ignore_unchgd = YES
+}
+field {
+  id       = NON_UNIQUE
+  label    = Allow non-unique UID
+  type     = BOOLEAN
+  htab     = 1
+  option   = -o
+}
+field {
+  id       = GROUP
+  label    = Initial login group
+  len      = 12
+  type     = STRING
+  hscroll  = YES
+  option   = -g
+  list_cmd = command:single-val:cut -d : -f 1 /etc/group | sort
+  ignore_unchgd = YES
+}
+field {
+  id       = GROUPS
+  label    = Supplementary groups
+  len      = 20
+  type     = STRING
+  hscroll  = YES
+  option   = -G
+  list_cmd = command:multi-val:cut -d : -f 1 /etc/group | sort
+  list_sep = ","
+  ignore_unchgd = YES
+}
+field {
+  id       = APPEND
+  label    = Add the user to these supplemental group(s)
+  type     = BOOLEAN
+  htab     = 1
+  option   = -a
+}
+field {
+  id       = SHELL
+  label    = Login shell
+  len      = 15
+  type     = STRING
+  hscroll  = YES
+  option   = -s
+  list_cmd = command:single-val:cat /etc/shells |grep -v ^# | sort
+  ignore_unchgd = YES
+}
+field {
+  id       = EXPIRE_DATE
+  label    = Date when account will be disabled (YYYY-MM-DD)
+  len      = 10
+  type     = STRING
+  option   = -e
+  list_cmd = command:single-val:date -d '+180 days' "+%Y-%m-%d : 3 months ahead"
+  ignore_unchgd = YES
+}
+field {
+  id       = INACTIVE
+  label    = Days account is disabled after pwd expiration
+  len      = 3
+  type     = NUMERIC
+  option   = -f
+  list_cmd = const:single-val:"0 : Disables the account as soon as the password has expired","-1 : Never inactives"
+  ignore_unchgd = YES
+}
+field {
+  id       = LOCKED
+  label    = Is this user account locked?
+  type     = BOOLEAN
+  vtab     = 1
+  option   = -L,-U
+}
+
+action { run(confirm):
+  echo 'Waiting 5 seconds for demo...' ; for c in 5 4 3 2 1; do echo "  $c" ; sleep 1 ; done ; usermod%{COMMENT}%{HOME_DIR}%{UID}%{NON_UNIQUE}%{GROUP}%{GROUPS}%{APPEND}%{SHELL}%{EXPIRE_DATE}%{INACTIVE}%{LOGIN}%{LOCKED} %{ARGV1} && echo "Account successfully changed."
+}
+</PRE>
+</BODY>
+</HTML>

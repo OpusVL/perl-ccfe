@@ -1,0 +1,79 @@
+<HTML BGCOLOR="WHITE">
+<HEAD>
+<TITLE>usermods.form</TITLE>
+</HEAD>
+<BODY>
+<PRE>
+###############################################################################
+# fping(8) minimal frontend
+###############################################################################
+
+title {
+  Send ICMP ECHO_REQUEST packets to network hosts
+}
+
+field {
+  id     = NET
+  label  = Target list network (A.B.C.D/P)
+  type   = STRING
+  len    = 18
+  option = -g
+}
+field {
+  id     = FILE
+  label  = Target list file
+  type   = STRING
+  len    = 40
+  option = -f
+}
+field {
+  id     = A
+  label  = Show systems that are alive
+  type   = BOOLEAN
+  option = -a
+}
+field {
+  id     = D
+  label  = Use DNS to lookup address of return ping packet
+  type   = BOOLEAN
+  option = -d
+}
+field {
+  id     = CA
+  label  = Display targets by address rather than DNS name
+  type   = BOOLEAN
+  option = -A
+}
+field {
+  id     = U
+  label  = Show targets that are unreachable
+  type   = BOOLEAN
+  option = -u
+}
+field {
+  id     = R
+  label  = Retry limit (default 3)
+  type   = NUMERIC
+  len    = 3
+  option = -r
+}
+field {
+  id     = T
+  label  = Timeout (in seconds, default: 10)
+  type   = NUMERIC
+  len    = 3
+  option = -T
+}
+field {
+  id     = E
+  label  = Show elapsed (round-trip) time of packets
+  type   = BOOLEAN
+  option = -e
+}
+
+action {
+  run: fping %{*}
+}
+</PRE>
+</BODY>
+</HTML>

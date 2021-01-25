@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <META NAME="AUTHOR" CONTENT="Massimo Loschi" />
+  <TITLE>CCFE :: the Curses Command Front-end :: Schermate</TITLE>
+<link rel="stylesheet" type="text/css" href="../style.css" media="screen" />
+</head>
+<body>
+<div id="header">
+	<div id="logo">
+		<h1><a href="index.html">CCFE</a></h1>
+		<p>the Curses Command Front-end</p>
+<HR COLOR=WHITE SIZE=1>
+<A HREF="../it/sshots.html"><IMG ALT="Versione italiana" TITLE="Versione italiana" BORDER=0 SRC="../icons/flag_it.gif"></A>
+<A HREF="../en/sshots.html"><IMG ALT="English version" TITLE="English version" BORDER=0 SRC="../icons/flag_en.gif"></A>
+	</div>
+	<!-- end #logo -->
+	<div id="menu">
+		<ul>
+                        <li class="first"><A HREF="features.html">Caratteristiche</A></LI>
+                        <li><A HREF="sshots.html">Schermate</A></LI>
+                        <li><A HREF="install.html">Installazione</A></LI>
+                        <li><A HREF="docs.html">Documentazione</A></LI>
+                        <li><A HREF="faq.html">FAQ</A></LI>
+                        <li><A HREF="dnload.html">Download</A></LI>
+		</ul>
+	</div>
+	<!-- end #menu -->
+</div>
+<!-- end #header -->
+<div id="page">
+	<div id="content">
+		<div class="post">
+			<h3 class="title">Schermate</H3>
+<P>
+L'applicazione di un'interfaccia CCFE negli esempi riportati in seguito &egrave;
+inutile dal punto di vista pratico: serve unicamente per mostrare l'aspetto del
+software e per una breve descrizione operativa.
+</P>
+<UL>
+<LI><A HREF="#es1">Esempio 1</A>: Maschera video base per il comando usermod(1)</LI>
+  <UL>
+    <LI>Maschera video base</LI>
+    <LI>Menu pop-up di selezione valore campo</LI>
+    <LI>Visualizzazione anteprima azione della form</LI>
+    <LI>Browser dell'output delle azioni di form e menu</LI>
+  </UL>
+<LI><A HREF="#es2">Esempio 2</A>: Maschere video per il comando usermod(1)</LI>
+    <B>(&Egrave; disponibile anche un <A HREF="scast1.html">breve video</A>)</B>
+  <UL>
+    <LI>Finestra pop-up con lo standard error del blocco init{}</LI>
+    <LI>Maschera video con alcuni campi disabilitati o rimossi dal blocco init{}</LI>
+  </UL>
+<LI><A HREF="#es3">Esempio 3</A>: Menu</LI>
+<LI><A HREF="#es4">Esempio 4</A>: CCFE configurato per apparire simile allo SMIT di AIX</LI>
+    <B>(&Egrave; disponibile anche un <A HREF="scast2.html">breve video</A>)</B>
+</UL>
+<HR NOSHADE SIZE=1>
+<I>IBM and AIX are trademarks of International Business Machines Corporation in the
+United States, other countries, or both.</I>
+<HR NOSHADE SIZE=1>
+<P>
+</P>
+
+		</div>
+		<div class="post">
+			<h3 class="title"><A NAME="es1">Esempio 1</A></H3>
+			<div class="entry">
+                            <B>Maschera video base per il comando usermod(1)</B>
+			</div>
+		</div>
+Il file <A HREF="../usermods.html">usermods.form</A> definisce la seguente maschera video per
+il comando Linux <TT>usermod(1)</TT>:
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermods1a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figura 1 - Maschera video base</I>
+</P>
+
+Questa &egrave; l'esempio di definizione base di una form: ad ogni opzione
+supportata dal comando <TT>usermod(1)</TT> &egrave; associato un campo, ed
+&egrave; fornito un minimo di supporto per la compilazione:
+ad esempio, premendo il tasto <TT>&lt;F1&gt;</TT> nel primo campo si apre
+un menu pop-up con l'elenco dei valori ammessi, i quali vengono generati come
+indicato nel relativo <A HREF="../usermods.html#login_list_cmd">attributo <TT>list_cmd</TT></A>:
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermods2a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figura 2 - Menu pop-up di selezione valore campo</I>
+</P>
+
+Inserendo alcuni valori nei campi della form (notare che i campi modificati
+sono automaticamente visualizzati in grassetto), premendo il tasto
+<TT>&lt;F4&gt;</TT> viene aperta una finestra pop-up in cui &egrave; presente
+l'anteprima del comando che verr&agrave; eseguito quando l'utente
+premer&agrave; il tasto <TT>&lt;Enter&gt;</TT>:
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermods3a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figura 3 - Visualizzazione anteprima azione della form</I>
+</P>
+
+Un'esecuzione terminata con successo del comando <TT>usermod(1)</TT> non ha
+output, cos&igrave; provando ad inserire nei campi valori non corretti e
+premendo il tasto <TT>&lt;Enter&gt;</TT>, nella schermata dell'output browser
+saranno presenti i messaggi di standard error, visualizzati in grassetto per
+differenziarli da quelli di standard output che invece hanno gli 
+attributi video standard:
+ 
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermods4a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figura 4 - Browser dell'output delle azioni di form e menu</I>
+</P>
+
+		<div class="post">
+			<h3 class="title"><A NAME="es2">Esempio 2</A></H3>
+			<div class="entry">
+                            <B>Maschere video per il comando usermod(1)</B>
+			</div>
+		</div>
+Il seguente esempio &egrave; pi&ugrave; complesso del precedente, ma semplifica
+l'interazione dell'utente con interfaccia CCFE applicata al comando
+<TT>usermod(1)</TT>: l'interfaccia CCFE &egrave; composta di due form, la prima,
+<A HREF="../ask_user.html">ask_user.form</A>,
+richiede lo username dell'account da modificare (supponiamo "ccfedemo"):
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/ask_user1a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figura 5</I>
+</P>
+
+(notare che il tasto <TT>&lt;F1&gt;</TT> &egrave; attivo come nell'<A HREF="#es1">esempio 1</A> e la partentesi angolare sinistra indicatrice dello
+scorrimento a sinistra del valore del campo)<BR>
+Premendo il tasto <TT>&lt;Enter&gt;</TT> viene richiamata la seconda maschera video,
+<A HREF="../usermod.html">usermod.form</A>, con tutti i campi
+automaticamente compilati con i valori correnti del sistema,
+cos&igrave; l'utente pu&ograve; modificarli a piacere:
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermod1a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figura 6</I>
+</P>
+
+Il successivo esempio mostra come il blocco <TT>init{}</TT> di
+<A HREF="../usermod.html">questa form</A> pu&ograve; gestire alcune eccezioni
+per modificare l'interazione con l'utente: ad esempio, se l'utente inserisce
+nella form <A HREF="../ask_user.html">ask_user.form</A> un nome di account
+non valido, allora CCFE mostrer&agrave; la seguente finestra pop-up di errore:
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermod2a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figura 7 - Pop-up window con lo standard error del blocco init{}</I>
+</P>
+
+e la form successiva non verr&agrave; richiamata fino a che l'utente non
+inserir&agrave; nel campo il nome di un account presente nel sistema.<BR>
+Questo comportamento pu&ograve; essere controllato con lo <I>standard error</I>
+e l'<I>exit status</I> dell blocco <TT>init{}</TT>, come &egrave; descritto
+nella documentazione fornita col software.
+<P>
+</P>
+Se CCFE viene eseguito da un utente senza i privilegi di <I>root</I>, come ad
+esempio dall'utente "myuname", allora le informazioni sulla scadenza delle
+password non possono essere lette, comparir&agrave; la seguente finestra
+pop-up:
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermod3a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figura 8 - Pop-up window (2) con lo standard error del blocco init{}</I>
+</P>
+
+e nella form successiva non saranno presentati all'utente i valori dei relativi
+campi e sar&agrave; rimosso il campo che permette di bloccare/sbloccare l'account:
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermod4a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figura 9 - Form di fig. 6 con alcuni campi disabilitati o rimossi dal blocco init{}</I>
+</P>
+
+Infine, giocando sui nomi dei file, &egrave; possibile attivare la nuova
+<I>scorciatoia</I> <TT>usermod</TT> come punto di ingresso per richiamare
+direttamente le form dell'<A HREF="#es2">esempio 2</A> col comando
+"<TT>ccfe usermod</TT>": &egrave; sufficiente<UL>
+<LI>rinominare <TT>usermod.form</TT> in <TT>dousermod.form</TT></LI>
+<LI>rinominare <TT>ask_user.form</TT> in <TT>usermod.form</TT> e cambiare di conseguenza il nome della form richiamata nel blocco <TT>action{}</TT>.</LI>
+</UL>
+Per maggiori dettagli fare riferimento alla documentazione fornita col software.
+<P>
+</P>
+
+		<div class="post">
+			<h3 class="title"><A NAME="es3">Esempio 3</A></H3>
+			<div class="entry">
+                            <B>Menu</B>
+			</div>
+		</div>
+La seguente schermata &egrave; stata prodotta caricando il menu
+<A HREF="../sysmon.html">sysmon.menu</A>, fornito insieme a CCFE come plugin di
+esempio:
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/sysmon1a.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figura 10 - Un semplice menu</I>
+</P>
+
+
+		<div class="post">
+			<h3 class="title"><A NAME="es4">Esempio 4</A></H3>
+			<div class="entry">
+                            <B>CCFE configurato per apparire simile allo SMIT di AIX</B>
+			</div>
+		</div>
+In questo esempio sono riproposte alcune delle precedenti schermate, ma relative
+ad un'istanza di CCFE con i file di configurazione <TT>ccfe.conf</TT> e
+<TT>msg/C/ccfe</TT> modificati in modo da rendere l'aspetto di CCFE simile a
+quello del <I>System Management Information Tool</I> del Sistema Operativo AIX:
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/ask_user1b.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figura 11</I>
+</P>
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermod1b.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figura 12</I>
+</P>
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermod2b.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figura 13</I>
+</P>
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermod3b.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figura 14</I>
+</P>
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/usermod4b.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figura 15</I>
+</P>
+
+<P ALIGN=CENTER>
+<IMG ALT="" SRC="../sshots/sysmon1b.png">
+</P>
+<P ALIGN=CENTER>
+<I>Figura 16</I>
+</P>
+	</div>
+</div>
+<!-- end #page -->
+<div id="footer">
+ <p>Copyright &copy; 2009-2016. Design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.</p>
+</div>
+<!-- end #footer -->
+</body>
+</html>
