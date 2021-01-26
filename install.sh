@@ -22,7 +22,7 @@
 
 # getopt() used for shell portability
 
-PREFIX='/usr/local/ccfe';
+PREFIX='$HOME/.ccfe';
 ETCDIR="$PREFIX/etc"
 BINDIR="$PREFIX/bin"
 LIBDIR="$PREFIX/lib"
