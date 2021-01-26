@@ -21,6 +21,12 @@ RUN apt-get -y update                       \
         libgnat-8       \
         gnat            \
         ssh             \
-        diffutils 
+        diffutils       \
+        g++             \
+        libmpfr-dev     \
+        libmpfr-doc     \
+        texinfo         \
+        gcc-multilib    \
+        libc6-i386
 
 CMD ["/bin/bash"]
